@@ -1,0 +1,28 @@
+"use client"
+
+import React from 'react'
+import { TrendingUp, X } from 'lucide-react'
+
+interface AnalyticsHeaderProps {
+    onClose: () => void
+    isError?: boolean
+}
+
+const AnalyticsHeader: React.FC<AnalyticsHeaderProps> = ({ onClose, isError = false }) => {
+    return (
+        <div className="rounded-t-2xl bg-gradient-to-r from-[#0054A5] to-[#003d7a] px-4 sm:px-6 py-3 flex items-center justify-between">
+            <div className="text-white font-semibold text-sm sm:text-base flex items-center gap-2">
+                <TrendingUp className="w-4 h-4" />
+                Link Analytics
+            </div>
+            <button
+                onClick={onClose}
+                className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300"
+            >
+                <X className="w-5 h-5 cursor-pointer" />
+            </button>
+        </div>
+    )
+}
+
+export default AnalyticsHeader

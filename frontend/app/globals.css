@@ -1,0 +1,464 @@
+@import 'tailwindcss';
+
+:root {
+    --color-primary: #0054A5;
+    --color-primary-contrast: #D7E0E8;
+    --color-primary-light: #2788CE;
+    --color-primary-dark: #06387E;
+    --color-neutral-50: #F8FAFC;
+    --color-neutral-100: #F1F5F9;
+    --color-neutral-300: #CBD5E1;
+    --color-neutral-500: #64748B;
+    --color-neutral-700: #334155;
+    --color-neutral-900: #0F172A;
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
+    --color-gradient-1: linear-gradient(180deg, #2788CE 0%, var(--primary) 100%);
+    --color-gradient-2: linear-gradient(168deg, #2474C0 9.12%, #033B8F 93.13%);
+    --color-gradient-3: linear-gradient(180deg, #0054A5 0%, #092868 100%);
+    --color-gradient-4: linear-gradient(180deg, #D7E0E8 0%, #96C4E7 100%);
+    --color-gradient-5: linear-gradient(165deg, #57A5DD 10.43%, #2788CE 89.78%);
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #0054A5;
+    border-radius: 10px;
+    border: 2px solid #f0f0f0;
+}
+
+.main-button {
+    background-color: #0054A5;
+    color: var(--color-neutral-50);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.main-button:hover {
+    background-color: #034691;
+}
+
+.main-button:focus {
+    background-color: var(--color-primary-dark);
+    outline: none;
+}
+
+.sec-button {
+    background-color: var(--color-neutral-50);
+    color: var(--color-primary);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.sec-button:hover {
+    background-color: #EAF3FC;
+}
+
+.sec-button:focus {
+    background-color: #D6E5F9;
+    outline: none;
+}
+
+/* -------------------- */
+
+.input-base {
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #64748B;
+    background-color: var(--color-neutral-50);
+    outline: 1px solid #CBD5E1;
+}
+
+.input-base:focus {
+    outline: 2px solid #2788CE;
+}
+
+.input-error {
+    outline: 2px solid var(--color-error);
+
+}
+
+.input-error:focus {
+    outline: 2px solid var(--color-error);
+}
+
+/* -------------------- */
+
+.button-auth {
+    width: 100%;
+    height: 3rem;
+    border: 1px solid #CBD5E1;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    color: #343641;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button-auth:hover {
+    background-color: #EAF3FC;
+}
+
+.button-auth:focus {
+    border-color: #0054A5;
+    outline: none;
+    background-color: #D6E5F9;
+}
+
+@media (min-width: 1024px) {
+    .button-auth {
+        height: 3.5rem;
+        font-size: 1.125rem;
+    }
+}
+
+
+/* -------------------- */
+
+
+.text-shadow-blue {
+    text-shadow: 0 1px 5px rgba(11, 101, 188, 0.4);
+}
+
+.drop-shadow-blue {
+    filter: drop-shadow(0 1px 5px rgba(11, 101, 188, 0.4));
+}
+
+.box-shadow {
+    box-shadow: 0 4px 10px 0 rgba(38, 107, 206, 0.15);
+}
+
+.text-shadow {
+    text-shadow: 0 4px 10px rgba(38, 107, 206, 0.2);
+}
+
+.bg-svg {
+    background-image: url("/bg.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+html,
+body {
+    overflow-x: hidden
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-scroll {
+    animation: scroll 15s linear infinite;
+}
+
+.shadow-1 {
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.shadow-5 {
+    box-shadow: 0 1px 4px 0 rgba(31, 38, 135, 0.05);
+}
+
+.shadow-2 {
+    box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.1);
+}
+
+.shadow-7 {
+    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.1);
+}
+
+.shadow-9 {
+    box-shadow: 0 8px 24px 0 rgba(31, 38, 135, 0.1);
+}
+
+.shadow-23 {
+    box-shadow: 0 0 24px 0 rgba(31, 38, 135, 0.1);
+}
+
+.shadow-3 {
+    box-shadow: 0 4px 16px 0 rgba(0, 84, 165, 0.3);
+}
+
+.shadow-4 {
+    box-shadow: 0 2px 8px 0 rgba(0, 84, 165, 0.02);
+}
+
+.shadow-6 {
+    box-shadow: 0 2px 8px 0 rgba(0, 84, 165, 0.1);
+}
+
+.shadow-12 {
+    box-shadow: 0 4px 16px 0 rgba(0, 84, 165, 0.1);
+}
+
+.shadow-16 {
+    box-shadow: 0 4px 12px 0 rgba(0, 84, 165, 0.15);
+}
+
+.shadow-22 {
+    box-shadow: 0 -6px 15px rgba(0, 84, 165, 0.05);
+}
+
+.shadow-25 {
+    box-shadow: 0 4px 12px 0 rgba(0, 84, 165, 0.25);
+}
+
+.shadow-26 {
+    box-shadow: 0 4px 12px 0 rgba(0, 84, 165, 0.5);
+}
+
+.shadow-30 {
+    box-shadow: 0 2px 4px 0 rgba(0, 84, 165, 0.05);
+}
+
+.shadow-31 {
+    box-shadow: 0 8px 24px 0 rgba(0, 84, 165, 0.15);
+}
+
+.shadow-19 {
+    box-shadow: 0 4px 12px 0 rgba(16, 185, 129, 0.15);
+}
+
+.shadow-20 {
+    box-shadow: 0 2px 8px 0 rgba(16, 185, 129, 0.3);
+}
+
+.shadow-18 {
+    box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.3);
+}
+
+.shadow-27 {
+    box-shadow: 0 2px 8px 0 rgba(100, 116, 139, 0.08);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientFlow {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.animate-gradient-flow {
+    animation: gradientFlow 1s ease-in-out infinite;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slideDown {
+    animation: slideDown 0.3s ease-out;
+}
+
+.space-y-2::-webkit-scrollbar {
+    width: 6px;
+}
+
+.space-y-2::-webkit-scrollbar-track {
+    background: rgba(0, 84, 165, 0.05);
+    border-radius: 10px;
+}
+
+.space-y-2::-webkit-scrollbar-thumb {
+    background: rgba(0, 84, 165, 0.2);
+    border-radius: 10px;
+}
+
+.space-y-2::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 84, 165, 0.3);
+}
+
+@keyframes pulse-slow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+}
+
+@media (max-width: 1023px) {
+    div::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    div::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    div::-webkit-scrollbar-thumb {
+        background: rgba(0, 84, 165, 0.3);
+        border-radius: 10px;
+    }
+
+    div::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 84, 165, 0.5);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+    animation: slideIn 0.4s ease-out;
+}
+
+.year-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #0054A5 transparent;
+}
+
+.year-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.year-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 100px;
+}
+
+.year-scroll::-webkit-scrollbar-thumb {
+    background: #0054A5;
+    backdrop-filter: blur(6px);
+    border-radius: 10px;
+    border: 1px solid #0054A5;
+}
+
+.year-scroll::-webkit-scrollbar-thumb:hover {
+    background: #0054A5;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-pop {
+    animation: pop 0.3s ease-out;
+}
+
+.react-colorful {
+    width: 220px;
+    height: 180px;
+}
+
+.react-colorful__saturation {
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+}
+
+.react-colorful__hue {
+    height: 28px;
+    border-radius: 0 0 12px 12px;
+    margin-top: 12px;
+}
+
+.react-colorful__pointer {
+    width: 20px;
+    height: 20px;
+    border-width: 3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.react-colorful__hue-pointer {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-width: 3px;
+}
