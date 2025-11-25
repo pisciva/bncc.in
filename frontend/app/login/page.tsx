@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from '@/components/auth/FormInput'
-import axios from 'axios'
+import { auth, getLoginRedirectUrl } from '@/lib/api'
 import Link from 'next/link'
 import Toast from '@/components/layout/Toast'
 import LeftCol from '@/components/auth/LeftCol'
@@ -17,6 +17,7 @@ type FormValues = { email: string; password: string }
 export default function LoginPage() {
     const [serverError, setServerError] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const {
         register,
@@ -26,12 +27,16 @@ export default function LoginPage() {
 
     const onSubmit = async (data: FormValues) => {
         setServerError('')
+        setLoading(true)
+        
         try {
-            const res = await axios.post('http://localhost:5000/auth/login', data)
-            window.location.href = `http://localhost:3000?token=${res.data.token}`
+            const response = await auth.login(data.email, data.password)
+            window.location.href = getLoginRedirectUrl(response.token)
         } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } }
-            setServerError(err.response?.data?.message || 'Login failed')
+            const err = error as Error
+            setServerError(err.message || 'Login failed')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -88,12 +93,18 @@ export default function LoginPage() {
 
                     {serverError && <Toast message={serverError} type="error" onClose={() => setServerError('')} />}
 
-                    <button type="submit" className="auth-button">Log In</button>
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="auth-button disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Logging in...' : 'Log In'}
+                    </button>
                 </form>
 
                 <OAuth />
 
-                <p className="auth-footer">Don’t have an account? <Link href="/register">Create an account</Link></p>
+                <p className="auth-footer">Don't have an account? <Link href="/register">Create an account</Link></p>
             </div>
         </div>
     )

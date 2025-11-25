@@ -3,12 +3,12 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import Toast from '@/components/layout/Toast'
-import axios from 'axios'
+import { password } from '@/lib/api'
 import { Mail } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ForgotPass() {
-    const { register, handleSubmit } = useForm<{ email: string }>({ mode: 'onSubmit', })
+    const { register, handleSubmit } = useForm<{ email: string }>({ mode: 'onSubmit' })
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
@@ -35,13 +35,13 @@ export default function ForgotPass() {
         setLoading(true)
 
         try {
-            const res = await axios.post('http://localhost:5000/forgot-password', data)
-            setMessage(res.data.message)
+            const response = await password.forgot(data.email)
+            setMessage(response.message)
             setCooldown(30)
             localStorage.setItem('forgotPassLastSubmit', Date.now().toString())
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } }
-            setError(err.response?.data?.message || 'Oops! Something went wrong. Please try again later.')
+        } catch (err) {
+            const error = err as Error
+            setError(error.message || 'Oops! Something went wrong. Please try again later.')
             setMessage('')
         } finally {
             setLoading(false)

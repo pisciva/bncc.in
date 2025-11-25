@@ -6,7 +6,7 @@ import { Lock, AlertCircle, Clock } from 'lucide-react'
 import StatusCard from '@/components/[customUrl]/StatusCard'
 import CodeInput from '@/components/[customUrl]/CodeInput'
 import Link from 'next/link'
-import { fetchRedirect } from '@/lib/api'
+import { redirect } from '@/lib/api'
 
 function RedirectPageContent() {
     const params = useParams()
@@ -96,7 +96,7 @@ function RedirectPageContent() {
     useEffect(() => {
         const checkAndRedirect = async () => {
             try {
-                const response = await fetchRedirect(customUrl, providedCode || undefined)
+                const response = await redirect.check(customUrl, providedCode || undefined)
                 await handleResponse(response)
             } catch {
                 setStatus('not-found')
@@ -118,7 +118,7 @@ function RedirectPageContent() {
         setError('')
 
         try {
-            const response = await fetchRedirect(customUrl, fullCode)
+            const response = await redirect.check(customUrl, fullCode)
             const data = await response.json()
 
             if (!response.ok) {

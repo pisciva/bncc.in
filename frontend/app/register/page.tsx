@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { InputField } from '@/components/auth/FormInput'
-import axios from 'axios'
+import { auth } from '@/lib/api'
 import Link from 'next/link'
 import LeftCol from '@/components/auth/LeftCol'
 import OAuth from '@/components/auth/OAuth'
@@ -25,6 +25,7 @@ export default function RegisterPage() {
     const [successMessage, setSuccessMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [countdown, setCountdown] = useState<number | null>(null)
+    const [loading, setLoading] = useState(false)
 
     const {
         register,
@@ -37,17 +38,16 @@ export default function RegisterPage() {
         setServerError('')
         setSuccessMessage('')
 
-        if (data.password !== data.confirmPassword)
+        if (data.password !== data.confirmPassword) {
             return setServerError('Passwords do not match')
+        }
+
+        setLoading(true)
 
         try {
-            const res = await axios.post('http://localhost:5000/auth/register', {
-                fullName: data.fullName,
-                email: data.email,
-                password: data.password
-            })
+            const response = await auth.register(data.fullName, data.email, data.password)
 
-            setSuccessMessage(`${res.data.message} Redirecting to login...`)
+            setSuccessMessage(`${response.message} Redirecting to login...`)
             reset()
 
             setCountdown(3)
@@ -67,8 +67,10 @@ export default function RegisterPage() {
             }, 3000)
 
         } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } }
-            setServerError(err.response?.data?.message || 'Registration failed, try again')
+            const err = error as Error
+            setServerError(err.message || 'Registration failed, try again')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -160,7 +162,13 @@ export default function RegisterPage() {
                         error={errors.confirmPassword?.message}
                     />
 
-                    <button type="submit" className="auth-button">Sign Up</button>
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="auth-button disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Signing up...' : 'Sign Up'}
+                    </button>
                 </form>
 
                 <OAuth />

@@ -4,7 +4,7 @@ import { Suspense, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from '@/components/auth/FormInput'
 import { useRouter, useSearchParams } from 'next/navigation'
-import axios from 'axios'
+import { password } from '@/lib/api'
 import Toast from '@/components/layout/Toast'
 import Link from 'next/link'
 
@@ -14,24 +14,24 @@ function ResetPasswordContent() {
     const [serverMessage, setServerMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [countdown, setCountdown] = useState<number | null>(null)
+    const [loading, setLoading] = useState(false)
 
     const token = useSearchParams().get('token')
     const router = useRouter()
 
     const onSubmit = async (data: { password: string; confirmPassword: string }) => {
-        setServerError('');
+        setServerError('')
         setServerMessage('')
 
         if (!token) return setServerError('Missing token in URL')
         if (data.password !== data.confirmPassword) return setServerError('Passwords do not match')
 
-        try {
-            const res = await axios.post('http://localhost:5000/reset-password', {
-                token,
-                password: data.password
-            })
+        setLoading(true)
 
-            setServerMessage(res.data.message || 'Password reset successful!')
+        try {
+            const response = await password.reset(token, data.password)
+
+            setServerMessage(response.message || 'Password reset successful!')
             setCountdown(3)
 
             const countdownInterval = setInterval(() => {
@@ -46,9 +46,11 @@ function ResetPasswordContent() {
 
             setTimeout(() => router.push('/login'), 3000)
 
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } }; message?: string }
-            setServerError(err.response?.data?.message || err.message || 'Reset failed.')
+        } catch (err) {
+            const error = err as Error
+            setServerError(error.message || 'Reset failed.')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -88,8 +90,12 @@ function ResetPasswordContent() {
                     <InputField {...passwordFieldProps('password', 'Password')} />
                     <InputField {...passwordFieldProps('confirmPassword', 'Confirm Password')} />
 
-                    <button type="submit" className="w-full h-12 sm:h-14 bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white font-semibold text-base sm:text-lg rounded-xl hover:shadow-3 transition-all duration-300 cursor-pointer">
-                        Reset Password
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full h-12 sm:h-14 bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white font-semibold text-base sm:text-lg rounded-xl hover:shadow-3 transition-all duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Resetting...' : 'Reset Password'}
                     </button>
                 </form>
 
