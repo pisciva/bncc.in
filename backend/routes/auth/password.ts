@@ -7,6 +7,8 @@ import { hashPassword } from '../../utils/auth/hashPassword'
 
 const router = express.Router()
 
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000'
+
 router.post('/forgot-password', async (req: Request, res: Response) => {
     const { email } = req.body
 
@@ -25,7 +27,7 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
         user.resetTokenExpiry = expiry
         await user.save()
 
-        const resetLink = `http://localhost:3000/reset-password?token=${token}`
+        const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`
         await sendResetPasswordEmail(user.email, user.fullName || "User", resetLink)
 
         return res.json({ message: message.reset_success })

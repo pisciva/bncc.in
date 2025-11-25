@@ -1,8 +1,17 @@
 'use client'
 
 import React from 'react'
+import { API_URL } from '@/lib/api'
 
 export default function OAuth() {
+    const handleGoogleLogin = () => {
+        window.location.href = `${API_URL}/auth/google`
+    }
+
+    const handleGithubLogin = () => {
+        window.location.href = `${API_URL}/auth/github`
+    }
+
     return (
         <div className="mt-4">
             <div className="flex items-center my-4">
@@ -12,15 +21,19 @@ export default function OAuth() {
             </div>
 
             <button
-                onClick={() => (window.location.href = 'http://localhost:5000/auth/google')}
-                className="button-auth">
+                onClick={handleGoogleLogin}
+                className="button-auth"
+                type="button"
+            >
                 <img src="/logo-google.svg" alt="Google" className="w-7 h-7 mr-3" />
                 Google
             </button>
 
             <button
-                onClick={() => (window.location.href = 'http://localhost:5000/auth/github')}
-                className="button-auth">
+                onClick={handleGithubLogin}
+                className="button-auth"
+                type="button"
+            >
                 <img src="/logo-github.svg" alt="GitHub" className="w-7 h-7 mr-3" />
                 GitHub
             </button>
