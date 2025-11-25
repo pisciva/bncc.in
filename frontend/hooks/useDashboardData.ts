@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { LinkType } from '@/types/link'
 import { QRType } from '@/types/qr'
+import { API_URL } from '@/lib/api'
 
 export const useDashboardData = () => {
     const [links, setLinks] = useState<LinkType[]>([])
@@ -20,10 +21,10 @@ export const useDashboardData = () => {
                 }
 
                 const [resLinks, resQR] = await Promise.all([
-                    fetch("http://localhost:5000/api/links", {
+                    fetch(`${API_URL}:5000/api/links`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
-                    fetch("http://localhost:5000/api/qrs", {
+                    fetch(`${API_URL}:5000/api/qrs`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
                 ])
