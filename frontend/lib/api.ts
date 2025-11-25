@@ -1,6 +1,8 @@
+// Centralized API configuration
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
+// Helper untuk get token
 const getToken = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('token')
@@ -8,32 +10,65 @@ const getToken = () => {
     return null
 }
 
+// Helper untuk headers with auth
 const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${getToken()}`
 })
 
+// =====================
+// AUTH ENDPOINTS
+// =====================
+
 export const auth = {
     login: async (email: string, password: string) => {
-        const res = await fetch(`${API_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.message || 'Login failed')
-        return data
+        try {
+            const res = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            
+            const contentType = res.headers.get('content-type')
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server error. Please try again later.')
+            }
+            
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.message || 'Login failed')
+            return data
+        } catch (error) {
+            if (error instanceof Error) throw error
+            throw new Error('Network error. Please check your connection.')
+        }
     },
 
     register: async (fullName: string, email: string, password: string) => {
-        const res = await fetch(`${API_URL}/auth/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullName, email, password })
-        })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.message || 'Registration failed')
-        return data
+        try {
+            const res = await fetch(`${API_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ fullName, email, password })
+            })
+            
+            const contentType = res.headers.get('content-type')
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server error. Please try again later.')
+            }
+            
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.message || 'Registration failed')
+            return data
+        } catch (error) {
+            if (error instanceof Error) throw error
+            throw new Error('Network error. Please check your connection.')
+        }
     },
 
     logout: async () => {
@@ -45,29 +80,65 @@ export const auth = {
     }
 }
 
+// =====================
+// PASSWORD ENDPOINTS
+// =====================
+
 export const password = {
     forgot: async (email: string) => {
-        const res = await fetch(`${API_URL}/forgot-password`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.message || 'Failed to send reset email')
-        return data
+        try {
+            const res = await fetch(`${API_URL}/forgot-password`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
+            
+            const contentType = res.headers.get('content-type')
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server error. Please try again later.')
+            }
+            
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.message || 'Failed to send reset email')
+            return data
+        } catch (error) {
+            if (error instanceof Error) throw error
+            throw new Error('Network error. Please check your connection.')
+        }
     },
 
     reset: async (token: string, password: string) => {
-        const res = await fetch(`${API_URL}/reset-password`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token, password })
-        })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.message || 'Failed to reset password')
-        return data
+        try {
+            const res = await fetch(`${API_URL}/reset-password`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ token, password })
+            })
+            
+            const contentType = res.headers.get('content-type')
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server error. Please try again later.')
+            }
+            
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.message || 'Failed to reset password')
+            return data
+        } catch (error) {
+            if (error instanceof Error) throw error
+            throw new Error('Network error. Please check your connection.')
+        }
     }
 }
+
+// =====================
+// LINKS ENDPOINTS
+// =====================
 
 export const links = {
     getAll: async () => {
@@ -110,6 +181,10 @@ export const links = {
     }
 }
 
+// =====================
+// QR ENDPOINTS
+// =====================
+
 export const qrs = {
     getAll: async () => {
         const res = await fetch(`${API_URL}/api/qrs`, {
@@ -151,6 +226,10 @@ export const qrs = {
     }
 }
 
+// =====================
+// REDIRECT ENDPOINT
+// =====================
+
 export const redirect = {
     check: async (customUrl: string, code?: string) => {
         const url = `${API_URL}/api/redirect/${customUrl}${code ? `?code=${code}` : ''}`
@@ -165,6 +244,10 @@ export const redirect = {
     }
 }
 
+// =====================
+// ANALYTICS ENDPOINT
+// =====================
+
 export const analytics = {
     get: async (linkId: string, startDate?: string, endDate?: string) => {
         let url = `${API_URL}/api/analytics/${linkId}`
@@ -177,6 +260,10 @@ export const analytics = {
         return res.json()
     }
 }
+
+// =====================
+// UTILITY
+// =====================
 
 export const getLoginRedirectUrl = (token: string) => {
     return `${SITE_URL}?token=${token}`
