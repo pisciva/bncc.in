@@ -9,6 +9,7 @@ import QrCustomizer from './comp/QrCustomizer'
 import ProtectedCode from './comp/ProtectedCode'
 import ExpirationDate from './comp/ExpirationDate'
 import ToggleMoreSetting from './comp/ToggleMoreSetting'
+import { API_URL } from '@/lib/api'
 
 type Errors = {
     originalUrl: string
@@ -186,7 +187,7 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
         setErrorMessage("")
 
         try {
-            const res = await fetch("http://localhost:5000/api/links", {
+            const res = await fetch(`${API_URL}/api/links`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

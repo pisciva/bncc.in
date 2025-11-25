@@ -9,6 +9,7 @@ import AnalyticsDateFilter from './analytics/AnalyticsDateFilter'
 import AnalyticsCharts from './analytics/AnalyticsCharts'
 import { AnalyticsData, AnalyticsView, ChartType } from '@/types/analytics'
 import { LinkCard } from "./LinkItem"
+import { API_URL } from '@/lib/api'
 
 interface LinkAnalyticsModeProps {
     link: LinkCard
@@ -32,7 +33,7 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
 
     const fetchAnalytics = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/analytics/${linkId}`, {
+            const res = await fetch(`${API_URL}/api/analytics/${linkId}`, {
                 headers: {
                     ...(token && { Authorization: `Bearer ${token}` })
                 }

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import axios from 'axios'
+import { API_URL } from '@/lib/api'
 
 type User = {
     id: string
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
 
             try {
-                const res = await axios.get('http://localhost:5000/api/auth/me', {
+                const res = await axios.get(`${API_URL}/api/auth/me`, {
                     headers: {
                         Authorization: `Bearer ${storedToken}`,
                     },

@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 import QRViewMode from "./QRViewMode"
 import QREditMode from "./QREditMode"
 import { QRType } from "./QR"
+import { API_URL } from '@/lib/api'
 
 interface QRItemProps {
     qr: QRType
@@ -56,7 +57,7 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
         setSaving(true)
 
         try {
-            const res = await fetch(`http://localhost:5000/api/qrs/${qr._id}`, {
+            const res = await fetch(`${API_URL}:5000/api/qrs/${qr._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

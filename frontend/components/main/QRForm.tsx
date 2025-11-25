@@ -6,6 +6,7 @@ import validator from 'validator'
 import FormInput from './comp/FormInput'
 import QrCustomizer from './comp/QrCustomizer'
 import ToggleMoreSetting from './comp/ToggleMoreSetting'
+import { API_URL } from '@/lib/api'
 
 type Errors = {
     originalUrl: string
@@ -86,7 +87,7 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
         setErrorMessage('')
 
         try {
-            const res = await fetch('http://localhost:5000/api/qrs', {
+            const res = await fetch(`${API_URL}/api/qrs`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext'
 import LinkViewMode from "./LinkViewMode"
 import LinkEditMode from "./LinkEditMode"
 import LinkAnalyticsMode from "./LinkAnalyticsMode"
+import { API_URL } from '@/lib/api'
 
 export interface LinkCard {
     _id: string
@@ -132,7 +133,7 @@ const LinkItem: React.FC<LinkItemProps> = ({
         setSaving(true)
 
         try {
-            const res = await fetch(`http://localhost:5000/api/links/${link._id}`, {
+            const res = await fetch(`${API_URL}/api/links/${link._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
