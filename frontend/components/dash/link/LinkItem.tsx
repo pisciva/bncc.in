@@ -1,12 +1,29 @@
 "use client"
 
-import Link from 'next/link'
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
+import dynamic from 'next/dynamic'
 import { useAuth } from '@/context/AuthContext'
 import LinkViewMode from "./LinkViewMode"
 import LinkEditMode from "./LinkEditMode"
-import LinkAnalyticsMode from "./LinkAnalyticsMode"
 import { API_URL } from '@/lib/api'
+
+// Lazy load analytics mode
+const LinkAnalyticsMode = dynamic(() => import('./LinkAnalyticsMode'), {
+    loading: () => (
+        <div className="bg-white/10 backdrop-blur-xl border border-white/30 p-6 rounded-2xl shadow-lg">
+            <div className="animate-pulse space-y-4">
+                <div className="h-8 bg-gray-300/20 rounded w-1/3"></div>
+                <div className="h-64 bg-gray-300/20 rounded"></div>
+                <div className="grid grid-cols-3 gap-4">
+                    <div className="h-20 bg-gray-300/20 rounded"></div>
+                    <div className="h-20 bg-gray-300/20 rounded"></div>
+                    <div className="h-20 bg-gray-300/20 rounded"></div>
+                </div>
+            </div>
+        </div>
+    ),
+    ssr: false
+})
 
 export interface LinkCard {
     _id: string
@@ -53,6 +70,8 @@ const LinkItem: React.FC<LinkItemProps> = ({
     const [mode, setMode] = useState<'view' | 'edit' | 'analytics'>('view')
     const [justUpdated, setJustUpdated] = useState(false)
     const cardRef = useRef<HTMLDivElement>(null)
+    
+    // Form states
     const [title, setTitle] = useState(link.title)
     const [customUrl, setCustomUrl] = useState(link.customUrl)
     const [originalUrl, setOriginalUrl] = useState(link.originalUrl)
@@ -61,10 +80,12 @@ const LinkItem: React.FC<LinkItemProps> = ({
     const [qrColor, setQrColor] = useState(link.qr?.qrColor || '#000000')
     const [showLogo, setShowLogo] = useState(link.qr?.showLogo || false)
 
+    // Toggle states
     const [useCode, setUseCode] = useState(!!link.code)
     const [useQR, setUseQR] = useState(!!link.qr?.enabled)
     const [useExpiration, setUseExpiration] = useState(!!link.expirationDate)
 
+    // UI states
     const [saving, setSaving] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [errors, setErrors] = useState<Errors>({
@@ -75,30 +96,35 @@ const LinkItem: React.FC<LinkItemProps> = ({
     })
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
-    const handleModeChange = (newMode: 'view' | 'edit' | 'analytics') => {
+    // Memoized mode change handler
+    const handleModeChange = useCallback((newMode: 'view' | 'edit' | 'analytics') => {
         if (newMode === 'edit' || newMode === 'analytics') {
             onActivate()
         }
         setMode(newMode)
-    }
+    }, [onActivate])
 
+    // Scroll to card when mode changes
     useEffect(() => {
         if (mode === 'edit' || mode === 'analytics') {
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 cardRef.current?.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
                 })
             }, 100)
+            return () => clearTimeout(timer)
         }
     }, [mode])
 
+    // Reset mode when deactivated
     useEffect(() => {
         if (!isActive && (mode === 'edit' || mode === 'analytics')) {
             setMode('view')
         }
-    }, [isActive])
+    }, [isActive, mode])
 
+    // Reset form when link changes
     useEffect(() => {
         setTitle(link.title)
         setCustomUrl(link.customUrl)
@@ -113,14 +139,18 @@ const LinkItem: React.FC<LinkItemProps> = ({
         setHasSubmitted(false)
         setErrorMessage('')
         setErrors({ customUrl: '', title: '', code: '', expirationDate: '' })
-    }, [link])
+    }, [link._id]) // Only re-run when link ID changes
 
-    const handleSave = async (e: React.FormEvent) => {
+    const handleSave = useCallback(async (e: React.FormEvent) => {
         e.preventDefault()
         setHasSubmitted(true)
 
         const newErrors: Errors = {
-            customUrl: !customUrl ? "Custom link is required" : customUrl.trim().length < 4 ? "Custom link is already in use" : "",
+            customUrl: !customUrl 
+                ? "Custom link is required" 
+                : customUrl.trim().length < 4 
+                ? "Custom link must be at least 4 characters" 
+                : "",
             title: !title ? "Title is required" : "",
             code: useCode && code.some(c => !c) ? "Code must be 6 digits" : "",
             expirationDate: useExpiration && !expirationDate ? "Expiration date required" : "",
@@ -162,11 +192,11 @@ const LinkItem: React.FC<LinkItemProps> = ({
             }
 
             onShowToast({ message: "Link updated!", type: "success" })
-            setSaving(false)
+            onUpdateLink?.(data.link)
             onDeactivate()
             setMode('view')
-            onUpdateLink?.(data.link)
 
+            // Visual feedback
             setJustUpdated(true)
             setTimeout(() => {
                 cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -175,11 +205,12 @@ const LinkItem: React.FC<LinkItemProps> = ({
 
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : "Network error")
+        } finally {
             setSaving(false)
         }
-    }
+    }, [title, customUrl, originalUrl, code, expirationDate, qrColor, showLogo, useCode, useQR, useExpiration, link._id, token, onShowToast, onUpdateLink, onDeactivate])
 
-    const handleCancelEdit = () => {
+    const handleCancelEdit = useCallback(() => {
         setTitle(link.title)
         setCustomUrl(link.customUrl)
         setOriginalUrl(link.originalUrl)
@@ -195,20 +226,23 @@ const LinkItem: React.FC<LinkItemProps> = ({
         setErrors({ customUrl: '', title: '', code: '', expirationDate: '' })
         onDeactivate()
         setMode('view')
-    }
+    }, [link, onDeactivate])
 
-    const handleCloseAnalytics = () => {
+    const handleCloseAnalytics = useCallback(() => {
         onDeactivate()
         setMode('view')
-    }
+    }, [onDeactivate])
 
-    const handleCopyShortenLink = () => {
-        const linkToCopy = link.shortenLink.startsWith("http") ? link.shortenLink : `https://${link.shortenLink}`
+    const handleCopyShortenLink = useCallback(() => {
+        const linkToCopy = link.shortenLink.startsWith("http") 
+            ? link.shortenLink 
+            : `https://${link.shortenLink}`
+        
         navigator.clipboard
             .writeText(linkToCopy)
             .then(() => onShowToast({ message: "Link grabbed!", type: "success" }))
             .catch(() => onShowToast({ message: "Failed to copy link", type: "error" }))
-    }
+    }, [link.shortenLink, onShowToast])
 
     return (
         <div ref={cardRef}>
@@ -261,4 +295,19 @@ const LinkItem: React.FC<LinkItemProps> = ({
     )
 }
 
-export default LinkItem
+// Memoization with custom comparison
+export default React.memo(LinkItem, (prevProps, nextProps) => {
+    // Only re-render if these specific props change
+    return (
+        prevProps.link._id === nextProps.link._id &&
+        prevProps.isActive === nextProps.isActive &&
+        prevProps.link.title === nextProps.link.title &&
+        prevProps.link.customUrl === nextProps.link.customUrl &&
+        prevProps.link.code === nextProps.link.code &&
+        prevProps.link.expirationDate === nextProps.link.expirationDate &&
+        prevProps.link.qr?.qrColor === nextProps.link.qr?.qrColor &&
+        prevProps.link.qr?.showLogo === nextProps.link.qr?.showLogo
+    )
+})
+
+LinkItem.displayName = 'LinkItem'

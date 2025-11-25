@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import { useAuth } from '@/context/AuthContext'
 import QRViewMode from "./QRViewMode"
 import QREditMode from "./QREditMode"
@@ -19,14 +19,19 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
     const [justUpdated, setJustUpdated] = useState(false)
     const [saving, setSaving] = useState(false)
     const cardRef = useRef<HTMLDivElement>(null)
+    
+    // Form states
     const [title, setTitle] = useState(qr.title)
     const [originalUrl, setOriginalUrl] = useState(qr.originalUrl)
     const [qrColor, setQrColor] = useState(qr.qrColor || '#000000')
     const [showLogo, setShowLogo] = useState(qr.showLogo || false)
+    
+    // UI states
     const [errorMessage, setErrorMessage] = useState('')
     const [errors, setErrors] = useState({ title: '' })
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
+    // Reset form when QR changes
     useEffect(() => {
         setTitle(qr.title)
         setOriginalUrl(qr.originalUrl)
@@ -35,20 +40,23 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
         setHasSubmitted(false)
         setErrorMessage('')
         setErrors({ title: '' })
-    }, [qr])
+    }, [qr._id]) // Only re-run when QR ID changes
 
+    // Real-time validation
     useEffect(() => {
         if (!hasSubmitted) return
-        if (title) {
+        if (title.trim()) {
             setErrors({ title: '' })
+        } else {
+            setErrors({ title: 'Title is required' })
         }
     }, [title, hasSubmitted])
 
-    const handleSave = async (e: React.FormEvent) => {
+    const handleSave = useCallback(async (e: React.FormEvent) => {
         e.preventDefault()
         setHasSubmitted(true)
 
-        if (!title) {
+        if (!title.trim()) {
             setErrors({ title: "Title is required" })
             return
         }
@@ -57,14 +65,14 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
         setSaving(true)
 
         try {
-            const res = await fetch(`${API_URL}:5000/api/qrs/${qr._id}`, {
+            const res = await fetch(`${API_URL}/api/qrs/${qr._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     ...(token && { Authorization: `Bearer ${token}` }),
                 },
                 body: JSON.stringify({
-                    title,
+                    title: title.trim(),
                     originalUrl,
                     qrColor,
                     showLogo
@@ -80,10 +88,10 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
             }
 
             onShowToast({ message: "QR updated!", type: "success" })
-            setSaving(false)
-            setEditing(false)
             onUpdateQR?.(data.qr)
+            setEditing(false)
 
+            // Visual feedback
             setJustUpdated(true)
             setTimeout(() => {
                 cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -92,11 +100,12 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
 
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : "Network error")
+        } finally {
             setSaving(false)
         }
-    }
+    }, [title, originalUrl, qrColor, showLogo, qr._id, token, onShowToast, onUpdateQR])
 
-    const handleCancelEdit = () => {
+    const handleCancelEdit = useCallback(() => {
         setTitle(qr.title)
         setOriginalUrl(qr.originalUrl)
         setQrColor(qr.qrColor || '#000000')
@@ -105,7 +114,11 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
         setErrorMessage('')
         setErrors({ title: '' })
         setEditing(false)
-    }
+    }, [qr])
+
+    const handleEdit = useCallback(() => {
+        setEditing(true)
+    }, [])
 
     return editing ? (
         <QREditMode
@@ -128,10 +141,22 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
             qr={qr}
             cardRef={cardRef}
             justUpdated={justUpdated}
-            onEdit={() => setEditing(true)}
+            onEdit={handleEdit}
             onShowToast={onShowToast}
         />
     )
 }
 
-export default QRItem
+// Memoization with custom comparison
+export default React.memo(QRItem, (prevProps, nextProps) => {
+    // Only re-render if these specific props change
+    return (
+        prevProps.qr._id === nextProps.qr._id &&
+        prevProps.qr.title === nextProps.qr.title &&
+        prevProps.qr.originalUrl === nextProps.qr.originalUrl &&
+        prevProps.qr.qrColor === nextProps.qr.qrColor &&
+        prevProps.qr.showLogo === nextProps.qr.showLogo
+    )
+})
+
+QRItem.displayName = 'QRItem'
