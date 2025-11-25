@@ -241,8 +241,8 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
             }
             resetForm()
 
-        } catch (err) {
-            setErrorMessage(err.message ?? "Network error")
+        } catch (error) {
+            setErrorMessage(error instanceof Error ? error.message : "Network error")
         }
     }
 

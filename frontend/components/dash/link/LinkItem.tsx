@@ -172,12 +172,8 @@ const LinkItem: React.FC<LinkItemProps> = ({
             }, 100)
             setTimeout(() => setJustUpdated(false), 1000)
 
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                setErrorMessage(err.message ?? "Network error")
-            } else {
-                setErrorMessage("Network error")
-            }
+        } catch (error) {
+            setErrorMessage(error instanceof Error ? error.message : "Network error")
             setSaving(false)
         }
     }
