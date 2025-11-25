@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link'
 import React from 'react'
 import { LineChart } from '@mui/x-charts/LineChart'
 import { PieChart } from '@mui/x-charts/PieChart'

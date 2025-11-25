@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import AnalyticsHeader from './analytics/AnalyticsHeader'
 import AnalyticsStats from './analytics/AnalyticsStats'
@@ -42,10 +43,15 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
             const data = await res.json()
             setAnalytics(data.analytics)
             setLoading(false)
-        } catch (err: any) {
-            setError(err.message)
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError("Unknown error occurred")
+            }
             setLoading(false)
         }
+
     }
 
     if (loading) {
@@ -80,7 +86,7 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
             <AnalyticsHeader onClose={onClose} />
 
             <div className="p-3 sm:p-5 space-y-6">
-                <AnalyticsStats 
+                <AnalyticsStats
                     link={link}
                     analytics={analytics}
                     view={view}
@@ -91,7 +97,7 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
                     <div className="lg:col-span-3 sm:space-y-4">
                         <div className="rounded-xl  pt-4 sm:pt-6 lg:pt-0">
                             <h3 className="text-sm font-bold text-[#0054A5] mb-3 uppercase tracking-wide">Chart Type</h3>
-                            <AnalyticsChartSelector 
+                            <AnalyticsChartSelector
                                 chartType={chartType}
                                 onChartTypeChange={setChartType}
                             />

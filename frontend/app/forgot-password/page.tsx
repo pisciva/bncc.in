@@ -39,7 +39,8 @@ export default function ForgotPass() {
             setMessage(res.data.message)
             setCooldown(30)
             localStorage.setItem('forgotPassLastSubmit', Date.now().toString())
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } }
             setError(err.response?.data?.message || 'Oops! Something went wrong. Please try again later.')
             setMessage('')
         } finally {
@@ -47,7 +48,7 @@ export default function ForgotPass() {
         }
     }
 
-    const onError = (errors: any) => {
+    const onError = (errors: Record<string, any>) => {
         if (errors.email) {
             setError(errors.email.message)
             setMessage('')

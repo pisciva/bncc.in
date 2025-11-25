@@ -119,7 +119,7 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
             }
 
             resetForm()
-        } catch (err: any) {
+        } catch (err) {
             setErrorMessage(err.message ?? 'Network error')
         }
     }

@@ -89,7 +89,7 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
             }, 100)
             setTimeout(() => setJustUpdated(false), 1000)
 
-        } catch (err: any) {
+        } catch (err) {
             setErrorMessage(err.message ?? "Network error")
             setSaving(false)
         }

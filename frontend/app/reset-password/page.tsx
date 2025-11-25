@@ -46,7 +46,8 @@ export default function ResetPass() {
 
             setTimeout(() => router.push('/login'), 3000)
 
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } }; message?: string }
             setServerError(err.response?.data?.message || err.message || 'Reset failed.')
         }
     }

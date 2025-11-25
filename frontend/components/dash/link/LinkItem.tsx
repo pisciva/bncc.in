@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link'
 import React, { useState, useEffect, useRef } from "react"
 import { useAuth } from '@/context/AuthContext'
 import LinkViewMode from "./LinkViewMode"
@@ -171,8 +172,12 @@ const LinkItem: React.FC<LinkItemProps> = ({
             }, 100)
             setTimeout(() => setJustUpdated(false), 1000)
 
-        } catch (err: any) {
-            setErrorMessage(err.message ?? "Network error")
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setErrorMessage(err.message ?? "Network error")
+            } else {
+                setErrorMessage("Network error")
+            }
             setSaving(false)
         }
     }

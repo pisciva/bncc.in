@@ -29,7 +29,8 @@ export default function LoginPage() {
         try {
             const res = await axios.post('http://localhost:5000/auth/login', data)
             window.location.href = `http://localhost:3000?token=${res.data.token}`
-        } catch (err: any) {
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } }
             setServerError(err.response?.data?.message || 'Login failed')
         }
     }
