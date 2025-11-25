@@ -38,7 +38,7 @@ export default function LoginPage() {
         <div className="min-h-screen bg-[#F8FAFC] grid grid-cols-1 lg:grid-cols-2 justify-items-center items-center p-7">
             <LeftCol />
 
-            <a href="/" className="text-xs absolute top-8 left-8 inline-flex items-center gap-2 mb-6 px-4 py-1 bg-white/15 backdrop-blur-xl border border-white/30 rounded-full text-[#0054A5] font-semibold hover:bg-white/25 transition-all duration-300 shadow-7 cursor-pointer z-999 lg:hidden">
+            <Link href="/" className="text-xs absolute top-8 left-8 inline-flex items-center gap-2 mb-6 px-4 py-1 bg-white/15 backdrop-blur-xl border border-white/30 rounded-full text-[#0054A5] font-semibold hover:bg-white/25 transition-all duration-300 shadow-7 cursor-pointer z-999 lg:hidden">
                 <ArrowLeft className="w-3" />
                 Back to Home
             </a>

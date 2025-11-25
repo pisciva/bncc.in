@@ -307,7 +307,7 @@ export default function PrivacyPolicy() {
                                     <li><strong>Analytics Control:</strong> Delete individual links to remove their associated analytics data</li>
                                 </ul>
                                 <p className="mt-3">
-                                    To exercise these rights, please contact us at <a href="mailto:rnd@bncc.net" className="text-[#0054A5] font-semibold hover:underline">rnd@bncc.net</a> or manage your data through your dashboard settings.
+                                    To exercise these rights, please contact us at <Link href="mailto:rnd@bncc.net" className="text-[#0054A5] font-semibold hover:underline">rnd@bncc.net</a> or manage your data through your dashboard settings.
                                 </p>
                             </>
                         }
@@ -342,7 +342,7 @@ export default function PrivacyPolicy() {
                                     Our Service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13.
                                 </p>
                                 <p>
-                                    If you are a parent or guardian and believe your child has provided us with personal information, please contact us at <a href="mailto:rnd@bncc.net" className="text-[#0054A5] font-semibold hover:underline">rnd@bncc.net</a>, and we will promptly delete such information from our systems.
+                                    If you are a parent or guardian and believe your child has provided us with personal information, please contact us at <Link href="mailto:rnd@bncc.net" className="text-[#0054A5] font-semibold hover:underline">rnd@bncc.net</a>, and we will promptly delete such information from our systems.
                                 </p>
                             </>
                         }
@@ -393,8 +393,8 @@ export default function PrivacyPolicy() {
                                     If you have any questions, concerns, or requests regarding this Privacy Policy, analytics features, or our privacy practices, please contact us:
                                 </p>
                                 <div className="space-y-2">
-                                    <p><strong>Email:</strong> <a href="mailto:rnd@bncc.net" className="text-[#0054A5] hover:underline">rnd@bncc.net</a></p>
-                                    <p><strong>Website:</strong> <a href="https://www.bncc.net" target="_blank" rel="noopener noreferrer" className="text-[#0054A5] hover:underline">www.bncc.net</a></p>
+                                    <p><strong>Email:</strong> <Link href="mailto:rnd@bncc.net" className="text-[#0054A5] hover:underline">rnd@bncc.net</a></p>
+                                    <p><strong>Website:</strong> <Link href="https://www.bncc.net" target="_blank" rel="noopener noreferrer" className="text-[#0054A5] hover:underline">www.bncc.net</a></p>
                                     <p><strong>Address:</strong> Jalan Rawa Belong No.51A, Kec. Palmerah, Kota Jakarta Barat, Indonesia</p>
                                 </div>
                                 <p className="mt-4 text-[#0054A5] font-semibold">

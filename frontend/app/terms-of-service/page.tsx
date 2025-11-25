@@ -363,8 +363,8 @@ export default function TermsOfService() {
                                     If you have any questions about these Terms of Service, analytics features, or our practices, please contact us:
                                 </p>
                                 <div className="space-y-2 text-[#64748B]">
-                                    <p><strong>Email:</strong> <a href="mailto:rnd@bncc.net" className="text-[#0054A5] hover:underline">rnd@bncc.net</a></p>
-                                    <p><strong>Website:</strong> <a href="https://www.bncc.net" target="_blank" rel="noopener noreferrer" className="text-[#0054A5] hover:underline">www.bncc.net</a></p>
+                                    <p><strong>Email:</strong> <Link href="mailto:rnd@bncc.net" className="text-[#0054A5] hover:underline">rnd@bncc.net</a></p>
+                                    <p><strong>Website:</strong> <Link href="https://www.bncc.net" target="_blank" rel="noopener noreferrer" className="text-[#0054A5] hover:underline">www.bncc.net</a></p>
                                     <p><strong>Address:</strong> Jalan Rawa Belong No.51A, Kec. Palmerah, Kota Jakarta Barat, Indonesia</p>
                                 </div>
                                 <p className="mt-4 text-[#0054A5] font-semibold">

@@ -99,9 +99,9 @@ export default function Footer() {
                             </div>
                             <div className='flex items-start gap-3'>
                                 <Mail className='w-5'/>
-                                <a href="mailto:info@bncc.net">
+                                <Link href="mailto:info@bncc.net">
                                     <h2 className="font-medium text-sm hover:underline">pr@bncc.net</h2>
-                                </a>
+                                </Link>
 
                             </div>
                             <div className='flex items-start gap-3'>

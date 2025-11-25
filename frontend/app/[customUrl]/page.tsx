@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { Lock, AlertCircle, Clock } from 'lucide-react'
 import StatusCard from '@/components/[customUrl]/StatusCard'
 import CodeInput from '@/components/[customUrl]/CodeInput'
+import Link from 'next/link'
 
 const api_url = 'http://localhost:5000/api/redirect'
 
@@ -268,10 +269,10 @@ export default function RedirectPage() {
                         <p className="text-center text-xs sm:text-sm text-[#64748B] font-medium">Enter the 6-digit code provided by the link creator</p>
                     </div>
                     <div className="mt-6 text-center">
-                        <a href="/" className="text-sm text-[#0054A5] font-semibold hover:underline inline-flex items-center gap-2 justify-center">
+                        <Link href="/" className="text-sm text-[#0054A5] font-semibold hover:underline inline-flex items-center gap-2 justify-center">
                             <img src="/images/back.svg" className='w-3' alt="" />
                             Back to Homepage
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

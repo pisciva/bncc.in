@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 interface StatusCardProps {
     icon: React.ReactNode
@@ -35,9 +36,9 @@ export default function StatusCard({
                     <p className="text-sm sm:text-base text-[#64748B] font-medium mb-8">{description}</p>
                     {children}
                     {showButton && (
-                        <a href={buttonHref} className="inline-block w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white font-semibold text-base rounded-xl hover:shadow-3 transition-all duration-300">
+                        <Link href={buttonHref} className="inline-block w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white font-semibold text-base rounded-xl hover:shadow-3 transition-all duration-300">
                             {buttonText}
-                        </a>
+                        </Link>
                     )}
                 </div>
             </div>
