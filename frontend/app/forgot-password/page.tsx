@@ -48,7 +48,7 @@ export default function ForgotPass() {
         }
     }
 
-    const onError = (errors: Record<string, any>) => {
+    const onError = (errors: Record<string, { message?: string }>) => {
         if (errors.email) {
             setError(errors.email.message)
             setMessage('')
@@ -67,7 +67,7 @@ export default function ForgotPass() {
                 <div className="mt-8 mb-8 text-center">
                     <h1 className="text-2xl sm:text-3xl font-bold text-[#0054A5] mb-3">Forgot your password?</h1>
                     <p className="text-sm sm:text-base text-[#64748B] font-medium">
-                        It's okay, it happens to the best of us. Enter your email, and we'll send you a link to reset it.
+                        It&apos;s okay, it happens to the best of us. Enter your email, and we&apos;ll send you a link to reset it.
                     </p>
                 </div>
 

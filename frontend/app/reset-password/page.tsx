@@ -80,7 +80,7 @@ export default function ResetPass() {
                 <div className="mt-8 mb-8 text-center">
                     <h1 className="text-2xl sm:text-3xl font-bold text-[#0054A5] mb-3">Reset Password</h1>
                     <p className="text-sm sm:text-base text-[#64748B] font-medium">
-                        You're almost there! Enter your new password below to finish resetting your account.
+                        You&apos;re almost there! Enter your new password below to finish resetting your account.
                     </p>
                 </div>
 
