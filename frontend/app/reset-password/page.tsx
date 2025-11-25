@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputField } from '@/components/auth/FormInput'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -8,7 +8,7 @@ import axios from 'axios'
 import Toast from '@/components/layout/Toast'
 import Link from 'next/link'
 
-export default function ResetPass() {
+function ResetPasswordContent() {
     const { register, handleSubmit, formState: { errors } } = useForm<{ password: string; confirmPassword: string }>()
     const [serverError, setServerError] = useState('')
     const [serverMessage, setServerMessage] = useState('')
@@ -123,5 +123,17 @@ export default function ResetPass() {
                 />
             )}
         </div>
+    )
+}
+
+export default function ResetPass() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+                <div className="w-16 h-16 border-4 border-[#0054A5]/30 border-t-[#0054A5] rounded-full animate-spin"></div>
+            </div>
+        }>
+            <ResetPasswordContent />
+        </Suspense>
     )
 }

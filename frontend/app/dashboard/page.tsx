@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { Suspense, useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
@@ -16,7 +16,7 @@ import type { FilterState } from '@/types/filters'
 import { getActiveFilterCount, handleLogout } from '@/utils/dashboardHelpers'
 import { TabType } from '@/types/dashboard'
 
-const DashboardPage = () => {
+function DashboardContent() {
     const { links, qrs, loading, error } = useDashboardData()
     const [activeTab, setActiveTab] = useState<TabType>("links")
     const [searchQuery, setSearchQuery] = useState("")
@@ -132,6 +132,20 @@ const DashboardPage = () => {
                 </Link>
             </div>
         </div>
+    )
+}
+
+const DashboardPage = () => {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="px-8 py-4 bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow">
+                    <p className="text-[#0054A5] font-semibold">Loading...</p>
+                </div>
+            </div>
+        }>
+            <DashboardContent />
+        </Suspense>
     )
 }
 

@@ -1,15 +1,14 @@
 "use client"
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { Lock, AlertCircle, Clock } from 'lucide-react'
 import StatusCard from '@/components/[customUrl]/StatusCard'
 import CodeInput from '@/components/[customUrl]/CodeInput'
 import Link from 'next/link'
+import { fetchRedirect } from '@/lib/api'
 
-const api_url = 'http://localhost:5000/api/redirect'
-
-export default function RedirectPage() {
+function RedirectPageContent() {
     const params = useParams()
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -97,17 +96,9 @@ export default function RedirectPage() {
     useEffect(() => {
         const checkAndRedirect = async () => {
             try {
-                const url = `${api_url}/${customUrl}${providedCode ? `?code=${providedCode}` : ''}`
-                const response = await fetch(url, {
-                    cache: 'no-store',
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0'
-                    }
-                })
+                const response = await fetchRedirect(customUrl, providedCode || undefined)
                 await handleResponse(response)
-            } catch (err) {
+            } catch {
                 setStatus('not-found')
             }
         }
@@ -127,14 +118,7 @@ export default function RedirectPage() {
         setError('')
 
         try {
-            const response = await fetch(`${api_url}/${customUrl}?code=${fullCode}`, {
-                cache: 'no-store',
-                headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
-                }
-            })
+            const response = await fetchRedirect(customUrl, fullCode)
             const data = await response.json()
 
             if (!response.ok) {
@@ -158,7 +142,7 @@ export default function RedirectPage() {
             }
 
             if (data.redirect) window.location.href = fixUrl(data.originalUrl)
-        } catch (err) {
+        } catch {
             setError('Something went wrong. Please try again.')
             setCode(Array(6).fill(''))
             setRedirecting(false)
@@ -280,4 +264,16 @@ export default function RedirectPage() {
     }
 
     return null
+}
+
+export default function RedirectPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+                <div className="w-16 h-16 border-4 border-[#0054A5]/30 border-t-[#0054A5] rounded-full animate-spin"></div>
+            </div>
+        }>
+            <RedirectPageContent />
+        </Suspense>
+    )
 }
