@@ -71,7 +71,7 @@ export default function Footer() {
                         <h1 className='font-bold text-lg lg:mb-2 text-center lg:text-left'>
                             About Us
                         </h1>
-                        <h2 className='font-medium text-sm lg:text-justify lg:max-w-150'>
+                        <h2 className='font-medium text-xs sm:text-sm lg:text-justify lg:max-w-150'>
                             Established in 1989, Bina Nusantara Computer Club is the oldest computer-based organization at BINUS University. We are a close-knit family of exceptional individuals who are passionately into technology and a commitment to professionalism.
                         </h2>
                     </div>
@@ -79,8 +79,8 @@ export default function Footer() {
 
                     <div className='lg:mb-0 flex flex-col'>
                         <h1 className='font-bold text-lg lg:mb-2'>Legal</h1>
-                        <Link href="/terms-of-service" className='font-medium text-sm hover:underline'>Terms of Service</Link>
-                        <Link href="/privacy-policy" className='font-medium text-sm hover:underline'>Privacy Policy</Link>
+                        <Link href="/terms-of-service" className='font-medium text-xs sm:text-sm hover:underline'>Terms of Service</Link>
+                        <Link href="/privacy-policy" className='font-medium text-xs sm:text-sm hover:underline'>Privacy Policy</Link>
                     </div>
                 </div>
 

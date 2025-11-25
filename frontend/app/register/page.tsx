@@ -78,9 +78,9 @@ export default function RegisterPage() {
         <div className="min-h-screen bg-[#F8FAFC] grid grid-cols-1 lg:grid-cols-2 justify-items-center items-center p-7">
             <LeftCol />
 
-            <Link href="/" className="text-xs absolute top-8 left-8 inline-flex items-center gap-2 mb-6 px-4 py-1 bg-white/15 backdrop-blur-xl border border-white/30 rounded-full text-[#0054A5] font-semibold hover:bg-white/25 transition-all duration-300 shadow-7 cursor-pointer z-999 lg:hidden">
+            <Link href="/" className="block lg:hidden absolute top-8 left-8 inline-flex items-center justify-center mb-6 border border-white/30 rounded-full text-[#0054A5] font-semibold  shadow-7 cursor-pointer z-50 w-10 h-10 md:w-auto md:h-auto px-0 md:px-4 py-0 md:py-1">
                 <ArrowLeft className="w-3" />
-                Back to Home
+                <div className="hidden md:block ml-2">Back to Home</div>
             </Link>
 
             <div className="w-full max-w-lg rounded-lg bg-[#F8FAFC] lg:p-5 lg:pl-10">
@@ -162,8 +162,8 @@ export default function RegisterPage() {
                         error={errors.confirmPassword?.message}
                     />
 
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         disabled={loading}
                         className="auth-button disabled:opacity-60 disabled:cursor-not-allowed"
                     >
@@ -173,7 +173,7 @@ export default function RegisterPage() {
 
                 <OAuth />
 
-                <p className="auth-footer">
+                <p className="auth-footer text-sm sm:text-md">
                     Already have an account? <Link href="/login">Sign in</Link>
                 </p>
             </div>

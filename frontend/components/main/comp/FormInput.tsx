@@ -54,7 +54,7 @@ export default function FormInput({
             </div>
 
             {errorMessage && (
-                <p className="text-sm text-red-500 mt-2 ml-1 animate-slideDown">{errorMessage}</p>
+                <p className="text-xs sm:text-sm text-red-500 mt-1 ml-1 animate-slideDown">{errorMessage}</p>
             )}
         </div>
     )

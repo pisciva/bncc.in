@@ -183,7 +183,7 @@
 }
 
 .auth-footer {
-	margin-top: 1.5rem;
+	margin-top: 1rem;
 	text-align: center;
 	color: #64748B;
 	font-weight: bold;
@@ -195,6 +195,7 @@
 
 @media (min-width: 768px) {
 	.auth-footer {
+		margin-top: 1.5rem;
 		flex-direction: row;
 		justify-content: center;
 	}
@@ -245,7 +246,6 @@
 	font-weight: 700;
 	font-size: 1.5rem;
 	text-align: center;
-	margin-bottom: 0.5rem;
 }
 
 @media (min-width: 1024px) {
@@ -268,7 +268,7 @@
 }
 
 .auth-button {
-	margin-top: 1rem;
+	margin-top: 0.5rem;
 	width: 100%;
 	height: 3rem;
 	/* default untuk mobile */

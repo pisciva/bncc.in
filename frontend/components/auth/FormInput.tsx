@@ -36,7 +36,7 @@ export const InputField = ({
     const hasValue = inputProps.value && inputProps.value.length > 0
 
     return (
-        <div className="w-full mt-4">
+        <div className={`w-full mt-2 ${error ? 'mt-2' : 'mt-4'}`}>
             {label && (
                 <label className="font-semibold text-sm lg:text-base text-[#0054A5] block mb-2">{label}</label>
             )}
@@ -52,7 +52,7 @@ export const InputField = ({
                     placeholder={placeholder}
                     {...inputProps}
                     className={`
-                        w-full h-12 lg:h-14 rounded-lg
+                        w-full h-12 lg:h-14 rounded-lg 
                         ${icon ? 'pl-12 lg:pl-14' : 'pl-4'}
                         ${showPasswordToggle ? 'pr-12' : 'pr-4'}
                         bg-white/10 backdrop-blur-xl
@@ -82,7 +82,7 @@ export const InputField = ({
             </div>
 
             {error && (
-                <p className="text-sm text-red-500 mt-1 ml-1 animate-slideDown">{error}</p>
+                <p className="lg:mb-2 text-xs sm:text-sm text-red-500 mt-1 ml-1 animate-slideDown">{error}</p>
             )}
         </div>
     )
