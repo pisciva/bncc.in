@@ -8,6 +8,7 @@ import DownloadQR from "../../main/comp/DownloadQR"
 import { formatCreatedAt } from "@/utils/formatCreatedAt"
 import { Eye, EyeOff, Copy, QrCode, Edit, Lock, Unlock, Clock, Calendar, KeyRound, BarChart3 } from 'lucide-react'
 import { LinkCard } from "./LinkItem"
+import Link from 'next/link'
 
 interface LinkViewModeProps {
     link: LinkCard
