@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import Toast from '@/components/layout/Toast'
 import axios from 'axios'
 import { Mail } from 'lucide-react'
+import Link from 'next/link'
 
 export default function ForgotPass() {
     const { register, handleSubmit } = useForm<{ email: string }>({ mode: 'onSubmit', })
@@ -106,13 +107,13 @@ export default function ForgotPass() {
                 </form>
 
                 <div className="mt-6 text-center">
-                    <a
+                    <Link
                         href="/login"
                         className="text-sm text-[#0054A5] font-semibold hover:underline inline-flex items-center gap-2 justify-center"
                     >
                         <img src="/images/back.svg" className='w-3' alt="" />
                         Back to Login
-                    </a>
+                    </Link>
                 </div>
             </div>
 

@@ -6,6 +6,7 @@ import { InputField } from '@/components/auth/FormInput'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import Toast from '@/components/layout/Toast'
+import Link from 'next/link'
 
 export default function ResetPass() {
     const { register, handleSubmit, formState: { errors } } = useForm<{ password: string; confirmPassword: string }>()
@@ -92,13 +93,13 @@ export default function ResetPass() {
                 </form>
 
                 <div className="mt-6 text-center">
-                    <a
+                    <Link
                         href="/login"
                         className="text-sm text-[#0054A5] font-semibold hover:underline inline-flex items-center gap-2 justify-center"
                     >
                         <img src="/images/back.svg" className='w-3' alt="" />
                         Back to Login
-                    </a>
+                    </Link>
                 </div>
             </div>
 

@@ -8,6 +8,7 @@ import DownloadQR from "../../main/comp/DownloadQR"
 import { formatCreatedAt } from "@/utils/formatCreatedAt"
 import { Copy, Edit, Calendar } from 'lucide-react'
 import { QRType } from "./QR"
+import Link from 'next/link'
 
 interface QRViewModeProps {
     qr: QRType
@@ -89,7 +90,7 @@ const QRViewMode: React.FC<QRViewModeProps> = ({
                             </p>
                         )}
 
-                        <a
+                        <Link
                             href={qr.originalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -97,7 +98,7 @@ const QRViewMode: React.FC<QRViewModeProps> = ({
                             className="text-xs sm:text-sm font-medium text-[#64748B] hover:text-[#0054A5] underline decoration-[0.5px] underline-offset-2 block text-center md:text-left truncate transition-colors w-full max-w-full min-w-0"
                         >
                             {qr.originalUrl}
-                        </a>
+                        </Link>
 
                         <div className="flex items-center justify-center md:justify-start gap-1.5 text-xs sm:text-sm">
                             <Calendar className="w-3.5 h-3.5 text-[#64748B]" />

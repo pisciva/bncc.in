@@ -55,13 +55,13 @@ const FloatingBox: React.FC<FloatingBoxProps> = ({
 export default function LeftCol() {
     return (
         <div className="hidden lg:flex relative w-full h-full bg-gradient-to-b from-[#2474C0] to-[#033B8F] rounded-3xl overflow-hidden mx-auto justify-center items-center">
-            <a
+            <Link
                 href="/"
                 className="absolute inline-flex items-center gap-2 mb-6 px-4 py-2 top-10 left-10 bg-white transition-all duration-300 backdrop-blur-xl rounded-full text-[#0054A5] font-semibold cursor-pointer z-999"
             >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Home
-            </a>
+            </Link>
 
             <div className="container w-full mx-auto relative h-full">
 

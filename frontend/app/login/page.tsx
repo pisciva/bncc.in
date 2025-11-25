@@ -41,7 +41,7 @@ export default function LoginPage() {
             <Link href="/" className="text-xs absolute top-8 left-8 inline-flex items-center gap-2 mb-6 px-4 py-1 bg-white/15 backdrop-blur-xl border border-white/30 rounded-full text-[#0054A5] font-semibold hover:bg-white/25 transition-all duration-300 shadow-7 cursor-pointer z-999 lg:hidden">
                 <ArrowLeft className="w-3" />
                 Back to Home
-            </a>
+            </Link>
 
             <div className="w-full relative max-w-lg rounded-lg bg-[#F8FAFC] lg:p-5 lg:pl-10">
                 <div className="auth-card flex flex-col w-full">

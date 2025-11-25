@@ -37,7 +37,7 @@ export const resetPasswordTemplate = (
           <div style="text-align:center;margin:25px 0;">
             <Link href="${resetLink}" style="display:inline-block;padding:10px 30px;background:#0054A5;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;border-radius:1000px;">
               Reset My Password
-            </a>
+            </Link>
           </div>
 
           <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(239,68,68,0.05);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:10px 15px;margin-bottom:10px;">
@@ -67,10 +67,10 @@ export const resetPasswordTemplate = (
           <div style="margin-bottom:16px;">
             <Link href="mailto:rnd@bncc.net" style="display:inline-block;margin:0 8px;color:#0054A5;font-size:12px;text-decoration:none;padding:8px 16px;background:rgba(255,255,255,0.15);border-radius:8px;border:1px solid #D3D3D3;font-weight:600;">
               📧 Email Support
-            </a>
+            </Link>
             <Link href="https://www.bncc.net" style="display:inline-block;margin:0 8px;color:#0054A5;font-size:12px;text-decoration:none;padding:8px 16px;background:rgba(255,255,255,0.15);border-radius:8px;border:1px solid #D3D3D3;font-weight:600;">
               🌐 Visit Website
-            </a>
+            </Link>
           </div>
 
           <div>

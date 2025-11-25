@@ -78,14 +78,14 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                             <p className="text-lg sm:text-xl lg:text-2xl font-bold text-[#0054A5] truncate">
                                 bncc.in/{link.customUrl}
                             </p>
-                            <a
+                            <Link
                                 href={link.originalUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="max-w-85 text-xs sm:text-sm font-medium text-[#64748B] hover:text-[#0054A5] underline decoration-[0.5px] underline-offset-2 truncate block transition-colors"
                             >
                                 {link.originalUrl}
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="flex flex-col lg:flex-row lg:gap-16 text-xs sm:text-sm z-0">
