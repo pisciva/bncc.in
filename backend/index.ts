@@ -17,7 +17,7 @@ connectDB()
 
 // middleware
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
 }))
 
@@ -28,7 +28,12 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'supersecret',
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        secure: true,
+        sameSite: 'none'
+    }
 }))
+
 
 app.use(passport.initialize())
 app.use(passport.session())
