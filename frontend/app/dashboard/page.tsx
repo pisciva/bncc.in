@@ -76,8 +76,8 @@ function DashboardContent() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="px-8 py-4 bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow">
-                    <p className="text-[#0054A5] font-semibold">Loading...</p>
+                <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0054A5]"></div>
                 </div>
             </div>
         )
@@ -139,8 +139,8 @@ const DashboardPage = () => {
     return (
         <Suspense fallback={
             <div className="min-h-screen flex items-center justify-center">
-                <div className="px-8 py-4 bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow">
-                    <p className="text-[#0054A5] font-semibold">Loading...</p>
+                <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0054A5]"></div>
                 </div>
             </div>
         }>
