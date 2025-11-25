@@ -63,10 +63,6 @@ const isLocalhostIP = (ip: string): boolean => {
 const getGeoData = (ip: string) => {
     let usedIP = ip
     
-    if (isLocalhostIP(ip) && process.env.NODE_ENV === 'development') {
-        usedIP = '182.253.55.255'
-    }
-    
     const geo = geoip.lookup(usedIP)
     
     return {
