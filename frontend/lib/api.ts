@@ -1,8 +1,6 @@
-// Centralized API configuration
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-// Helper untuk get token
 const getToken = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('token')
@@ -10,15 +8,10 @@ const getToken = () => {
     return null
 }
 
-// Helper untuk headers with auth
 const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${getToken()}`
 })
-
-// =====================
-// AUTH ENDPOINTS
-// =====================
 
 export const auth = {
     login: async (email: string, password: string) => {
@@ -79,11 +72,6 @@ export const auth = {
         return res.json()
     }
 }
-
-// =====================
-// PASSWORD ENDPOINTS
-// =====================
-
 export const password = {
     forgot: async (email: string) => {
         try {
@@ -136,10 +124,6 @@ export const password = {
     }
 }
 
-// =====================
-// LINKS ENDPOINTS
-// =====================
-
 export const links = {
     getAll: async () => {
         const res = await fetch(`${API_URL}/api/links`, {
@@ -180,10 +164,6 @@ export const links = {
         return data
     }
 }
-
-// =====================
-// QR ENDPOINTS
-// =====================
 
 export const qrs = {
     getAll: async () => {
@@ -226,10 +206,6 @@ export const qrs = {
     }
 }
 
-// =====================
-// REDIRECT ENDPOINT
-// =====================
-
 export const redirect = {
     check: async (customUrl: string, code?: string) => {
         const url = `${API_URL}/api/redirect/${customUrl}${code ? `?code=${code}` : ''}`
@@ -244,9 +220,6 @@ export const redirect = {
     }
 }
 
-// =====================
-// ANALYTICS ENDPOINT
-// =====================
 
 export const analytics = {
     get: async (linkId: string, startDate?: string, endDate?: string) => {
@@ -260,10 +233,6 @@ export const analytics = {
         return res.json()
     }
 }
-
-// =====================
-// UTILITY
-// =====================
 
 export const getLoginRedirectUrl = (token: string) => {
     return `${SITE_URL}?token=${token}`

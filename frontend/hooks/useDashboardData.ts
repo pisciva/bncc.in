@@ -21,10 +21,10 @@ export const useDashboardData = () => {
                 }
 
                 const [resLinks, resQR] = await Promise.all([
-                    fetch(`${API_URL}:5000/api/links`, {
+                    fetch(`${API_URL}/api/links`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
-                    fetch(`${API_URL}:5000/api/qrs`, {
+                    fetch(`${API_URL}/api/qrs`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
                 ])
