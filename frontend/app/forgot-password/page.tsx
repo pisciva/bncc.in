@@ -50,7 +50,7 @@ export default function ForgotPass() {
 
     const onError = (errors: Record<string, { message?: string }>) => {
         if (errors.email) {
-            setError(errors.email.message)
+            setError(errors.email.message || 'Invalid email')
             setMessage('')
         }
     }
