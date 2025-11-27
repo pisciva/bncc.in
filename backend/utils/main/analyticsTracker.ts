@@ -4,26 +4,15 @@ import { getClientIP, getUserIdentifier } from './rateLimitHelpers'
 import axios from 'axios'
 
 interface IPApiResponse {
-    city?: string
+    region?: string
     country?: string
-    country_code?: string
+    country_name?: string
     error?: boolean
     reason?: string
 }
 
 const ipCache = new Map<string, { data: IPApiResponse; timestamp: number }>()
 const CACHE_DURATION = 24 * 60 * 60 * 1000 
-
-const getCountryName = (countryCode: string): string => {
-    if (!countryCode || countryCode === 'XX') return 'Unknown'
-    
-    try {
-        const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
-        return regionNames.of(countryCode) || countryCode
-    } catch {
-        return countryCode
-    }
-}
 
 const getReferrerDomain = (refererHeader: string | undefined): string => {
     if (!refererHeader) return 'Direct'
@@ -78,9 +67,8 @@ const getGeoData = async (ip: string) => {
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
         const { data } = cached
         return {
-            city: data.city || 'Unknown',
-            countryCode: data.country_code || 'XX',
-            country: data.country || getCountryName(data.country_code || 'XX'),
+            city: data.region || 'Unknown',
+            country: data.country_name || 'Unknown',
             usedIP
         }
     }
@@ -102,7 +90,6 @@ const getGeoData = async (ip: string) => {
             console.warn(`IP API error for ${usedIP}:`, data.reason)
             return {
                 city: 'Unknown',
-                countryCode: 'XX',
                 country: 'Unknown',
                 usedIP
             }
@@ -114,9 +101,8 @@ const getGeoData = async (ip: string) => {
         })
 
         return {
-            city: data.city || 'Unknown',
-            countryCode: data.country_code || 'XX',
-            country: data.country || getCountryName(data.country_code || 'XX'),
+            city: data.region || 'Unknown',
+            country: data.country_name || 'Unknown',
             usedIP
         }
     } catch (error) {
@@ -124,7 +110,6 @@ const getGeoData = async (ip: string) => {
         
         return {
             city: 'Unknown',
-            countryCode: 'XX',
             country: 'Unknown',
             usedIP
         }
@@ -142,12 +127,11 @@ const updateDateStats = (analytics: any, today: string, isNewUser: boolean): voi
 
 const updateRegionStats = (
     analytics: any, 
-    countryCode: string, 
     country: string, 
     city: string, 
     isNewUser: boolean
 ): void => {
-    const regionStats = analytics.byRegion.get(countryCode) || {
+    const regionStats = analytics.byRegion.get(country) || {
         country,
         clicks: 0,
         uniqueUsers: 0,
@@ -166,7 +150,7 @@ const updateRegionStats = (
     }
     regionStats.cities.set(city, cityStats)
     
-    analytics.byRegion.set(countryCode, regionStats)
+    analytics.byRegion.set(country, regionStats)
 }
 
 const updateReferrerStats = (analytics: any, referrer: string, isNewUser: boolean): void => {
@@ -212,7 +196,7 @@ export const trackAnalytics = async (req: Request, linkId: string | unknown): Pr
         if (isNewUser) analytics.uniqueUsers.push(userIdentifier)
 
         updateDateStats(analytics, today, isNewUser)
-        updateRegionStats(analytics, geoData.countryCode, geoData.country, geoData.city, isNewUser)
+        updateRegionStats(analytics, geoData.country, geoData.city, isNewUser)
         updateReferrerStats(analytics, referrer, isNewUser)
 
         await analytics.save()
