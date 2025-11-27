@@ -39,6 +39,7 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
     const [shakeExpiration, setShakeExpiration] = useState(false)
     const [popupCode, setPopupCode] = useState(false)
     const [popupExpiration, setPopupExpiration] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const popupCodeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
     const popupExpirationTimeoutRef = useRef<NodeJS.Timeout | null>(null)
     const [errorMessage, setErrorMessage] = useState('')
@@ -185,6 +186,7 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
         }
 
         setErrorMessage("")
+        setIsLoading(true)
 
         try {
             const res = await fetch(`${API_URL}/api/links`, {
@@ -219,6 +221,7 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
                 } else {
                     setErrorMessage(data.error || "Something went wrong")
                 }
+                setIsLoading(false)
                 return
             }
 
@@ -241,9 +244,11 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
                 })
             }
             resetForm()
+            setIsLoading(false)
 
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : "Network error")
+            setIsLoading(false)
         }
     }
 
@@ -364,7 +369,13 @@ export default function ShortenLink({ onSuccess }: ShortenFormProps) {
                 )}
 
                 <div className="flex items-center justify-center">
-                    <button type="submit" className="shorten-btn">Shorten</button>
+                    {isLoading ? (
+                        <div className="flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0054A5]"></div>
+                        </div>
+                    ) : (
+                        <button type="submit" className="shorten-btn">Shorten</button>
+                    )}
                 </div>
             </form>
         </>

@@ -22,6 +22,7 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
     const [qrColor, setQrColor] = useState('#000000')
     const [showLogo, setShowLogo] = useState(false)
     const [useTitle, setUseTitle] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState<Errors>({ originalUrl: '', title: '' })
     const [errorMessage, setErrorMessage] = useState('')
     const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -85,6 +86,7 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
         }
 
         setErrorMessage('')
+        setIsLoading(true)
 
         try {
             const res = await fetch(`${API_URL}/api/qrs`, {
@@ -104,6 +106,7 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
             const data = await res.json()
             if (!res.ok) {
                 setErrorMessage(data.error || data.message || 'Something went wrong')
+                setIsLoading(false)
                 return
             }
 
@@ -120,8 +123,10 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
             }
 
             resetForm()
+            setIsLoading(false)
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : "Network error")
+            setIsLoading(false)
         }
     }
 
@@ -167,7 +172,13 @@ export default function QRForm({ onSuccess }: ShortenQRProps) {
             {errorMessage && <p className="text-red-500 text-sm">{errorMessage} </p>}
 
             <div className="flex items-center justify-center">
-                <button type="submit" className="shorten-btn">Generate</button>
+                {isLoading ? (
+                    <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0054A5]"></div>
+                    </div>
+                ) : (
+                    <button type="submit" className="shorten-btn">Generate</button>
+                )}
             </div>
         </form>
     )

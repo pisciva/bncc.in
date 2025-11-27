@@ -46,27 +46,12 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
             if (!qrRef.current) return
 
             const dataUrl = await toPng(qrRef.current, { pixelRatio: 5 })
+            const res = await fetch(dataUrl)
+            const blob = await res.blob()
 
-            if (navigator.clipboard && ClipboardItem && typeof ClipboardItem === 'function') {
-                try {
-                    const res = await fetch(dataUrl)
-                    const blob = await res.blob()
-                    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-                    setToast({ message: 'QR grabbed! Go paste it!', type: 'success' })
-                    return
-                } catch (clipboardErr) {
-                    console.warn('Clipboard API failed, falling back to download:', clipboardErr)
-                }
-            }
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
 
-            const link = document.createElement('a')
-            link.download = `${customUrl || title || 'qr-code'}.png`
-            link.href = dataUrl
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-
-            setToast({ message: 'QR downloaded! (Copy not supported on this device)', type: 'success' })
+            setToast({ message: 'QR grabbed! Go paste it!', type: 'success' })
         } catch (err) {
             setToast({ message: "Uh-oh! Couldn't grab the QR!", type: 'error' })
         }
@@ -184,7 +169,7 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                                 {qr && (
                                     <div className="flex gap-2">
                                         <DownloadQR qrRef={qrRef} name={customUrl} />
-                                        <button onClick={handleCopyQR} title="Copy QR" className="flex px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16">
+                                        <button onClick={handleCopyQR} title="Copy QR" className="hidden lg:flex px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16">
                                             Copy QR
                                             <IconCopy color='#0054A5' width={16} />
                                         </button>
@@ -202,7 +187,7 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                                             Edit link <IconEdit color="#64748B" width={19} />
                                         </button>
 
-                                        <LockPopup show={popup} className="resultbox-position" />
+                                       <LockPopup show={popup} className="resultbox-position" />
                                     </div>
                                 )}
                             </div>
@@ -219,7 +204,7 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                             >
                                 {qrValue_qr ? (
                                     <div className="relative" style={{ width: size, height: size }}>
-                                        <QRCode value={qrValue_qr || ""} size={size} fgColor={qr.color || "#000"} className="w-full h-full" />
+                                        <QRCode value={qrValue_qr || ""} size={size} fgColor={qr.color || "#000"} className="w-full h-full"/>
 
                                         {qr.logo && (
                                             <div
@@ -244,7 +229,7 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                             <DownloadQR qrRef={qrRef} name={title} />
                             <button
                                 onClick={handleCopyQR}
-                                className="flex px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16"
+                                className="hidden lg:flex px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16"
                             >
                                 Copy QR <IconCopy color='#0054A5' width={16} />
                             </button>

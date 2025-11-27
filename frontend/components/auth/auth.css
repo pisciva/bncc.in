@@ -216,7 +216,6 @@
 	border-radius: 0.5rem;
 	background-color: #F8FAFC;
 	padding: 1.25rem;
-	padding-left: 2.5rem;
 }
 
 .auth-card-header {
@@ -234,7 +233,6 @@
 @media (min-width: 1024px) {
 	.auth-card {
 		padding: 1.25rem;
-		padding-left: 2.5rem;
 	}
 
 	.auth-card-header img {
