@@ -98,7 +98,7 @@ export default function Footer() {
             </div>
 
             <div className='flex flex-col lg:flex-row lg:justify-between mt-8 lg:mt-10 gap-6 lg:items-end relative'>
-                <div className='flex gap-4 sm:gap-8 justify-center lg:justify-end order-2 lg:order-3 lg:mb-4'>
+                <div className='flex gap-6 sm:gap-8 justify-center lg:justify-end order-2 lg:order-3 lg:mb-4'>
                     <Link href="https://instagram.com/bnccbinus" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                         <img src="/images/footer/icon-ig.svg" width={30} className='cursor-pointer w-6 sm:w-7 lg:w-[26px]' alt="Instagram" />
                     </Link>
