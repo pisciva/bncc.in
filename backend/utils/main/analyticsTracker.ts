@@ -62,6 +62,14 @@ const isLocalhostIP = (ip: string): boolean => {
 // geo lokasi data
 const getGeoData = (ip: string) => {
     let usedIP = ip
+
+    if (isLocalhostIP(ip) && process.env.NODE_ENV === 'development') {
+        // usedIP = '91.160.93.4' // Prancis
+        usedIP = '217.13.124.105' // Spanyol
+        // usedIP = '63.116.61.253' // USA
+        // usedIP = '116.50.29.50' // Indonesia
+        // usedIP = '101.191.135.146' // Australia
+    }
     
     const geo = geoip.lookup(usedIP)
     

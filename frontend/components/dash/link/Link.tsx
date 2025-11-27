@@ -5,7 +5,7 @@ import Link from 'next/link'
 import LinkItem from "./LinkItem"
 import LoadMoreButton from "../layout/LoadMoreButton"
 import { usePagination } from "@/hooks/usePagination"
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll"
+
 
 interface LinkCard {
     _id: string
