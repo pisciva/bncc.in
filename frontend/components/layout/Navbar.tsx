@@ -49,16 +49,15 @@ export default function Navbar() {
                                 user ? (
                                     <div className="relative" ref={dropdownRef}>
                                         <button className="flex items-center space-x-2 hover:font-semibold transition cursor-pointer"
-                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                            onMouseEnter={() => setIsDropdownOpen(true)}>
+                                            onClick={() => setIsDropdownOpen((prev) => !prev)}
+                                        >
                                             <UserCircle2 className="w-5 h-5" />
                                             <span>{getFirstName(user.fullName)}</span>
                                             <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
                                         </button>
 
                                         {isDropdownOpen && (
-                                            <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-xl shadow-xl border border-white/50 rounded-2xl overflow-hidden animate-fadeIn"
-                                                onMouseLeave={() => setIsDropdownOpen(false)}>
+                                            <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-xl shadow-xl border border-white/50 rounded-2xl overflow-hidden animate-fadeIn">
                                                 <div>
                                                     <button className="w-full flex items-center space-x-3 px-4 py-3 text-[#0054A5] hover:bg-[#0054A5]/10 transition cursor-pointer text-left"
                                                         onClick={() => {
