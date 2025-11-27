@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { UserCircle2, Menu, X, LayoutList, LogOut, ChevronDown, House } from 'lucide-react'
+import { UserCircle2, Menu, X, LayoutList, LogOut, ChevronDown, House, LogIn } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useState, useRef, useEffect } from 'react'
 
@@ -138,9 +138,10 @@ export default function Navbar() {
                                         </button>
                                     </>
                                 ) : (
-                                    <Link href="/login" className="hover:font-semibold transition cursor-pointer py-2"
+                                    <Link href="/login" className="flex items-center space-x-2 hover:font-semibold transition cursor-pointer py-2 text-left"
                                         onClick={() => setIsMenuOpen(false)}>
-                                        Sign In
+                                        <LogIn className="w-5 h-5 lg:hidden" />
+                                        <span>Sign In</span>
                                     </Link>
                                 )
                             )}
