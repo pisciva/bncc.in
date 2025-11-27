@@ -11,126 +11,85 @@ interface IPApiResponse {
     reason?: string
 }
 
-interface ReferrerInfo {
-    source: string
-    medium?: string
-    campaign?: string
-    rawDomain?: string
-}
-
 const ipCache = new Map<string, { data: IPApiResponse; timestamp: number }>()
-const CACHE_DURATION = 24 * 60 * 60 * 1000
+const CACHE_DURATION = 24 * 60 * 60 * 1000 
 
-const platformPatterns: Array<{ pattern: RegExp; name: string }> = [
-    { pattern: /instagram\.com$/i, name: 'Instagram' },
-    { pattern: /facebook\.com$/i, name: 'Facebook' },
-    { pattern: /fb\.com$/i, name: 'Facebook' },
-    { pattern: /twitter\.com$/i, name: 'X (Twitter)' },
-    { pattern: /x\.com$/i, name: 'X (Twitter)' },
-    { pattern: /linkedin\.com$/i, name: 'LinkedIn' },
-    { pattern: /whatsapp\.com$/i, name: 'WhatsApp' },
-    { pattern: /wa\.me$/i, name: 'WhatsApp' },
-    { pattern: /t\.me$/i, name: 'Telegram' },
-    { pattern: /telegram\.(me|org)$/i, name: 'Telegram' },
-    { pattern: /tiktok\.com$/i, name: 'TikTok' },
-    { pattern: /youtube\.com$/i, name: 'YouTube' },
-    { pattern: /youtu\.be$/i, name: 'YouTube' },
-    { pattern: /reddit\.com$/i, name: 'Reddit' },
-    { pattern: /pinterest\.com$/i, name: 'Pinterest' },
-    { pattern: /discord\.(com|gg)$/i, name: 'Discord' },
-    { pattern: /line\.me$/i, name: 'LINE' },
-    { pattern: /google\.(com|co\.\w+)$/i, name: 'Google Search' },
-    { pattern: /bing\.com$/i, name: 'Bing Search' },
-    { pattern: /yahoo\.com$/i, name: 'Yahoo Search' },
-    { pattern: /duckduckgo\.com$/i, name: 'DuckDuckGo' },
-    { pattern: /baidu\.com$/i, name: 'Baidu' },
-    { pattern: /yandex\.(ru|com)$/i, name: 'Yandex' },
-    { pattern: /localhost$/i, name: 'localhost' },
-]
-
-const getBaseDomain = (hostname: string): string => {
-    const parts = hostname.split('.')
-    if (parts.length >= 2) {
-        return parts.slice(-2).join('.')
-    }
-    return hostname
-}
-
-const detectPlatform = (hostname: string): string | null => {
-    const cleanHostname = hostname.replace(/^www\./, '')
-    const baseDomain = getBaseDomain(cleanHostname)
-    
-    for (const { pattern, name } of platformPatterns) {
-        if (pattern.test(baseDomain) || pattern.test(cleanHostname)) {
-            return name
-        }
-    }
-    
-    return null
-}
-
-const isSearchEngine = (platformName: string | null): boolean => {
-    if (!platformName) return false
-    const searchEngines = ['Google Search', 'Bing Search', 'Yahoo Search', 'DuckDuckGo', 'Baidu', 'Yandex']
-    return searchEngines.includes(platformName)
-}
-
-const getReferrerInfo = (req: Request): ReferrerInfo => {
-    const utmSource = req.query.utm_source as string
-    const utmMedium = req.query.utm_medium as string
-    const utmCampaign = req.query.utm_campaign as string
-    
-    if (utmSource) {
-        return {
-            source: utmSource,
-            medium: utmMedium,
-            campaign: utmCampaign
-        }
-    }
-    
-    const refererHeader = req.get('referer') || req.get('referrer')
-    
-    if (!refererHeader) {
-        return { source: 'Direct' }
-    }
+const getReferrerDomain = (refererHeader: string | undefined): string => {
+    if (!refererHeader) return 'Direct'
     
     try {
         const url = new URL(refererHeader)
-        const hostname = url.hostname.replace(/^www\./, '')
-        const platform = detectPlatform(hostname)
+        const hostname = url.hostname.toLowerCase().replace(/^www\./, '')
         
-        if (platform) {
-            return {
-                source: platform,
-                medium: isSearchEngine(platform) ? 'organic' : 'referral',
-                rawDomain: hostname
-            }
+        const socialMediaPatterns = [
+            { pattern: /instagram\.com/, name: 'Instagram' },
+            { pattern: /^(facebook\.com|fb\.com|fb\.me|m\.facebook\.com)/, name: 'Facebook' },
+            { pattern: /^(twitter\.com|x\.com|t\.co|mobile\.twitter\.com)/, name: 'X (Twitter)' },
+            { pattern: /linkedin\.com/, name: 'LinkedIn' },
+            { pattern: /^(wa\.me|web\.whatsapp\.com|api\.whatsapp\.com|chat\.whatsapp\.com)/, name: 'WhatsApp' },
+            { pattern: /^(t\.me|telegram\.me|telegram\.org|web\.telegram\.org)/, name: 'Telegram' },
+            { pattern: /tiktok\.com/, name: 'TikTok' },
+            { pattern: /^(youtube\.com|youtu\.be|m\.youtube\.com|music\.youtube\.com)/, name: 'YouTube' },
+            { pattern: /reddit\.com/, name: 'Reddit' },
+            { pattern: /pinterest\.com/, name: 'Pinterest' },
+            { pattern: /^(discord\.com|discord\.gg|discordapp\.com)/, name: 'Discord' },
+            { pattern: /^(line\.me|line\.naver\.jp)/, name: 'LINE' },
+            { pattern: /snapchat\.com/, name: 'Snapchat' },
+            { pattern: /twitch\.tv/, name: 'Twitch' },
+            { pattern: /tumblr\.com/, name: 'Tumblr' },
+            { pattern: /vk\.com/, name: 'VK' },
+            { pattern: /weibo\.com/, name: 'Weibo' },
+            { pattern: /wechat\.com/, name: 'WeChat' },
+            { pattern: /qzone\.qq\.com/, name: 'Qzone' },
+            { pattern: /threads\.net/, name: 'Threads' },
+            { pattern: /medium\.com/, name: 'Medium' },
+            { pattern: /quora\.com/, name: 'Quora' },
+            { pattern: /slack\.com/, name: 'Slack' },
+            { pattern: /whatsapp\.com/, name: 'WhatsApp' }
+        ]
+        
+        for (const { pattern, name } of socialMediaPatterns) {
+            if (pattern.test(hostname)) return name
         }
         
-        const baseDomain = getBaseDomain(hostname)
-        return {
-            source: baseDomain,
-            medium: 'referral',
-            rawDomain: hostname
+        const searchEnginePatterns = [
+            { pattern: /^(google\.|www\.google\.)/, name: 'Google Search' },
+            { pattern: /bing\.com/, name: 'Bing Search' },
+            { pattern: /yahoo\.com/, name: 'Yahoo Search' },
+            { pattern: /duckduckgo\.com/, name: 'DuckDuckGo' },
+            { pattern: /baidu\.com/, name: 'Baidu' },
+            { pattern: /yandex\./, name: 'Yandex' },
+            { pattern: /ask\.com/, name: 'Ask.com' },
+            { pattern: /aol\.com/, name: 'AOL Search' },
+            { pattern: /ecosia\.org/, name: 'Ecosia' }
+        ]
+        
+        for (const { pattern, name } of searchEnginePatterns) {
+            if (pattern.test(hostname)) return name
         }
         
+        const emailPatterns = [
+            { pattern: /^(mail\.|outlook\.|gmail\.)/, name: 'Email' },
+            { pattern: /webmail\./, name: 'Email' }
+        ]
+        
+        for (const { pattern, name } of emailPatterns) {
+            if (pattern.test(hostname)) return name
+        }
+        
+        if (hostname === 'localhost' || hostname.startsWith('localhost:')) {
+            return 'localhost'
+        }
+        
+        if (url.searchParams.has('utm_source')) {
+            const utmSource = url.searchParams.get('utm_source')
+            if (utmSource) return `UTM: ${utmSource}`
+        }
+        
+        return hostname
     } catch {
-        return { source: 'Direct' }
+        return 'Direct'
     }
-}
-
-const getDetailedReferrer = (req: Request): string => {
-    const info = getReferrerInfo(req)
-    
-    if (info.campaign) {
-        return `${info.source} (${info.campaign})`
-    }
-    
-    if (info.medium && info.medium !== 'referral') {
-        return `${info.source} (${info.medium})`
-    }
-    
-    return info.source
 }
 
 const isLocalhostIP = (ip: string): boolean => {
@@ -256,7 +215,7 @@ export const trackAnalytics = async (req: Request, linkId: string | unknown): Pr
             isLocalhostIP(ip) && process.env.NODE_ENV === 'development' ? geoData.usedIP : undefined
         )
         
-        const referrer = getDetailedReferrer(req)
+        const referrer = getReferrerDomain(req.get('referer') || req.get('referrer'))
 
         let analytics = await Analytics.findOne({ linkId: linkIdString })
         
