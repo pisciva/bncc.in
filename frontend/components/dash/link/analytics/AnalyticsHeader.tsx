@@ -19,18 +19,16 @@ const AnalyticsHeader: React.FC<AnalyticsHeaderProps> = ({ onClose, onRefresh, r
             </div>
             <div className="flex items-center gap-2">
                 {!isError && onRefresh && (
-                    <button
+                    <button className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={onRefresh}
                         disabled={refreshing}
-                        className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Refresh analytics"
                     >
                         <RefreshCw className={`w-5 h-5 cursor-pointer ${refreshing ? 'animate-spin' : ''}`} />
                     </button>
                 )}
-                <button
+                <button className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300"
                     onClick={onClose}
-                    className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300"
                 >
                     <X className="w-5 h-5 cursor-pointer" />
                 </button>
