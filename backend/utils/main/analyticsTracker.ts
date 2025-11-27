@@ -19,74 +19,34 @@ const getReferrerDomain = (refererHeader: string | undefined): string => {
     
     try {
         const url = new URL(refererHeader)
-        const hostname = url.hostname.toLowerCase().replace(/^www\./, '')
+        const domain = url.hostname.replace('www.', '')
         
-        const socialMediaPatterns = [
-            { pattern: /instagram\.com/, name: 'Instagram' },
-            { pattern: /^(facebook\.com|fb\.com|fb\.me|m\.facebook\.com)/, name: 'Facebook' },
-            { pattern: /^(twitter\.com|x\.com|t\.co|mobile\.twitter\.com)/, name: 'X (Twitter)' },
-            { pattern: /linkedin\.com/, name: 'LinkedIn' },
-            { pattern: /^(wa\.me|web\.whatsapp\.com|api\.whatsapp\.com|chat\.whatsapp\.com)/, name: 'WhatsApp' },
-            { pattern: /^(t\.me|telegram\.me|telegram\.org|web\.telegram\.org)/, name: 'Telegram' },
-            { pattern: /tiktok\.com/, name: 'TikTok' },
-            { pattern: /^(youtube\.com|youtu\.be|m\.youtube\.com|music\.youtube\.com)/, name: 'YouTube' },
-            { pattern: /reddit\.com/, name: 'Reddit' },
-            { pattern: /pinterest\.com/, name: 'Pinterest' },
-            { pattern: /^(discord\.com|discord\.gg|discordapp\.com)/, name: 'Discord' },
-            { pattern: /^(line\.me|line\.naver\.jp)/, name: 'LINE' },
-            { pattern: /snapchat\.com/, name: 'Snapchat' },
-            { pattern: /twitch\.tv/, name: 'Twitch' },
-            { pattern: /tumblr\.com/, name: 'Tumblr' },
-            { pattern: /vk\.com/, name: 'VK' },
-            { pattern: /weibo\.com/, name: 'Weibo' },
-            { pattern: /wechat\.com/, name: 'WeChat' },
-            { pattern: /qzone\.qq\.com/, name: 'Qzone' },
-            { pattern: /threads\.net/, name: 'Threads' },
-            { pattern: /medium\.com/, name: 'Medium' },
-            { pattern: /quora\.com/, name: 'Quora' },
-            { pattern: /slack\.com/, name: 'Slack' },
-            { pattern: /whatsapp\.com/, name: 'WhatsApp' }
-        ]
-        
-        for (const { pattern, name } of socialMediaPatterns) {
-            if (pattern.test(hostname)) return name
+        const platformMap: Record<string, string> = {
+            'instagram.com': 'Instagram',
+            'facebook.com': 'Facebook',
+            'fb.com': 'Facebook',
+            'twitter.com': 'X (Twitter)',
+            'x.com': 'X (Twitter)',
+            'linkedin.com': 'LinkedIn',
+            'wa.me': 'WhatsApp',
+            'web.whatsapp.com': 'WhatsApp',
+            'api.whatsapp.com': 'WhatsApp',
+            't.me': 'Telegram',
+            'telegram.me': 'Telegram',
+            'tiktok.com': 'TikTok',
+            'youtube.com': 'YouTube',
+            'youtu.be': 'YouTube',
+            'reddit.com': 'Reddit',
+            'pinterest.com': 'Pinterest',
+            'discord.com': 'Discord',
+            'line.me': 'LINE',
+            'google.com': 'Google Search',
+            'bing.com': 'Bing Search',
+            'yahoo.com': 'Yahoo Search',
+            'localhost': 'localhost'
         }
         
-        const searchEnginePatterns = [
-            { pattern: /^(google\.|www\.google\.)/, name: 'Google Search' },
-            { pattern: /bing\.com/, name: 'Bing Search' },
-            { pattern: /yahoo\.com/, name: 'Yahoo Search' },
-            { pattern: /duckduckgo\.com/, name: 'DuckDuckGo' },
-            { pattern: /baidu\.com/, name: 'Baidu' },
-            { pattern: /yandex\./, name: 'Yandex' },
-            { pattern: /ask\.com/, name: 'Ask.com' },
-            { pattern: /aol\.com/, name: 'AOL Search' },
-            { pattern: /ecosia\.org/, name: 'Ecosia' }
-        ]
-        
-        for (const { pattern, name } of searchEnginePatterns) {
-            if (pattern.test(hostname)) return name
-        }
-        
-        const emailPatterns = [
-            { pattern: /^(mail\.|outlook\.|gmail\.)/, name: 'Email' },
-            { pattern: /webmail\./, name: 'Email' }
-        ]
-        
-        for (const { pattern, name } of emailPatterns) {
-            if (pattern.test(hostname)) return name
-        }
-        
-        if (hostname === 'localhost' || hostname.startsWith('localhost:')) {
-            return 'localhost'
-        }
-        
-        if (url.searchParams.has('utm_source')) {
-            const utmSource = url.searchParams.get('utm_source')
-            if (utmSource) return `UTM: ${utmSource}`
-        }
-        
-        return hostname
+        return platformMap[domain] || 'Other'
     } catch {
         return 'Direct'
     }
