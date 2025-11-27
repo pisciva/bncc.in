@@ -24,6 +24,7 @@ export default function RegisterPage() {
     const [serverError, setServerError] = useState('')
     const [successMessage, setSuccessMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [countdown, setCountdown] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
 
@@ -157,8 +158,8 @@ export default function RegisterPage() {
                             }
                         }}
                         showPasswordToggle
-                        showPassword={showPassword}
-                        setShowPassword={setShowPassword}
+                        showPassword={showConfirmPassword}
+                        setShowPassword={setShowConfirmPassword}
                         error={errors.confirmPassword?.message}
                     />
 

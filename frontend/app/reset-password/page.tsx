@@ -13,6 +13,7 @@ function ResetPasswordContent() {
     const [serverError, setServerError] = useState('')
     const [serverMessage, setServerMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [countdown, setCountdown] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
 
@@ -54,22 +55,6 @@ function ResetPasswordContent() {
         }
     }
 
-    const passwordFieldProps = (name: 'password' | 'confirmPassword', placeholder: string) => ({
-        type: 'password',
-        icon: '/icon-password.svg',
-        placeholder,
-        register,
-        name,
-        rules: {
-            required: `${placeholder} is required`,
-            minLength: { value: 6, message: 'Minimum 6 characters' }
-        },
-        showPasswordToggle: true,
-        showPassword,
-        setShowPassword,
-        error: errors[name]?.message
-    })
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
             <div className="w-full max-w-lg bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow-1 p-8 sm:p-10 relative">
@@ -87,8 +72,37 @@ function ResetPasswordContent() {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <InputField {...passwordFieldProps('password', 'Password')} />
-                    <InputField {...passwordFieldProps('confirmPassword', 'Confirm Password')} />
+                    <InputField
+                        type="password"
+                        icon="/icon-password.svg"
+                        placeholder="Password"
+                        register={register}
+                        name="password"
+                        rules={{
+                            required: 'Password is required',
+                            minLength: { value: 6, message: 'Minimum 6 characters' }
+                        }}
+                        showPasswordToggle
+                        showPassword={showPassword}
+                        setShowPassword={setShowPassword}
+                        error={errors.password?.message}
+                    />
+
+                    <InputField
+                        type="password"
+                        icon="/icon-password.svg"
+                        placeholder="Confirm Password"
+                        register={register}
+                        name="confirmPassword"
+                        rules={{
+                            required: 'Confirm Password is required',
+                            minLength: { value: 6, message: 'Minimum 6 characters' }
+                        }}
+                        showPasswordToggle
+                        showPassword={showConfirmPassword}
+                        setShowPassword={setShowConfirmPassword}
+                        error={errors.confirmPassword?.message}
+                    />
 
                     <button 
                         type="submit" 
