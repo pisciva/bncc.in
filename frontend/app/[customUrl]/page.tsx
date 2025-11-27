@@ -204,7 +204,7 @@ function RedirectPageContent() {
     if (status === 'protected') {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
-                <div className="max-w-lg bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow-1 p-8 sm:p-10 relative">
+                <div className="max-w-lg bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow-1 p-6 sm:p-10 relative">
                     <div className="absolute left-1/2 -top-9 transform -translate-x-1/2">
                         <div className="w-50 h-17 border-2 bg-[#F8FAFC] backdrop-blur-xl border-white/40 rounded-full shadow-2 flex items-center justify-center">
                             <img src="/logo-bnccin2.svg" className="w-32" alt="Logo" />

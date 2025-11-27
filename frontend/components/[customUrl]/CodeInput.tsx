@@ -45,7 +45,7 @@ export default function CodeInput({ code, setCode, disabled, onSubmit }: CodeInp
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     disabled={disabled}
-                    className="w-12 h-12 sm:w-15 sm:h-15 text-center text-2xl font-bold rounded-xl bg-white/10 backdrop-blur-xl border border-[#D3D3D3] shadow-5 text-[#0054A5] focus:outline-none focus:border-[#0054A5]/30 focus:shadow-6 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-11 h-11 sm:w-15 sm:h-15 text-center text-2xl font-bold rounded-xl bg-white/10 backdrop-blur-xl border border-[#D3D3D3] shadow-5 text-[#0054A5] focus:outline-none focus:border-[#0054A5]/30 focus:shadow-6 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
                 />
             ))}
         </div>

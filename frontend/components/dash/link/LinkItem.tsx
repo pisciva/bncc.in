@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic'
 import { useAuth } from '@/context/AuthContext'
 import LinkViewMode from "./LinkViewMode"
 import LinkEditMode from "./LinkEditMode"
-import { API_URL } from '@/lib/api'
 
 const LinkAnalyticsMode = dynamic(() => import('./LinkAnalyticsMode'), {
     loading: () => (
