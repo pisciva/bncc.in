@@ -67,7 +67,7 @@ export default function ToggleMoreSetting({
                             className="w-5 h-5 rounded-full bg-[#0054A5]/10 hover:bg-[#0054A5]/20 flex items-center justify-center cursor-pointer transition-all duration-200 group"
                             title="More information"
                         >
-                            <span className="text-[#0054A5] text-xs font-bold group-hover:scale-110 transition-transform">!</span>
+                            <span className="text-[#0054A5] text-xs font-bold group-hover:scale-110 transition-transform">i</span>
                         </button>
 
                         {showInfo && (
