@@ -11,45 +11,126 @@ interface IPApiResponse {
     reason?: string
 }
 
-const ipCache = new Map<string, { data: IPApiResponse; timestamp: number }>()
-const CACHE_DURATION = 24 * 60 * 60 * 1000 
+interface ReferrerInfo {
+    source: string
+    medium?: string
+    campaign?: string
+    rawDomain?: string
+}
 
-const getReferrerDomain = (refererHeader: string | undefined): string => {
-    if (!refererHeader) return 'Direct'
+const ipCache = new Map<string, { data: IPApiResponse; timestamp: number }>()
+const CACHE_DURATION = 24 * 60 * 60 * 1000
+
+const platformPatterns: Array<{ pattern: RegExp; name: string }> = [
+    { pattern: /instagram\.com$/i, name: 'Instagram' },
+    { pattern: /facebook\.com$/i, name: 'Facebook' },
+    { pattern: /fb\.com$/i, name: 'Facebook' },
+    { pattern: /twitter\.com$/i, name: 'X (Twitter)' },
+    { pattern: /x\.com$/i, name: 'X (Twitter)' },
+    { pattern: /linkedin\.com$/i, name: 'LinkedIn' },
+    { pattern: /whatsapp\.com$/i, name: 'WhatsApp' },
+    { pattern: /wa\.me$/i, name: 'WhatsApp' },
+    { pattern: /t\.me$/i, name: 'Telegram' },
+    { pattern: /telegram\.(me|org)$/i, name: 'Telegram' },
+    { pattern: /tiktok\.com$/i, name: 'TikTok' },
+    { pattern: /youtube\.com$/i, name: 'YouTube' },
+    { pattern: /youtu\.be$/i, name: 'YouTube' },
+    { pattern: /reddit\.com$/i, name: 'Reddit' },
+    { pattern: /pinterest\.com$/i, name: 'Pinterest' },
+    { pattern: /discord\.(com|gg)$/i, name: 'Discord' },
+    { pattern: /line\.me$/i, name: 'LINE' },
+    { pattern: /google\.(com|co\.\w+)$/i, name: 'Google Search' },
+    { pattern: /bing\.com$/i, name: 'Bing Search' },
+    { pattern: /yahoo\.com$/i, name: 'Yahoo Search' },
+    { pattern: /duckduckgo\.com$/i, name: 'DuckDuckGo' },
+    { pattern: /baidu\.com$/i, name: 'Baidu' },
+    { pattern: /yandex\.(ru|com)$/i, name: 'Yandex' },
+    { pattern: /localhost$/i, name: 'localhost' },
+]
+
+const getBaseDomain = (hostname: string): string => {
+    const parts = hostname.split('.')
+    if (parts.length >= 2) {
+        return parts.slice(-2).join('.')
+    }
+    return hostname
+}
+
+const detectPlatform = (hostname: string): string | null => {
+    const cleanHostname = hostname.replace(/^www\./, '')
+    const baseDomain = getBaseDomain(cleanHostname)
+    
+    for (const { pattern, name } of platformPatterns) {
+        if (pattern.test(baseDomain) || pattern.test(cleanHostname)) {
+            return name
+        }
+    }
+    
+    return null
+}
+
+const isSearchEngine = (platformName: string | null): boolean => {
+    if (!platformName) return false
+    const searchEngines = ['Google Search', 'Bing Search', 'Yahoo Search', 'DuckDuckGo', 'Baidu', 'Yandex']
+    return searchEngines.includes(platformName)
+}
+
+const getReferrerInfo = (req: Request): ReferrerInfo => {
+    const utmSource = req.query.utm_source as string
+    const utmMedium = req.query.utm_medium as string
+    const utmCampaign = req.query.utm_campaign as string
+    
+    if (utmSource) {
+        return {
+            source: utmSource,
+            medium: utmMedium,
+            campaign: utmCampaign
+        }
+    }
+    
+    const refererHeader = req.get('referer') || req.get('referrer')
+    
+    if (!refererHeader) {
+        return { source: 'Direct' }
+    }
     
     try {
         const url = new URL(refererHeader)
-        const domain = url.hostname.replace('www.', '')
+        const hostname = url.hostname.replace(/^www\./, '')
+        const platform = detectPlatform(hostname)
         
-        const platformMap: Record<string, string> = {
-            'instagram.com': 'Instagram',
-            'facebook.com': 'Facebook',
-            'fb.com': 'Facebook',
-            'twitter.com': 'X (Twitter)',
-            'x.com': 'X (Twitter)',
-            'linkedin.com': 'LinkedIn',
-            'wa.me': 'WhatsApp',
-            'web.whatsapp.com': 'WhatsApp',
-            'api.whatsapp.com': 'WhatsApp',
-            't.me': 'Telegram',
-            'telegram.me': 'Telegram',
-            'tiktok.com': 'TikTok',
-            'youtube.com': 'YouTube',
-            'youtu.be': 'YouTube',
-            'reddit.com': 'Reddit',
-            'pinterest.com': 'Pinterest',
-            'discord.com': 'Discord',
-            'line.me': 'LINE',
-            'google.com': 'Google Search',
-            'bing.com': 'Bing Search',
-            'yahoo.com': 'Yahoo Search',
-            'localhost': 'localhost'
+        if (platform) {
+            return {
+                source: platform,
+                medium: isSearchEngine(platform) ? 'organic' : 'referral',
+                rawDomain: hostname
+            }
         }
         
-        return platformMap[domain] || 'Other'
+        const baseDomain = getBaseDomain(hostname)
+        return {
+            source: baseDomain,
+            medium: 'referral',
+            rawDomain: hostname
+        }
+        
     } catch {
-        return 'Direct'
+        return { source: 'Direct' }
     }
+}
+
+const getDetailedReferrer = (req: Request): string => {
+    const info = getReferrerInfo(req)
+    
+    if (info.campaign) {
+        return `${info.source} (${info.campaign})`
+    }
+    
+    if (info.medium && info.medium !== 'referral') {
+        return `${info.source} (${info.medium})`
+    }
+    
+    return info.source
 }
 
 const isLocalhostIP = (ip: string): boolean => {
@@ -175,7 +256,7 @@ export const trackAnalytics = async (req: Request, linkId: string | unknown): Pr
             isLocalhostIP(ip) && process.env.NODE_ENV === 'development' ? geoData.usedIP : undefined
         )
         
-        const referrer = getReferrerDomain(req.get('referer') || req.get('referrer'))
+        const referrer = getDetailedReferrer(req)
 
         let analytics = await Analytics.findOne({ linkId: linkIdString })
         

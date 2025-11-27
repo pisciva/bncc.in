@@ -193,9 +193,13 @@ function RedirectPageContent() {
                 description="You've exceeded the maximum number of attempts (5)."
                 showButton={true}
             >
-                <div className="bg-orange-50/80 backdrop-blur-sm border border-orange-200 rounded-xl p-4 mb-8">
+                <div className="bg-orange-50/80 backdrop-blur-sm border border-orange-200 rounded-xl p-4">
                     <p className="text-orange-600 font-semibold text-lg mb-1">Time remaining:</p>
                     <p className="text-orange-600 text-2xl font-bold">{remainingTime}</p>
+                </div>
+
+                <div className='text-xs sm:text-sm text-[#64748B] mt-4 mb-8'>
+                    This block applies to your connection and affects other devices on the same network.
                 </div>
             </StatusCard>
         )
