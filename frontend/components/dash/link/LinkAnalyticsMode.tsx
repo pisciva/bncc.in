@@ -21,6 +21,7 @@ interface LinkAnalyticsModeProps {
 const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, token, onClose }) => {
     const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
     const [loading, setLoading] = useState(true)
+    const [refreshing, setRefreshing] = useState(false)
     const [error, setError] = useState('')
     const [view, setView] = useState<AnalyticsView>('clicks')
     const [chartType, setChartType] = useState<ChartType>('time')
@@ -31,8 +32,14 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
         fetchAnalytics()
     }, [linkId])
 
-    const fetchAnalytics = async () => {
+    const fetchAnalytics = async (isRefresh = false) => {
         try {
+            if (isRefresh) {
+                setRefreshing(true)
+            } else {
+                setLoading(true)
+            }
+
             const res = await fetch(`${API_URL}/api/analytics/${linkId}`, {
                 headers: {
                     ...(token && { Authorization: `Bearer ${token}` })
@@ -43,16 +50,21 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
 
             const data = await res.json()
             setAnalytics(data.analytics)
-            setLoading(false)
+            setError('')
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message)
             } else {
                 setError("Unknown error occurred")
             }
+        } finally {
             setLoading(false)
+            setRefreshing(false)
         }
+    }
 
+    const handleRefresh = () => {
+        fetchAnalytics(true)
     }
 
     if (loading) {
@@ -69,7 +81,7 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
     if (error) {
         return (
             <div className="bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow-7">
-                <AnalyticsHeader onClose={onClose} isError />
+                <AnalyticsHeader onClose={onClose} onRefresh={handleRefresh} refreshing={refreshing} isError />
                 <div className="p-6">
                     <p className="text-red-500 font-medium">{error}</p>
                     <button onClick={onClose} className="mt-4 px-6 py-2.5 bg-gradient-to-r from-[#0054A5] to-[#003d7a] rounded-full text-white font-semibold hover:shadow-3 transition-all">
@@ -84,7 +96,7 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
 
     return (
         <div className="bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow-7">
-            <AnalyticsHeader onClose={onClose} />
+            <AnalyticsHeader onClose={onClose} onRefresh={handleRefresh} refreshing={refreshing} />
 
             <div className="p-3 sm:p-5 space-y-6">
                 <AnalyticsStats
