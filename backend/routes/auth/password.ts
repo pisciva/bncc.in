@@ -28,10 +28,20 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
         await user.save()
 
         const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`
-        await sendResetPasswordEmail(user.email, user.fullName || "User", resetLink)
+        
+        try {
+            await sendResetPasswordEmail(user.email, user.fullName || "User", resetLink)
+            console.log('✅ Email sent successfully to:', user.email)
+        } catch (emailError) {
+            console.error('❌ Email sending failed:', emailError)
+            return res.status(500).json({ 
+                message: 'Failed to send email. Please try again later.' 
+            })
+        }
 
         return res.json({ message: message.reset_success })
     } catch (err) {
+        console.error('❌ Forgot password error:', err)
         return res.status(500).json({ message: message.reset_failed })
     }
 })
