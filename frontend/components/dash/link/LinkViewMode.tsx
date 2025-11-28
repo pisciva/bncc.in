@@ -6,7 +6,7 @@ import QRCode from "react-qr-code"
 import BNCCLogo from "../..//layout/BNCCLogo"
 import DownloadQR from "../../main/comp/DownloadQR"
 import { formatCreatedAt } from "@/utils/formatCreatedAt"
-import { Eye, EyeOff, Copy, QrCode, Edit, Lock, Unlock, Clock, Calendar, KeyRound, BarChart3 } from 'lucide-react'
+import { Eye, EyeOff, Copy, QrCode, Edit, Lock, Unlock, Clock, Calendar, KeyRound, BarChart3, MoreVertical } from 'lucide-react'
 import { LinkCard } from "./LinkItem"
 import Link from 'next/link'
 
@@ -29,9 +29,12 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
 }) => {
     const [showPasscode, setShowPasscode] = useState(false)
     const [popup, setPopup] = useState(false)
+    const [mobileMenu, setMobileMenu] = useState(false)
     const qrRef = useRef<HTMLDivElement>(null)
     const popupRef = useRef<HTMLDivElement>(null)
     const qrButtonRef = useRef<HTMLButtonElement>(null)
+    const mobileMenuRef = useRef<HTMLDivElement>(null)
+    const mobileMenuButtonRef = useRef<HTMLButtonElement>(null)
 
     const expDate = link.expirationDate ? new Date(link.expirationDate) : null
     const now = new Date()
@@ -48,9 +51,23 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
             await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
             onShowToast({ message: 'QR grabbed! Go paste it!', type: 'success' })
         } catch (err) {
-            
             onShowToast({ message: "Uh-oh! Couldn't grab the QR!", type: 'error' })
         }
+    }
+
+    const handleMobileQRClick = () => {
+        setMobileMenu(false)
+        setPopup(true)
+    }
+
+    const handleMobileAnalyticsClick = () => {
+        setMobileMenu(false)
+        onViewAnalytics()
+    }
+
+    const handleMobileEditClick = () => {
+        setMobileMenu(false)
+        onEdit()
     }
 
     useEffect(() => {
@@ -65,6 +82,19 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
         else document.removeEventListener("mousedown", handleClickOutside)
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [popup])
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (mobileMenuButtonRef.current && mobileMenuButtonRef.current.contains(e.target as Node)) return
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
+                setMobileMenu(false)
+            }
+        }
+
+        if (mobileMenu) document.addEventListener("mousedown", handleClickOutside)
+        else document.removeEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [mobileMenu])
 
     return (
         <div className={`rounded-2xl shadow-7 hover:shadow-7 transition-all duration-300 border ${justUpdated ? 'border-[#0054A5]/50 shadow-12 scale-[1.01]' : 'border-transparent'}`}>
@@ -135,27 +165,27 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                             )}
                         </div>
 
-                        <div className="flex gap-2 flex-col sm:flex-row items-end">
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={onCopy}
-                                    className="cursor-pointer h-9 sm:h-10 px-3 sm:px-4 py-2 bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white text-xs sm:text-sm font-semibold rounded-full hover:shadow-3 transition-all duration-300 flex items-center gap-2"
-                                >
-                                    <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
-                                    <span className="hidden sm:inline">Copy Link</span>
-                                </button>
+                        <div className="flex gap-2 flex-col sm:flex-row items-center">
+                            {/* Desktop: Copy Link Button - Always visible */}
+                            <button
+                                onClick={onCopy}
+                                className="cursor-pointer h-9 sm:h-10 px-3 sm:px-4 py-2 bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white text-xs sm:text-sm font-semibold rounded-full hover:shadow-3 transition-all duration-300 flex items-center gap-2"
+                            >
+                                <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
+                                <span className="hidden sm:inline">Copy Link</span>
+                            </button>
 
+                            {/* Desktop: Analytics, QR, Edit buttons - Hidden below lg (1024px) */}
+                            <div className="hidden lg:flex gap-2">
                                 <button
                                     onClick={onViewAnalytics}
-                                    className="cursor-pointer h-9 sm:h-10 px-3 sm:px-4 py-2 border border-[#D3D3D3] bg-white/15 text-[#0054A5] text-xs sm:text-sm font-semibold rounded-full  transition-all duration-300 flex items-center gap-2"
+                                    className="cursor-pointer h-9 sm:h-10 px-3 sm:px-4 py-2 border border-[#D3D3D3] bg-white/15 text-[#0054A5] text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 flex items-center gap-2"
                                     title="View Analytics"
                                 >
                                     <BarChart3 className="w-3 h-3 sm:w-5 sm:h-5 text-[#0054A5]" />
                                     <span className="hidden sm:inline">Analytics</span>
                                 </button>
-                            </div>
 
-                            <div className="flex gap-2">
                                 {link.qr?.enabled && (
                                     <div className="relative">
                                         <button
@@ -206,6 +236,77 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                     <Edit className="w-4 h-4 sm:w-5 sm:h-5 text-[#0054A5]" />
                                 </button>
                             </div>
+
+                            {/* Mobile: Three-dot menu - Visible below lg (1024px) */}
+                            <div className="relative lg:hidden">
+                                <button
+                                    ref={mobileMenuButtonRef}
+                                    onClick={() => setMobileMenu(!mobileMenu)}
+                                    className="cursor-pointer w-9 h-9 bg-white/15 backdrop-blur-xl border border-[#D3D3D3] rounded-full hover:bg-white/25 transition-all duration-300 flex items-center justify-center"
+                                >
+                                    <MoreVertical className="w-4 h-4 text-[#0054A5]" />
+                                </button>
+
+                                {/* Mobile dropdown menu */}
+                                <div className={`absolute right-0 top-full mt-2 z-50 transition-all duration-300 ease-out ${mobileMenu ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                                    <div ref={mobileMenuRef} className="bg-white rounded-xl shadow-1 border border-[#D3D3D3] overflow-hidden min-w-[160px]">
+                                        <button
+                                            onClick={handleMobileAnalyticsClick}
+                                            className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#0054A5]/5 transition-colors text-left"
+                                        >
+                                            <BarChart3 className="w-4 h-4 text-[#0054A5]" />
+                                            <span className="text-sm font-medium text-[#0054A5]">Analytics</span>
+                                        </button>
+
+                                        {link.qr?.enabled && (
+                                            <button
+                                                onClick={handleMobileQRClick}
+                                                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#0054A5]/5 transition-colors text-left border-t border-[#D3D3D3]"
+                                            >
+                                                <QrCode className="w-4 h-4 text-[#0054A5]" />
+                                                <span className="text-sm font-medium text-[#0054A5]">QR Code</span>
+                                            </button>
+                                        )}
+
+                                        <button
+                                            onClick={handleMobileEditClick}
+                                            className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#0054A5]/5 transition-colors text-left border-t border-[#D3D3D3]"
+                                        >
+                                            <Edit className="w-4 h-4 text-[#0054A5]" />
+                                            <span className="text-sm font-medium text-[#0054A5]">Edit</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* QR Code Popup - Shared for both mobile and desktop */}
+                            {link.qr?.enabled && popup && (
+                                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 flex items-center justify-center lg:hidden" onClick={() => setPopup(false)}>
+                                    <div onClick={(e) => e.stopPropagation()} className="m-4">
+                                        <div ref={popupRef}>
+                                            <div className="bg-white rounded-2xl shadow-1 p-4 flex flex-col items-center gap-4">
+                                                <div className="overflow-hidden rounded-2xl shadow-2">
+                                                    <div
+                                                        ref={qrRef}
+                                                        className="relative bg-white flex items-center justify-center transition-all duration-300"
+                                                        style={{ width: size + 40, height: size + 40 }}
+                                                    >
+                                                        <div className="relative" style={{ width: size, height: size }}>
+                                                            <QRCode value={qrValue || ""} size={size} fgColor={link.qr.qrColor || "#000"} className="w-full h-full" />
+                                                            {link.qr.showLogo && (
+                                                                <div className="absolute bg-white rounded-tl-md" style={{ bottom: 0, right: 0, paddingLeft: size * 0.02, paddingTop: size * 0.02 }}>
+                                                                    <BNCCLogo color={link.qr.qrColor} width={Math.floor(size / 3)} />
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <DownloadQR qrRef={qrRef} name={link.title} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

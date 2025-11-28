@@ -112,7 +112,7 @@ const QRViewMode: React.FC<QRViewModeProps> = ({
                         <DownloadQR qrRef={qrRef} name={qr.title} rounded="rounded-full" />
                         <button
                             onClick={handleCopyQR}
-                            className="cursor-pointer w-10 h-10 bg-white/15 backdrop-blur-xl border border-[#D3D3D3] rounded-full hover:bg-white/25 transition-all duration-300 flex items-center justify-center flex-shrink-0"
+                            className="hidden lg:flex cursor-pointer w-10 h-10 bg-white/15 backdrop-blur-xl border border-[#D3D3D3] rounded-full hover:bg-white/25 transition-all duration-300 items-center justify-center flex-shrink-0"
                         >
                             <Copy className="w-3.5 h-3.5 text-[#0054A5]" />
                         </button>

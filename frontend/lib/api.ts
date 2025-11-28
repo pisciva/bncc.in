@@ -160,7 +160,7 @@ export const links = {
             headers: getAuthHeaders()
         })
         const data = await res.json()
-        if (!res.ok) throw new Error(data.message || 'Failed to delete link')
+        if (!res.ok) throw new Error(data.message || data.error || 'Failed to delete link')
         return data
     }
 }

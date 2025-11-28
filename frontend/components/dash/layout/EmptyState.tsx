@@ -75,7 +75,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                 <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">
                     No {dataLabelPlural} found
                 </p>
-                <p className="text-[#0054A5]/70 font-medium text-sm lg:text-base mt-2 max-w-sm px-4">
+                <p className="text-[#0054A5]/70 font-medium text-sm lg:text-base mt-2 max-w-sm sm:max-w-md px-4">
                     {searchQuery && !hasActiveFilters && (
                         <>
                             No {dataLabelPlural} match your search "<span className="font-semibold">{truncateQuery(searchQuery)}</span>"

@@ -139,4 +139,4 @@ const Links: React.FC<LinksProps> = ({
     )
 }
 
-export default Links    
+export default Links

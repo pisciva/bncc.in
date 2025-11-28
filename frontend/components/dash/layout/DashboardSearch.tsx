@@ -41,7 +41,7 @@ const DashboardSearch: React.FC<DashboardSearchProps> = ({
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
                     placeholder={placeholder}
-                    className="font-medium w-full px-10 py-2.5 pl-11 bg-white/10 backdrop-blur-xl border border-[#D3D3D3] rounded-full text-[#0054A5] placeholder-gray-400 focus:border-[#0054A5] focus:outline-none"
+                    className="min-h-10 text-sm lg:text-base font-medium w-full px-10 py-2.5 pl-11 bg-white/10 backdrop-blur-xl border border-[#D3D3D3] rounded-full text-[#0054A5] placeholder-gray-400 focus:border-[#0054A5] focus:outline-none"
                 />
 
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
@@ -56,7 +56,7 @@ const DashboardSearch: React.FC<DashboardSearchProps> = ({
             <div ref={filterButtonRef} className="relative">
                 <button
                     onClick={onToggleFilter}
-                    className="min-h-11 cursor-pointer relative px-5 py-2.5 bg-[#0054A5] rounded-full flex items-center gap-2 text-white"
+                    className="min-h-10 cursor-pointer relative px-5 py-2.5 bg-[#0054A5] rounded-full flex items-center gap-2 text-white"
                 >
                     <Filter className="w-4 h-4" />
                     <span className="hidden sm:inline">Filter</span>

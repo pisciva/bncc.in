@@ -88,30 +88,30 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            <nav className="lg:hidden fixed top-5 left-5 right-5 z-50 pointer-events-auto">
-                <div className="flex items-center justify-between">
-                    <div className="relative bg-white/20 backdrop-blur-xl shadow-23 border border-white/18 rounded-full px-4 sm:px-6 py-3 overflow-hidden group">
+            <nav className="lg:hidden fixed top-5 left-5 right-5 z-50 pointer-events-none">
+                <div className="flex items-center justify-between pointer-events-none">
+                    <div className="pointer-events-auto relative bg-white/20 backdrop-blur-xl shadow-23 border border-white/18 rounded-full px-4 sm:px-6 py-3 overflow-hidden group">
                         <div className="absolute inset-0 bg-gradient-to-r from-[#0054A5]/0 via-[#2788CE]/20 to-[#0054A5]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-flow"></div>
 
                         <Link href="/">
-                            <img src="/logo-bnccin.svg" alt="BNCC Logo" width={80} className="object-contain relative z-10" />
+                            <img src="/logo-bnccin.svg" alt="BNCC Logo" width={70} className="object-contain relative z-10" />
                         </Link>
                     </div>
 
-                    <div className="bg-white/20 backdrop-blur-xl shadow-23 border border-white/18 rounded-full">
+                    <div className="pointer-events-auto bg-white/20 backdrop-blur-xl shadow-23 border border-white/18 rounded-full">
                         <button className="text-[#0054A5] p-3 sm:p-4 hover:bg-white/10 rounded-full transition"
                             onClick={() => setIsMenuOpen(!isMenuOpen)}>
                             {isMenuOpen ? (
-                                <X className="w-6 h-6" />
+                                <X className="w-4 h-4" />
                             ) : (
-                                <Menu className="w-6 h-6" />
+                                <Menu className="w-4 h-4" />
                             )}
                         </button>
                     </div>
                 </div>
 
                 {isMenuOpen && (
-                    <div className="mt-3 bg-white/25 backdrop-blur-xl shadow-23 border-2 border-white/30 rounded-3xl px-6 py-4 animate-fadeIn">
+                    <div className="pointer-events-auto mt-3 bg-white/25 backdrop-blur-xl shadow-23 border-2 border-white/30 rounded-3xl px-6 py-4 animate-fadeIn">
                         <div className="flex flex-col space-y-4 font-medium text-[#0054A5]">
                             <Link href="/" className="flex items-center space-x-2 hover:font-semibold transition cursor-pointer py-2 text-left border-b border-white/20" onClick={() => setIsMenuOpen(false)}>
                                 <House className="w-5 h-5" />

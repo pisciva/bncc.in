@@ -16,7 +16,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 }) => {
     return (
         <div className="relative inline-flex w-full lg:w-80 rounded-full bg-white/15 backdrop-blur-xl border border-[#D3D3D3] p-1">
-            <div className={`absolute top-1 bottom-1 transition-all duration-300 ease-in-out bg-gradient-to-br from-[#0054A5] to-[#003d7a] rounded-full ${activeTab === "links" ? "left-1 w-[calc(50%-0.25rem)]" : "left-[calc(50%+0.125rem)] w-[calc(50%-0.25rem)]"}`} />
+            <div className={`absolute top-1 bottom-1 transition-all duration-300 ease-in-out bg-gradient-to-br from-[#0054A5] to-[#003d7a] rounded-full ${activeTab === "links" ? "left-1 w-[calc(50%-0.25rem)]" : "left-[calc(50%)] w-[calc(50%-0.25rem)]"}`} />
 
             {tabs.map((tab) => (
                 <button
