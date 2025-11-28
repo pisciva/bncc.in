@@ -9,16 +9,13 @@ export default async function sendEmail(
 ) {
     try {
         const data = await resend.emails.send({
-            from: 'BNCC-IN <onboarding@resend.dev>',
+            from: 'bncc.in',
             to,
             subject,
             html,
         })
-
-        console.log('📧 [Resend] Email sent:', data)
         return data
     } catch (error) {
-        console.error('❌ [Resend] Failed:', error)
         throw error
     }
 }
