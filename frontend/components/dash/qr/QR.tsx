@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import Link from 'next/link'
 import QRItem from "./QRItem"
 import LoadMoreButton from "../layout/LoadMoreButton"
+import EmptyState from "../layout/EmptyState"
 import { usePagination } from "@/hooks/usePagination"
 
 export interface QRType {
@@ -19,9 +19,20 @@ export interface QRType {
 type QRsProps = {
     qrs: QRType[]
     onShowToast: (toast: { message: string; type?: "success" | "error" | "warning" }) => void
+    searchQuery?: string
+    onClearSearch?: () => void
+    hasActiveFilters?: boolean
+    onClearFilters?: () => void
 }
 
-const QRs: React.FC<QRsProps> = ({ qrs: initialQrs, onShowToast }) => {
+const QRs: React.FC<QRsProps> = ({ 
+    qrs: initialQrs, 
+    onShowToast,
+    searchQuery = "",
+    onClearSearch,
+    hasActiveFilters = false,
+    onClearFilters
+}) => {
     const [qrs, setQrs] = useState<QRType[]>(initialQrs)
     const [isLoadingMore, setIsLoadingMore] = useState(false)
 
@@ -54,24 +65,35 @@ const QRs: React.FC<QRsProps> = ({ qrs: initialQrs, onShowToast }) => {
         setIsLoadingMore(false)
     }
 
-    if (qrs.length === 0) {
+    // Determine empty state type
+    const isTrulyEmpty = initialQrs.length === 0 && !searchQuery && !hasActiveFilters
+    const isFilteredEmpty = qrs.length === 0 && (searchQuery || hasActiveFilters)
+
+    // No data at all
+    if (isTrulyEmpty) {
         return (
-            <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
-                <div className="flex flex-col justify-center items-center text-center py-24">
-                    <img src="/images/dash/no-link.svg" className="w-50 lg:w-70 mb-4" alt="No QR codes" />
-                    <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">Nothing's here yet.</p>
-                    <p className="text-[#0054A5] font-medium text-sm lg:text-base mt-1">
-                        Try{' '}
-                        <Link href="/" className="text-[#2788CE] hover:underline">
-                            creating a QR
-                        </Link>
-                        {' '}to get started.
-                    </p>
-                </div>
-            </div>
+            <EmptyState
+                type="no-data"
+                dataType="qr"
+            />
         )
     }
 
+    // No results from search/filter
+    if (isFilteredEmpty) {
+        return (
+            <EmptyState
+                type="no-results"
+                dataType="qr"
+                searchQuery={searchQuery}
+                hasActiveFilters={hasActiveFilters}
+                onClearSearch={onClearSearch}
+                onClearFilters={onClearFilters}
+            />
+        )
+    }
+
+    // Has data to display
     return (
         <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">

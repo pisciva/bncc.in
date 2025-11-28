@@ -73,6 +73,23 @@ function DashboardContent() {
         setShowFilterPopup(prev => !prev)
     }
 
+    const handleClearSearch = () => {
+        setSearchQuery("")
+    }
+
+    const handleClearFilters = () => {
+        setFilters({
+            dateFilter: 'all',
+            customDateRange: { start: null, end: null },
+            status: [],
+            access: [],
+            showLogo: []
+        })
+    }
+
+    const activeFilterCount = getActiveFilterCount(filters)
+    const hasActiveFilters = activeFilterCount > 0
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -116,13 +133,31 @@ function DashboardContent() {
                         filters={filters}
                         onFiltersChange={setFilters}
                         filterButtonRef={filterButtonRef}
-                        activeFilterCount={getActiveFilterCount(filters)}
+                        activeFilterCount={activeFilterCount}
                     />
                 </div>
 
                 <div className="mb-20">
-                    {activeTab === "links" && <Links links={filteredLinks} onShowToast={setToast} />}
-                    {activeTab === "qrs" && <QRs qrs={filteredQrs} onShowToast={setToast} />}
+                    {activeTab === "links" && (
+                        <Links 
+                            links={filteredLinks} 
+                            onShowToast={setToast}
+                            searchQuery={searchQuery}
+                            onClearSearch={handleClearSearch}
+                            hasActiveFilters={hasActiveFilters}
+                            onClearFilters={handleClearFilters}
+                        />
+                    )}
+                    {activeTab === "qrs" && (
+                        <QRs 
+                            qrs={filteredQrs} 
+                            onShowToast={setToast}
+                            searchQuery={searchQuery}
+                            onClearSearch={handleClearSearch}
+                            hasActiveFilters={hasActiveFilters}
+                            onClearFilters={handleClearFilters}
+                        />
+                    )}
                 </div>
 
                 <Link href="/">

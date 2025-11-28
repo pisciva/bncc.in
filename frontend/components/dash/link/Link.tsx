@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import Link from 'next/link'
 import LinkItem from "./LinkItem"
 import LoadMoreButton from "../layout/LoadMoreButton"
+import EmptyState from "../layout/EmptyState"
 import { usePagination } from "@/hooks/usePagination"
 
 
@@ -27,9 +27,20 @@ interface LinkCard {
 type LinksProps = {
     links: LinkCard[]
     onShowToast: (toast: { message: string; type?: "success" | "error" | "warning" }) => void
+    searchQuery?: string
+    onClearSearch?: () => void
+    hasActiveFilters?: boolean
+    onClearFilters?: () => void
 }
 
-const Links: React.FC<LinksProps> = ({ links: initialLinks, onShowToast }) => {
+const Links: React.FC<LinksProps> = ({ 
+    links: initialLinks, 
+    onShowToast,
+    searchQuery = "",
+    onClearSearch,
+    hasActiveFilters = false,
+    onClearFilters
+}) => {
     const [links, setLinks] = useState<LinkCard[]>(initialLinks)
     const [activeLinkId, setActiveLinkId] = useState<string | null>(null)
     const [isLoadingMore, setIsLoadingMore] = useState(false)
@@ -43,19 +54,12 @@ const Links: React.FC<LinksProps> = ({ links: initialLinks, onShowToast }) => {
         reset
     } = usePagination({
         items: links,
-        itemsPerPage: 10 // Adjust sesuai kebutuhan
+        itemsPerPage: 10
     })
-
-    // Infinite scroll (optional - uncomment jika mau auto-load)
-    // const sentinelRef = useInfiniteScroll({
-    //     onLoadMore: handleLoadMore,
-    //     hasMore,
-    //     loading: isLoadingMore
-    // })
 
     useEffect(() => {
         setLinks(initialLinks)
-        reset() // Reset pagination when links change
+        reset()
     }, [initialLinks])
 
     const handleUpdateLink = (updatedLink: LinkCard) => {
@@ -74,30 +78,40 @@ const Links: React.FC<LinksProps> = ({ links: initialLinks, onShowToast }) => {
 
     const handleLoadMore = async () => {
         setIsLoadingMore(true)
-        // Simulate loading delay (remove in production)
         await new Promise(resolve => setTimeout(resolve, 300))
         loadMore()
         setIsLoadingMore(false)
     }
 
-    if (links.length === 0) {
+    // Check if it's truly empty (no links in database) vs filtered out
+    const isTrulyEmpty = initialLinks.length === 0 && !searchQuery && !hasActiveFilters
+    const isFilteredEmpty = links.length === 0 && (searchQuery || hasActiveFilters)
+
+    // State: Tidak ada link sama sekali di database
+    if (isTrulyEmpty) {
         return (
-            <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
-                <div className="flex flex-col justify-center items-center text-center py-24">
-                    <img src="/images/dash/no-link.svg" className="w-50 lg:w-70 mb-4" alt="No links" />
-                    <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">Nothing's here yet.</p>
-                    <p className="text-[#0054A5] font-medium text-sm lg:text-base mt-1">
-                        Try{' '}
-                        <Link href="/" className="text-[#2788CE] hover:underline">
-                            creating a link
-                        </Link>
-                        {' '}to get started.
-                    </p>
-                </div>
-            </div>
+            <EmptyState
+                type="no-data"
+                dataType="link"
+            />
         )
     }
 
+    // State: Link tidak ditemukan karena search/filter
+    if (isFilteredEmpty) {
+        return (
+            <EmptyState
+                type="no-results"
+                dataType="link"
+                searchQuery={searchQuery}
+                hasActiveFilters={hasActiveFilters}
+                onClearSearch={onClearSearch}
+                onClearFilters={onClearFilters}
+            />
+        )
+    }
+
+    // State: Ada links yang ditampilkan
     return (
         <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
             <ul className="space-y-3 sm:space-y-4">
@@ -125,4 +139,4 @@ const Links: React.FC<LinksProps> = ({ links: initialLinks, onShowToast }) => {
     )
 }
 
-export default Links
+export default Links    
