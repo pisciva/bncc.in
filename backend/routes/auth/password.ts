@@ -12,10 +12,6 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000'
 router.post('/forgot-password', async (req: Request, res: Response) => {
     const { email } = req.body
 
-    console.log('📧 [Forgot Password] Request received for:', email)
-    console.log('🔧 [Config] EMAIL_USER:', process.env.EMAIL_USER ? '✅ Set' : '❌ Not set')
-    console.log('🔧 [Config] EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ Set' : '❌ Not set')
-
     if (!email) {
         return res.status(400).json({ message: message.email_required })
     }
@@ -23,30 +19,19 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ email })
         if (!user) {
-            console.log('❌ [User] Not found:', email)
             return res.status(404).json({ message: message.email_not_found })
         }
-
-        console.log('✅ [User] Found:', user.email)
 
         const { token, expiry } = generateResetToken(15)
         user.resetToken = token
         user.resetTokenExpiry = expiry
         await user.save()
 
-        console.log('✅ [Token] Generated and saved')
-
         const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`
-        console.log('🔗 [Reset Link]:', resetLink)
-
-        console.log('📤 [Email] Attempting to send...')
         await sendResetPasswordEmail(user.email, user.fullName || "User", resetLink)
-        console.log('✅ [Email] Sent successfully!')
 
         return res.json({ message: message.reset_success })
-    } catch (err: any) {
-        console.error('❌ [Error] Details:', err.message)
-        console.error('❌ [Error] Stack:', err.stack)
+    } catch (err) {
         return res.status(500).json({ message: message.reset_failed })
     }
 })
@@ -74,8 +59,7 @@ router.post('/reset-password', async (req: Request, res: Response) => {
         await user.save()
 
         return res.json({ message: message.reset_password_success })
-    } catch (err: any) {
-        console.error('❌ [Reset Password Error]:', err.message)
+    } catch (err) {
         return res.status(500).json({ message: message.reset_password_failed })
     }
 })
