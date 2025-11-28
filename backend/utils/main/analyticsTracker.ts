@@ -11,6 +11,13 @@ interface IPApiResponse {
     reason?: string
 }
 
+const getWIBDate = () => {
+    const now = new Date()
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000
+    const wib = new Date(utc + 7 * 60 * 60 * 1000)
+    return wib.toISOString().split('T')[0]
+}
+
 const ipCache = new Map<string, { data: IPApiResponse; timestamp: number }>()
 const CACHE_DURATION = 24 * 60 * 60 * 1000
 
@@ -51,7 +58,6 @@ const normalize = (val: string): string => {
 const parseReferrer = (ref: string): string => {
     try {
         const hostname = new URL(ref).hostname.replace(/^www\./, '').toLowerCase()
-
         const domainMap: Record<string, string> = {
             'instagram.com': 'Instagram',
             'facebook.com': 'Facebook',
@@ -74,10 +80,7 @@ const parseReferrer = (ref: string): string => {
             'google.co.id': 'Google',
             'mail.google.com': 'Gmail'
         }
-
-        if (domainMap[hostname]) return domainMap[hostname]
-
-        return 'Other'
+        return domainMap[hostname] || 'Other'
     } catch {
         return 'Other'
     }
@@ -86,13 +89,10 @@ const parseReferrer = (ref: string): string => {
 const getReferrerSource = (req: Request): string => {
     const param = req.query['ref'] || req.query['source'] || req.query['utm_source']
     if (typeof param === 'string') return normalize(param)
-
     const uaSource = detectUserAgentSource(req.get('user-agent') || '')
     if (uaSource !== 'Other') return uaSource
-
     const header = req.get('referer') || req.get('referrer')
     if (header) return parseReferrer(header)
-
     return 'Other'
 }
 
@@ -118,20 +118,14 @@ const getGeoData = async (ip: string) => {
     try {
         const response = await axios.get<IPApiResponse>(`https://ipapi.co/${usedIP}/json/`, { timeout: 3000 })
         const data = response.data
-
         ipCache.set(usedIP, { data, timestamp: Date.now() })
-
         return {
             city: data.region || 'Unknown',
             country: data.country_name || 'Unknown',
             usedIP
         }
     } catch {
-        return {
-            city: 'Unknown',
-            country: 'Unknown',
-            usedIP
-        }
+        return { city: 'Unknown', country: 'Unknown', usedIP }
     }
 }
 
@@ -170,7 +164,7 @@ const updateReferrerStats = (analytics: any, referrer: string, isNewUser: boolea
 
 export const trackAnalytics = async (req: Request, linkId: string | unknown): Promise<void> => {
     const linkIdString = String(linkId)
-    const today = new Date().toISOString().split('T')[0]
+    const today = getWIBDate()
 
     const ip = getClientIP(req)
     const geo = await getGeoData(ip)
