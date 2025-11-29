@@ -10,6 +10,7 @@ import AnalyticsCharts from './analytics/AnalyticsCharts'
 import { AnalyticsData, AnalyticsView, ChartType } from '@/types/analytics'
 import { LinkCard } from "./LinkItem"
 import { API_URL } from '@/lib/api'
+import { Monitor } from 'lucide-react'
 
 interface LinkAnalyticsModeProps {
     link: LinkCard
@@ -98,7 +99,7 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
         <div className="bg-white/15 backdrop-blur-xl border border-white/30 rounded-2xl shadow-7">
             <AnalyticsHeader onClose={onClose} onRefresh={handleRefresh} refreshing={refreshing} />
 
-            <div className="p-3 sm:p-5 space-y-6">
+            <div className="p-3 sm:p-5 space-y-3 lg:space-y-6">
                 <AnalyticsStats
                     link={link}
                     analytics={analytics}
@@ -106,9 +107,10 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
                     onViewChange={setView}
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-6">
+                {/* Desktop: Full Analytics Charts (≥1024px) */}
+                <div className="hidden lg:grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-6">
                     <div className="lg:col-span-3 sm:space-y-4">
-                        <div className="rounded-xl  pt-4 sm:pt-6 lg:pt-0">
+                        <div className="rounded-xl pt-4 sm:pt-6 lg:pt-0">
                             <h3 className="text-sm font-bold text-[#0054A5] mb-3 uppercase tracking-wide">Chart Type</h3>
                             <AnalyticsChartSelector
                                 chartType={chartType}
@@ -137,6 +139,25 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
                             startDate={startDate}
                             endDate={endDate}
                         />
+                    </div>
+                </div>
+
+                {/* Mobile: Minimalist Desktop Only Message (<1024px) */}
+                <div className="lg:hidden">
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border-2 border-dashed border-blue-200">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-[#0054A5]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <Monitor className="w-5 h-5 text-[#0054A5]" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                                    Charts available on desktop
+                                </h3>
+                                <p className="text-xs text-gray-600">
+                                    Use a computer or laptop for detailed charts and visualizations
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
