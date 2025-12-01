@@ -1,22 +1,30 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export default async function sendEmail(
     to: string,
     subject: string,
     html: string
-): Promise<void> {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-        },
-    })
-
-    await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to,
-        subject,
-        html,
-    })
+) {
+    try {
+        const data = await resend.emails.send({
+            from: 'bncc.in <onboarding@resend.dev>',
+            to,
+            subject,
+            html,
+            tags: [
+                {
+                    name: 'category',
+                    value: 'password_reset'
+                }
+            ],
+            headers: {
+                'X-Entity-Ref-ID': '123456789'
+            }
+        })
+        return data
+    } catch (error) {
+        throw error
+    }
 }
