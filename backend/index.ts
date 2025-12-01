@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 5000
+const PORT = 5000
 
 import './config/passport'
 
@@ -65,4 +65,4 @@ app.use('/api/qrs', qrRoutes)
 app.use('/api/redirect', redirectRoutes)
 app.use('/api/analytics', analyticsRoutes)
 
-app.listen(PORT, () => console.log(`Server running → http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`server dah jalan - http://localhost:${PORT}`))

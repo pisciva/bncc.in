@@ -2,9 +2,7 @@ import passport from 'passport'
 import { Strategy as GitHubStrategy, Profile } from 'passport-github2'
 import { User } from '../models/user'
 
-const callbackURL = process.env.NODE_ENV === 'production'
-    ? `${process.env.BACKEND_URL}/auth/github/callback`
-    : 'http://localhost:5000/auth/github/callback'
+const callbackURL = `${process.env.BACKEND_URL}/auth/github/callback` || 'http://localhost:5000/auth/github/callback'
 
 passport.use(
     new GitHubStrategy(

@@ -16,23 +16,11 @@ router.get("/google/callback",
         session: false 
     }),
     (req, res) => {
-        if (!req.user) {
-            console.log("No user found in req.user");
-            return res.redirect(`${FRONTEND_URL}/login?error=no_user`);
-        }
-
-        console.log("User from Google:", req.user);
-
-        if (!process.env.JWT_SECRET) {
-            console.log("JWT_SECRET missing");
-            return res.status(500).send("Server misconfigured");
-        }
-
         const user = req.user as { _id: string; userId: string }
         const token = jwt.sign(
             { id: user._id, userId: user.userId },
             process.env.JWT_SECRET as string,
-            { expiresIn: "7d" }
+            { expiresIn: "3d" }
         )
         res.redirect(`${FRONTEND_URL}?token=${token}`)
     }

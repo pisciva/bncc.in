@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express'
 import { Link } from '../../models/link'
-import { Analytics } from '../../models/analytics'
 import authMiddleware from '../../middleware/authMiddleware'
 import { formatDefaultName } from '../../utils/main/formatDefaultName'
 
@@ -97,32 +96,6 @@ router.put('/:id', authMiddleware, async (req: Request, res: Response) => {
         await link.save()
         res.status(200).json({ message: 'Link updated successfully', link })
     } catch (error) {
-        res.status(500).json({ error: 'Server error' })
-    }
-})
-
-// delete link (CASCADE DELETE ANALYTICS)
-router.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params
-        const userId = (req as any).user ? (req as any).user.userId : null
-
-        if (!userId) return res.status(401).json({ error: 'Unauthorized' })
-
-        const link = await Link.findOne({ _id: id, userId })
-        if (!link) return res.status(404).json({ error: 'Link not found' })
-
-        // Delete analytics associated with this link
-        await Analytics.deleteOne({ linkId: id })
-        console.log(`✅ Analytics deleted for link: ${id}`)
-
-        // Delete the link
-        await Link.deleteOne({ _id: id })
-        console.log(`✅ Link deleted: ${id}`)
-
-        res.status(200).json({ message: 'Link and its analytics deleted successfully' })
-    } catch (error: any) {
-        console.error('❌ Delete error:', error.message)
         res.status(500).json({ error: 'Server error' })
     }
 })

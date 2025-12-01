@@ -6,9 +6,7 @@ export const connectDB = async () => {
         if (!uri) throw new Error("MONGO_URI not defined")
 
         await mongoose.connect(uri)
-        console.log("✅ MongoDB connected")
     } catch (err) {
-        console.error("❌ MongoDB error:", err)
         process.exit(1)
     }
 }

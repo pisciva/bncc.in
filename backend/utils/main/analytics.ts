@@ -23,7 +23,6 @@ interface AnalyticsData {
 
 export const getUserId = (user: any): string | null => {
     if (!user) return null
-    
     return user.userId || user.id || user._doc?.userId || user._doc?.id || null
 }
 
@@ -127,7 +126,6 @@ const processReferrerStats = (byReferrer: any): Record<string, StatsData> => {
 
 export const transformAnalyticsData = (analytics: any): AnalyticsData => {
     const analyticsObj = analytics.toObject ? analytics.toObject() : analytics
-    
     const byDate = processDateStats(analyticsObj.byDate)
     const { countries, cities } = processRegionStats(analyticsObj.byRegion)
     const byReferrer = processReferrerStats(analyticsObj.byReferrer)

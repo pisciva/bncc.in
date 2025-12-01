@@ -7,20 +7,16 @@ import { hashPassword } from '../../utils/auth/hashPassword'
 
 const router = express.Router()
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000'
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 router.post('/forgot-password', async (req: Request, res: Response) => {
     const { email } = req.body
 
-    if (!email) {
-        return res.status(400).json({ message: message.email_required })
-    }
+    if (!email) return res.status(400).json({ message: message.email_required })
 
     try {
         const user = await User.findOne({ email })
-        if (!user) {
-            return res.status(404).json({ message: message.email_not_found })
-        }
+        if (!user) return res.status(404).json({ message: message.email_not_found })
 
         const { token, expiry } = generateResetToken(15)
         user.resetToken = token
@@ -48,10 +44,7 @@ router.post('/reset-password', async (req: Request, res: Response) => {
             resetToken: token,
             resetTokenExpiry: { $gt: new Date() }
         })
-
-        if (!user) {
-            return res.status(400).json({ message: message.token_expired })
-        }
+        if (!user) return res.status(400).json({ message: message.token_expired })
 
         user.password = await hashPassword(password)
         user.resetToken = null

@@ -46,6 +46,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
 router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.user ? req.user.userId : null
+        
         if (!userId) return res.status(401).json({ error: 'Unauthorized' })
 
         const qrs = await QR.find({ userId }).sort({ createdAt: -1 })

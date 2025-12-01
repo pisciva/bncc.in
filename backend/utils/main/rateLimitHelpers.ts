@@ -24,22 +24,15 @@ const max_attempts = 5
 const block_duration = 3 * 60 * 60 * 1000
 const cleanup_duration = 24 * 60 * 60 * 1000 
 
+// get ip address
 export const getClientIP = (req: Request): string => {
     const xForwardedFor = req.headers['x-forwarded-for']
     const xRealIP = req.headers['x-real-ip']
     const cfConnectingIP = req.headers['cf-connecting-ip']
     
-    if (typeof xForwardedFor === 'string') {
-        return xForwardedFor.split(',')[0].trim()
-    }
-    
-    if (typeof xRealIP === 'string') {
-        return xRealIP
-    }
-    
-    if (typeof cfConnectingIP === 'string') {
-        return cfConnectingIP
-    }
+    if (typeof xForwardedFor === 'string') return xForwardedFor.split(',')[0].trim()
+    if (typeof xRealIP === 'string') return xRealIP
+    if (typeof cfConnectingIP === 'string') return cfConnectingIP
     
     return req.ip || req.socket.remoteAddress || ''
 }
@@ -49,6 +42,7 @@ export const getClientId = (req: Request, customUrl: string): string => {
     return `${customUrl}_${ip}`
 }
 
+// create user hash
 export const getUserIdentifier = (req: Request, simulatedIP?: string): string => {
     const ip = simulatedIP || getClientIP(req)
     const userAgent = req.get('user-agent') || ''
@@ -58,9 +52,7 @@ export const getUserIdentifier = (req: Request, simulatedIP?: string): string =>
 export const isBlocked = (clientId: string): BlockStatus => {
     const data = attemptStore.get(clientId)
 
-    if (!data) {
-        return { blocked: false }
-    }
+    if (!data) return { blocked: false }
 
     if (data.blockedUntil && Date.now() >= data.blockedUntil) {
         attemptStore.delete(clientId)

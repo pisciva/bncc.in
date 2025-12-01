@@ -2,9 +2,7 @@ import passport from 'passport'
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20'
 import { User } from '../models/user'
 
-const callbackURL = process.env.NODE_ENV === 'production'
-    ? `${process.env.BACKEND_URL}/auth/google/callback`
-    : 'http://localhost:5000/auth/google/callback'
+const callbackURL = `${process.env.BACKEND_URL}/auth/google/callback` || 'http://localhost:5000/auth/google/callback'
 
 passport.use(
     new GoogleStrategy(

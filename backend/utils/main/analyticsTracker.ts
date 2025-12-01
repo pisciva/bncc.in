@@ -11,6 +11,7 @@ interface IPApiResponse {
     reason?: string
 }
 
+// get time date
 const getWIBDate = () => {
     const now = new Date()
     const utc = now.getTime() + now.getTimezoneOffset() * 60000
@@ -55,6 +56,7 @@ const normalize = (val: string): string => {
     return ID_POPULAR_SOURCES[v] || 'Other'
 }
 
+// parse referrer
 const parseReferrer = (ref: string): string => {
     try {
         const hostname = new URL(ref).hostname.replace(/^www\./, '').toLowerCase()
@@ -86,6 +88,7 @@ const parseReferrer = (ref: string): string => {
     }
 }
 
+// get traffic
 const getReferrerSource = (req: Request): string => {
     const param = req.query['ref'] || req.query['source'] || req.query['utm_source']
     if (typeof param === 'string') return normalize(param)
@@ -96,15 +99,17 @@ const getReferrerSource = (req: Request): string => {
     return 'Other'
 }
 
+// localhost
 const isLocalhostIP = (ip: string): boolean => {
     return ip === '::1' || ip === '127.0.0.1' || ip.startsWith('::ffff:127') || ip === 'unknown'
 }
 
+// fetch loc data
 const getGeoData = async (ip: string) => {
     let usedIP = ip
-    if (isLocalhostIP(ip) && process.env.NODE_ENV === 'development') {
-        usedIP = '217.13.124.105'
-    }
+    // if (isLocalhostIP(ip) && process.env.NODE_ENV === 'development') {
+        // usedIP = '217.13.124.105' // dummy ip
+    // }
 
     const cached = ipCache.get(usedIP)
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -129,6 +134,7 @@ const getGeoData = async (ip: string) => {
     }
 }
 
+// update daily 
 const updateDateStats = (analytics: any, today: string, isNewUser: boolean): void => {
     const dateStats = analytics.byDate.get(today) || { clicks: 0, uniqueUsers: 0 }
     dateStats.clicks++
@@ -136,6 +142,7 @@ const updateDateStats = (analytics: any, today: string, isNewUser: boolean): voi
     analytics.byDate.set(today, dateStats)
 }
 
+// update loc
 const updateRegionStats = (analytics: any, country: string, city: string, isNewUser: boolean): void => {
     const regionStats = analytics.byRegion.get(country) || {
         country,
@@ -155,6 +162,7 @@ const updateRegionStats = (analytics: any, country: string, city: string, isNewU
     analytics.byRegion.set(country, regionStats)
 }
 
+// update referrer 
 const updateReferrerStats = (analytics: any, referrer: string, isNewUser: boolean): void => {
     const stats = analytics.byReferrer.get(referrer) || { clicks: 0, uniqueUsers: 0 }
     stats.clicks++
@@ -162,6 +170,7 @@ const updateReferrerStats = (analytics: any, referrer: string, isNewUser: boolea
     analytics.byReferrer.set(referrer, stats)
 }
 
+// track link 
 export const trackAnalytics = async (req: Request, linkId: string | unknown): Promise<void> => {
     const linkIdString = String(linkId)
     const today = getWIBDate()

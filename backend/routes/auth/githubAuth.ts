@@ -20,7 +20,7 @@ router.get("/github/callback",
         const token = jwt.sign(
             { id: user._id, userId: user.userId },
             process.env.JWT_SECRET as string,
-            { expiresIn: "7d" }
+            { expiresIn: "3d" }
         )
         res.redirect(`${FRONTEND_URL}?token=${token}`)
     }
