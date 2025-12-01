@@ -13,7 +13,7 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
     loading = false 
 }) => {
     return (
-        <button className="w-full mt-6 py-4 bg-gradient-to-r from-[#0054A5] to-[#2788CE] hover:from-[#003d7a] hover:to-[#1e6ba8] text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed group"
+        <button className="cursor-pointer w-full mt-6 py-4 bg-gradient-to-r from-[#0054A5] to-[#2788CE] hover:from-[#003d7a] hover:to-[#1e6ba8] text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed group"
             onClick={onLoadMore}
             disabled={loading}
         >
@@ -25,7 +25,7 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
             ) : (
                 <>
                     <span>Load More ({remainingCount} remaining)</span>
-                    <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
+                    <ChevronDown className="w-5 h-5" />
                 </>
             )}
         </button>
