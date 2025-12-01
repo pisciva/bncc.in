@@ -13,15 +13,6 @@ export default async function sendEmail(
             to,
             subject,
             html,
-            tags: [
-                {
-                    name: 'category',
-                    value: 'password_reset'
-                }
-            ],
-            headers: {
-                'X-Entity-Ref-ID': '123456789'
-            }
         })
         return data
     } catch (error) {
