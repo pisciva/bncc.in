@@ -1,21 +1,22 @@
-import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import nodemailer from 'nodemailer'
 
 export default async function sendEmail(
     to: string,
     subject: string,
     html: string
-) {
-    try {
-        const data = await resend.emails.send({
-            from: 'bncc.in',
-            to,
-            subject,
-            html,
-        })
-        return data
-    } catch (error) {
-        throw error
-    }
+): Promise<void> {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    })
+
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to,
+        subject,
+        html,
+    })
 }
