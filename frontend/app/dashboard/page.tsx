@@ -1,8 +1,7 @@
 'use client'
 
-import React, { Suspense, useEffect, useState, useRef } from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
-import { useSearchParams, useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
 import Links from '@/components/dash/link/Link'
 import QRs from '@/components/dash/qr/QR'
@@ -12,26 +11,27 @@ import DashboardTabs from '@/components/dash/layout/DashboardTabs'
 import DashboardSearch from '@/components/dash/layout/DashboardSearch'
 import { useDashboardData } from '@/hooks/useDashboardData'
 import { useFilteredLinks, useFilteredQrs } from '@/hooks/useDashboardFilters'
-import type { FilterState } from '@/types/filters'
+import { useDashboardState } from '@/hooks/useDashboardState'
 import { getActiveFilterCount, handleLogout } from '@/utils/dashboardHelpers'
-import { TabType } from '@/types/dashboard'
 
 function DashboardContent() {
     const { links, qrs, loading, error } = useDashboardData()
-    const [activeTab, setActiveTab] = useState<TabType>("links")
-    const [searchQuery, setSearchQuery] = useState("")
-    const [showFilterPopup, setShowFilterPopup] = useState(false)
-    const [toast, setToast] = useState<{ message: string; type?: "success" | "error" | "warning" } | null>(null)
-    const [filters, setFilters] = useState<FilterState>({
-        dateFilter: 'all',
-        customDateRange: { start: null, end: null },
-        status: [],
-        access: [],
-        showLogo: []
-    })
-    const filterButtonRef = useRef<HTMLDivElement>(null!)
-    const searchParams = useSearchParams()
-    const router = useRouter()
+    const {
+        activeTab,
+        searchQuery,
+        showFilterPopup,
+        toast,
+        filters,
+        filterButtonRef,
+        setSearchQuery,
+        setToast,
+        setFilters,
+        handleTabChange,
+        handleToggleFilter,
+        handleClearSearch,
+        handleClearFilters
+    } = useDashboardState()
+
     const filteredLinks = useFilteredLinks(links, searchQuery, filters)
     const filteredQrs = useFilteredQrs(qrs, searchQuery, filters)
 
@@ -39,53 +39,6 @@ function DashboardContent() {
         { id: "links", label: "Links", count: filteredLinks.length },
         { id: "qrs", label: "QR Codes", count: filteredQrs.length },
     ]
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                filterButtonRef.current &&
-                !filterButtonRef.current.contains(event.target as Node)
-            ) {
-                setShowFilterPopup(false)
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
-
-    useEffect(() => {
-        const mode = searchParams.get('mode')
-        if (mode === 'qr') {
-            setActiveTab('qrs')
-            router.replace('/dashboard', { scroll: false })
-        } else if (mode === 'link') {
-            setActiveTab('links')
-            router.replace('/dashboard', { scroll: false })
-        }
-    }, [searchParams, router])
-
-    const handleTabChange = (tab: TabType) => {
-        setActiveTab(tab)
-        setSearchQuery("")
-    }
-
-    const handleToggleFilter = () => {
-        setShowFilterPopup(prev => !prev)
-    }
-
-    const handleClearSearch = () => {
-        setSearchQuery("")
-    }
-
-    const handleClearFilters = () => {
-        setFilters({
-            dateFilter: 'all',
-            customDateRange: { start: null, end: null },
-            status: [],
-            access: [],
-            showLogo: []
-        })
-    }
 
     const activeFilterCount = getActiveFilterCount(filters)
     const hasActiveFilters = activeFilterCount > 0

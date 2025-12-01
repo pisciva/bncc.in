@@ -14,8 +14,7 @@ export default function ToggleMore({
     setShow,
 }: ToggleMoreProps) {
     return (
-        <div
-            className="w-full flex items-center justify-center cursor-pointer select-none mt-1 group"
+        <div className="w-full flex items-center justify-center cursor-pointer select-none mt-1 group"
             onClick={() => setShow(!show)}
         >
             <svg className={`w-4 h-4 mr-2 transform transition-transform duration-300 origin-center ${show ? 'rotate-180' : ''}`} viewBox="0 0 24 24" stroke="#0054A5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">

@@ -61,10 +61,9 @@ export default function ToggleMoreSetting({
             <div className="relative flex items-center gap-3">
                 {infoText && (
                     <div className="relative" ref={infoPopupRef}>
-                        <button
+                        <button className="w-5 h-5 rounded-full bg-[#0054A5]/10 hover:bg-[#0054A5]/20 flex items-center justify-center cursor-pointer transition-all duration-200 group"
                             type="button"
                             onClick={handleInfoClick}
-                            className="w-5 h-5 rounded-full bg-[#0054A5]/10 hover:bg-[#0054A5]/20 flex items-center justify-center cursor-pointer transition-all duration-200 group"
                             title="More information"
                         >
                             <span className="text-[#0054A5] text-xs font-bold group-hover:scale-110 transition-transform">i</span>
@@ -82,10 +81,9 @@ export default function ToggleMoreSetting({
                 )}
 
                 <div className="relative">
-                    <button
+                    <button className={`w-12 rounded-full p-1 cursor-pointer transition-transform duration-200 ${enabled ? 'bg-[#0054A5]' : 'bg-[#D7E0E8]'} ${shake ? 'animate-shake' : ''}`}
                         type="button"
                         onClick={onToggle}
-                        className={`w-12 rounded-full p-1 cursor-pointer transition-transform duration-200 ${enabled ? 'bg-[#0054A5]' : 'bg-[#D7E0E8]'} ${shake ? 'animate-shake' : ''}`}
                     >
                         <div className={`bg-white w-4 h-4 rounded-full shadow-md transition ${enabled ? 'translate-x-6' : ''}`}/>
                     </button>

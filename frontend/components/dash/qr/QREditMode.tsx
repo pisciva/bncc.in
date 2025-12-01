@@ -46,9 +46,8 @@ const QREditMode: React.FC<QREditModeProps> = ({
                     <Edit className="w-4 h-4" />
                     Edit QR Code
                 </div>
-                <button
+                <button className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300"
                     onClick={onCancel}
-                    className="text-white hover:bg-white/20 rounded-full p-1 transition-all duration-300"
                 >
                     <X className="w-5 h-5 cursor-pointer" />
                 </button>
@@ -69,11 +68,10 @@ const QREditMode: React.FC<QREditModeProps> = ({
 
                     <div className="w-full">
                         <label className="font-semibold text-sm lg:text-base text-[#0054A5] block mb-2">Original Link</label>
-                        <input
+                        <input className="w-full px-4 py-2.5 rounded-xl bg-white/5 backdrop-blur-xl border border-[#D3D3D3] shadow-5 text-[#64748B] font-medium placeholder:text-gray-400 cursor-not-allowed opacity-60"
                             type="text"
                             value={originalUrl}
                             disabled
-                            className="w-full px-4 py-2.5 rounded-xl bg-white/5 backdrop-blur-xl border border-[#D3D3D3] shadow-5 text-[#64748B] font-medium placeholder:text-gray-400 cursor-not-allowed opacity-60"
                         />
                         <p className="text-xs text-[#64748B] mt-2 italic">Original link cannot be edited</p>
                     </div>
@@ -101,16 +99,14 @@ const QREditMode: React.FC<QREditModeProps> = ({
                 </div>
 
                 <div className="flex gap-2 sm:gap-3 ml-auto mt-4 lg:mt-0">
-                    <button
+                    <button className="cursor-pointer flex-1 sm:flex-none px-4 sm:px-6 py-2.5 bg-white/10 backdrop-blur-xl border border-[#D3D3D3] rounded-full text-[#0054A5] font-semibold hover:bg-white/20 transition-all duration-300"
                         onClick={onCancel}
-                        className="cursor-pointer flex-1 sm:flex-none px-4 sm:px-6 py-2.5 bg-white/10 backdrop-blur-xl border border-[#D3D3D3] rounded-full text-[#0054A5] font-semibold hover:bg-white/20 transition-all duration-300"
                     >
                         Cancel
                     </button>
-                    <button
+                    <button className="cursor-pointer flex-1 sm:flex-none px-4 sm:px-6 py-2.5 bg-gradient-to-r from-[#0054A5] to-[#003d7a] rounded-full text-white font-semibold hover:shadow-3 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
                         onClick={onSave}
                         disabled={saving}
-                        className="cursor-pointer flex-1 sm:flex-none px-4 sm:px-6 py-2.5 bg-gradient-to-r from-[#0054A5] to-[#003d7a] rounded-full text-white font-semibold hover:shadow-3 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                         <Save className="w-4 h-4" />
                         {saving ? "Saving..." : "Save"}

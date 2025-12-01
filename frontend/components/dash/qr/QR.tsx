@@ -65,11 +65,9 @@ const QRs: React.FC<QRsProps> = ({
         setIsLoadingMore(false)
     }
 
-    // Determine empty state type
     const isTrulyEmpty = initialQrs.length === 0 && !searchQuery && !hasActiveFilters
     const isFilteredEmpty = qrs.length === 0 && (searchQuery || hasActiveFilters)
 
-    // No data at all
     if (isTrulyEmpty) {
         return (
             <EmptyState
@@ -79,7 +77,6 @@ const QRs: React.FC<QRsProps> = ({
         )
     }
 
-    // No results from search/filter
     if (isFilteredEmpty) {
         return (
             <EmptyState
@@ -93,7 +90,6 @@ const QRs: React.FC<QRsProps> = ({
         )
     }
 
-    // Has data to display
     return (
         <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">

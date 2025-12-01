@@ -34,26 +34,14 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
         }
     }
 
-    /**
-     * LOGIC BARU (NO DISABLE)
-     * - Klik 1 → start
-     * - Klik 2 → end
-     * - Jika klik < start → auto-swap → start = klik, end = start sebelumnya
-     * - Jika range sudah lengkap dan klik lagi:
-     *      - klik < start → start = klik
-     *      - klik > end → end = klik
-     *      - klik antara → start = klik
-     */
     const handleDateSelect = (day: number) => {
         const selected = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
 
-        // Jika belum ada start → set start
         if (!startDate) {
             onStartDateChange(selected)
             return
         }
 
-        // Jika belum ada end → pilih end (dengan auto-swap)
         if (startDate && !endDate) {
             if (selected < startDate) {
                 onStartDateChange(selected)
@@ -64,25 +52,20 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
             return
         }
 
-        // RANGE SUDAH LENGKAP → tentukan mana yang lebih dekat ke tanggal yang dipilih
         if (startDate && endDate) {
             const distToStart = Math.abs(selected.getTime() - startDate.getTime())
             const distToEnd = Math.abs(selected.getTime() - endDate.getTime())
 
             if (distToStart < distToEnd) {
-                // Lebih dekat ke start → ubah start
                 if (selected <= endDate) {
                     onStartDateChange(selected)
                 } else {
-                    // Kalau klik di luar range kanan → jadikan end baru
                     onEndDateChange(selected)
                 }
             } else {
-                // Lebih dekat ke end → ubah end
                 if (selected >= startDate) {
                     onEndDateChange(selected)
                 } else {
-                    // Kalau klik di luar range kiri → jadikan start baru
                     onStartDateChange(selected)
                 }
             }
@@ -117,7 +100,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     return (
         <div className={`w-80 bg-white border-2 border-white/50 rounded-2xl shadow-1 p-5 ${className}`}>
 
-            {/* HEADER */}
             <div className="flex items-center justify-between mb-4">
                 <button
                     onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))}
@@ -138,7 +120,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 </button>
             </div>
 
-            {/* DAYS HEADER */}
             <div className="grid grid-cols-7 gap-1 mb-2">
                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
                     <div key={d} className="text-center text-xs font-bold text-[#0054A5] py-2">
@@ -147,7 +128,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 ))}
             </div>
 
-            {/* CALENDAR GRID */}
             <div className="grid grid-cols-7 gap-1">
                 {emptyDays.map((_, idx) => <div key={idx} />)}
 
@@ -181,9 +161,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
             </div>
 
             {endDate && (
-                <button
+                <button className="cursor-pointer mt-4 w-full py-2 bg-[#0054A5] text-white rounded-lg font-semibold hover:bg-[#003d7a] transition-all"
                     onClick={onClose}
-                    className="cursor-pointer mt-4 w-full py-2 bg-[#0054A5] text-white rounded-lg font-semibold hover:bg-[#003d7a] transition-all"
                 >
                     Apply
                 </button>

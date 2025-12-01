@@ -1,154 +1,33 @@
 "use client"
 
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState, Suspense } from 'react'
+import { useParams, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { Lock, AlertCircle, Clock } from 'lucide-react'
 import StatusCard from '@/components/[customUrl]/StatusCard'
 import CodeInput from '@/components/[customUrl]/CodeInput'
 import Link from 'next/link'
-import { redirect } from '@/lib/api'
+import { useRedirectLogic } from '@/hooks/useRedirectLogic'
+import { useBlockTimer } from '@/hooks/useBlockTimer'
 
 function RedirectPageContent() {
     const params = useParams()
     const searchParams = useSearchParams()
-    const router = useRouter()
     const customUrl = params.customUrl as string
     const providedCode = searchParams.get('code')
-    const [status, setStatus] = useState<'loading' | 'expired' | 'protected' | 'not-found' | 'blocked'>('loading')
-    const [code, setCode] = useState<string[]>(Array(6).fill(''))
-    const [error, setError] = useState('')
-    const [redirecting, setRedirecting] = useState(false)
-    const [attempts, setAttempts] = useState(0)
-    const [blockUntil, setBlockUntil] = useState<number | null>(null)
-    const [remainingTime, setRemainingTime] = useState('')
-    const [linkData, setLinkData] = useState<{
-        originalUrl: string
-        requiresCode: boolean
-        title?: string
-        shortenLink?: string
-    } | null>(null)
 
-    const formatTime = (ms: number) => {
-        const hours = Math.floor(ms / (1000 * 60 * 60))
-        const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((ms % (1000 * 60)) / 1000)
-        return `${hours}h ${minutes}m ${seconds}s`
-    }
+    const {
+        status,
+        code,
+        setCode,
+        error,
+        redirecting,
+        attempts,
+        blockUntil,
+        linkData,
+        handleSubmitCode
+    } = useRedirectLogic(customUrl, providedCode)
 
-    useEffect(() => {
-        if (status !== 'blocked' || !blockUntil) return
-
-        const interval = setInterval(() => {
-            const diff = blockUntil - Date.now()
-            if (diff <= 0) {
-                window.location.reload()
-            } else {
-                setRemainingTime(formatTime(diff))
-            }
-        }, 1000)
-
-        return () => clearInterval(interval)
-    }, [status, blockUntil])
-
-    useEffect(() => {
-        if (status === 'protected') document.getElementById('code-0')?.focus()
-    }, [status])
-
-    const fixUrl = (url: string) => {
-        if (!url.startsWith('http://') && !url.startsWith('https://')) return 'https://' + url
-        return url
-    }
-
-    const handleResponse = async (response: Response) => {
-        const data = await response.json()
-
-        if (!response.ok) {
-            const statusHandlers: Record<number, () => void> = {
-                404: () => setStatus('not-found'),
-                410: () => setStatus('expired'),
-                429: () => {
-                    setStatus('blocked')
-                    setBlockUntil(data.blockedUntil)
-                    setAttempts(data.attempts || 5)
-                },
-                401: () => {
-                    setStatus('protected')
-                    setAttempts(data.attempts || 0)
-                    setLinkData({
-                        originalUrl: '',
-                        requiresCode: true,
-                        title: data.title,
-                        shortenLink: data.shortenLink
-                    })
-                }
-            }
-
-            const handler = statusHandlers[response.status]
-            if (handler) handler()
-            return
-        }
-
-        if (data.redirect) {
-            window.location.href = fixUrl(data.originalUrl)
-        }
-    }
-
-    useEffect(() => {
-        const checkAndRedirect = async () => {
-            try {
-                const response = await redirect.check(customUrl, providedCode || undefined)
-                await handleResponse(response)
-            } catch {
-                setStatus('not-found')
-            }
-        }
-
-        checkAndRedirect()
-    }, [customUrl, providedCode])
-
-    const handleSubmitCode = async () => {
-        const fullCode = code.join('')
-
-        if (fullCode.length !== 6) {
-            setError('Please enter all 6 digits')
-            return
-        }
-
-        setRedirecting(true)
-        setError('')
-
-        try {
-            const response = await redirect.check(customUrl, fullCode)
-            const data = await response.json()
-
-            if (!response.ok) {
-                if (response.status === 429) {
-                    setStatus('blocked')
-                    setBlockUntil(data.blockedUntil)
-                    setAttempts(data.attempts || 5)
-                    setRedirecting(false)
-                    return
-                }
-
-                if (response.status === 401) {
-                    setAttempts(data.attempts || 0)
-                    const attemptsLeft = data.attemptsLeft || (5 - (data.attempts || 0))
-                    setError(`Incorrect code. ${attemptsLeft} attempts remaining.`)
-                    setCode(Array(6).fill(''))
-                    setRedirecting(false)
-                    setTimeout(() => document.getElementById('code-0')?.focus(), 100)
-                    return
-                }
-            }
-
-            if (data.redirect) window.location.href = fixUrl(data.originalUrl)
-        } catch {
-            setError('Something went wrong. Please try again.')
-            setCode(Array(6).fill(''))
-            setRedirecting(false)
-            setTimeout(() => document.getElementById('code-0')?.focus(), 100)
-        }
-    }
+    const remainingTime = useBlockTimer(blockUntil, status === 'blocked')
 
     if (status === 'loading') {
         return (
@@ -241,10 +120,10 @@ function RedirectPageContent() {
                         )}
                         <button
                             onClick={handleSubmitCode}
-                            disabled={redirecting || code.some(c => !c)}
+                            disabled={redirecting || code.some((c: string) => !c)}
                             className={`w-full h-12 sm:h-14 font-semibold text-base sm:text-lg rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${redirecting
                                 ? 'bg-yellow-500/80 text-white cursor-not-allowed'
-                                : code.some(c => !c)
+                                : code.some((c: string) => !c)
                                     ? 'bg-gray-400/80 text-white cursor-not-allowed'
                                     : 'bg-gradient-to-r from-[#0054A5] to-[#003d7a] text-white hover:shadow-3 cursor-pointer'}`}>
                             {redirecting ? (

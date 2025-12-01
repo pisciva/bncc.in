@@ -31,10 +31,9 @@ export default function QrCustomizer({
                     <h2 className="text-[#64748B] text-sm font-semibold mb-3">QR Code Color</h2>
                     <div className="flex flex-row items-center gap-3">
                         <div className="relative flex">
-                            <button
+                            <button className="w-12 h-12 rounded-xl border-white/50 shadow-lg cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl relative overflow-hidden group"
                                 type="button"
                                 onClick={() => setIsPickerOpen(!isPickerOpen)}
-                                className="w-12 h-12 rounded-xl border-white/50 shadow-lg cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl relative overflow-hidden group"
                                 style={{ backgroundColor: qrColor }}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -72,12 +71,10 @@ export default function QrCustomizer({
 
                 <div className="flex justify-between items-center">
                     <h2 className="text-[#64748B] text-sm font-semibold">Show BNCC Logo</h2>
-                    <button type="button"
+                    <button type="button" className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${showLogo ? 'bg-[#0054A5]' : 'bg-[#D7E0E8]'}`}
                         onClick={() => setShowLogo(!showLogo)}
-                        className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${showLogo ? 'bg-[#0054A5]' : 'bg-[#D7E0E8]'}`}
                     >
-                        <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${showLogo ? 'translate-x-6' : ''}`}
-                        />
+                        <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${showLogo ? 'translate-x-6' : ''}`}/>
                     </button>
                 </div>
             </div>

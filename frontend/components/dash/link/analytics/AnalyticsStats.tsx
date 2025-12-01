@@ -27,15 +27,11 @@ const AnalyticsStats: React.FC<AnalyticsStatsProps> = ({ analytics, view, onView
                 <button
                     onClick={() => onViewChange('clicks')}
                     className={`group cursor-pointer py-2 pl-2 sm:pl-4 pr-4 sm:pr-6 rounded-xl transition-all duration-200 hover:scale-[1.01] ${view === 'clicks'
-                            ? 'border-[#0054A5] border-2 bg-gradient-to-br from-blue-50 to-blue-100/50 shadow-6'
-                            : 'border-black/20 border-1 bg-white/10 hover:border-[#0054A5]/50 hover:bg-white/20 hover:shadow-6'
-                        }`}
+                        ? 'border-[#0054A5] border-2 bg-gradient-to-br from-blue-50 to-blue-100/50 shadow-6' : 'border-black/20 border-1 bg-white/10 hover:border-[#0054A5]/50 hover:bg-white/20 hover:shadow-6'}`}
                 >
                     <div className="flex items-center gap-3">
                         <div className={`p-2.5 rounded-lg transition-all duration-300 ${view === 'clicks'
-                                ? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-18'
-                                : 'bg-blue-500/80 group-hover:bg-blue-500'
-                            }`}>
+                            ? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-18' : 'bg-blue-500/80 group-hover:bg-blue-500'}`}>
                             <TrendingUp className="w-3 h-3 sm:w-5 sm:h-5 text-white" />
                         </div>
                         <div className="text-left flex-1">
@@ -49,15 +45,11 @@ const AnalyticsStats: React.FC<AnalyticsStatsProps> = ({ analytics, view, onView
                 <button
                     onClick={() => onViewChange('users')}
                     className={`group cursor-pointer py-2 pl-2 sm:pl-4 pr-4 sm:pr-6 rounded-xl transition-all duration-300 hover:scale-[1.01] ${view === 'users'
-                            ? 'border-[#10B981] border-2 bg-gradient-to-br from-green-50 to-green-100/50 shadow-19'
-                            : 'border-black/20 border-1 bg-white/10 hover:border-[#10B981]/50 hover:bg-white/20 hover:shadow-20'
-                        }`}
+                        ? 'border-[#10B981] border-2 bg-gradient-to-br from-green-50 to-green-100/50 shadow-19' : 'border-black/20 border-1 bg-white/10 hover:border-[#10B981]/50 hover:bg-white/20 hover:shadow-20'}`}
                 >
                     <div className="flex items-center gap-3">
                         <div className={`p-2.5 rounded-lg transition-all duration-300 ${view === 'users'
-                                ? 'bg-gradient-to-br from-green-500 to-green-600 shadow-20'
-                                : 'bg-green-500/80 group-hover:bg-green-500'
-                            }`}>
+                            ? 'bg-gradient-to-br from-green-500 to-green-600 shadow-20' : 'bg-green-500/80 group-hover:bg-green-500'}`}>
                             <Users className="w-3 h-3 sm:w-5 sm:h-5 text-white" />
                         </div>
                         <div className="text-left flex-1">

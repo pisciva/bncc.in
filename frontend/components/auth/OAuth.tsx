@@ -21,18 +21,16 @@ export default function OAuth() {
             </div>
 
             <div className="flex gap-2">
-                <button
+                <button className="button-auth"
                     onClick={handleGoogleLogin}
-                    className="button-auth"
                     type="button"
                 >
                     <img src="/logo-google.svg" alt="Google" className="w-6 h-6 lg:w-7 lg:h-7 mr-3" />
                     Google
                 </button>
 
-                <button
+                <button className="button-auth"
                     onClick={handleGithubLogin}
-                    className="button-auth"
                     type="button"
                 >
                     <img src="/logo-github.svg" alt="GitHub" className="w-7 h-7 mr-3" />

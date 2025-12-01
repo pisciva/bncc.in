@@ -156,9 +156,8 @@ const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                                 </h4>
                                 <div className="space-y-2 max-h-80 overflow-y-auto pr-2">
                                     {countryData.map((country, index) => (
-                                        <div
+                                        <div className="flex items-center gap-2 justify-center lg:justify-end"
                                             key={country.id}
-                                            className="flex items-center gap-2 justify-center lg:justify-end"
                                         >
                                             <span className="text-xs sm:text-sm text-[#64748B] font-medium truncate max-w-[120px]">
                                                 {country.label}
@@ -213,9 +212,8 @@ const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                                 </h4>
                                 <div className="space-y-2 max-h-80 overflow-y-auto pl-2">
                                     {cityData.map((city, index) => (
-                                        <div
+                                        <div className="flex items-center gap-2 justify-center lg:justify-start"
                                             key={city.id}
-                                            className="flex items-center gap-2 justify-center lg:justify-start"
                                         >
                                             <span className="text-xs sm:text-sm font-bold text-[#0054A5] min-w-[30px]">
                                                 {city.value}

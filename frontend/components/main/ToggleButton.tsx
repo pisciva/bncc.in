@@ -28,12 +28,7 @@ export default function ToggleButton({ mode, setMode }: ToggleButtonProps) {
         {
             key: 'qr',
             label: 'QR Generate',
-            icon: (
-                <QrCode
-                    className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-300 ${mode === 'qr' ? 'text-white' : 'text-[#0054A5]'
-                        }`}
-                />
-            )
+            icon: (<QrCode className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-300 ${mode === 'qr' ? 'text-white' : 'text-[#0054A5]'}`}/>)
         }
 
     ]
@@ -54,11 +49,7 @@ export default function ToggleButton({ mode, setMode }: ToggleButtonProps) {
                         key={key}
                         onClick={() => setMode(key)}
                         className={`flex items-center gap-1.5 lg:gap-2 px-3 py-2 lg:px-4 lg:py-2.5 rounded-full text-xs lg:text-base font-medium transition-all duration-500 ease-outrelative z-10 w-32 lg:w-40 justify-center cursor-pointer
-                            ${mode === key
-                                ? 'text-white scale-[1.02]'
-                                : 'text-[#0054A5] hover:bg-white/10'
-                            }
-                        `}
+                            ${mode === key ? 'text-white scale-[1.02]' : 'text-[#0054A5] hover:bg-white/10'}`}
                     >
                         {icon}
                         <span className="hidden sm:inline">{label}</span>

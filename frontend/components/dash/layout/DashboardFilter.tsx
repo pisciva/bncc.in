@@ -137,9 +137,7 @@ const FilterPopup: React.FC<FilterPopupProps> = ({
                                 key={typeBtn}
                                 onClick={() => handleDateFilterChange(typeBtn as any)}
                                 className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all
-                                    ${filters.dateFilter === typeBtn
-                                        ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-md'
-                                        : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
+                                    ${filters.dateFilter === typeBtn ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-md' : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
                                 {typeBtn === "last7days" ? "Last 7 Days" : "Last 30 Days"}
                             </button>
                         ))}
@@ -178,9 +176,7 @@ const FilterPopup: React.FC<FilterPopupProps> = ({
                                         key={s}
                                         onClick={() => handleStatusToggle(s as any)}
                                         className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all
-                                            ${filters.status.includes(s as any)
-                                                ? 'bg-[#0054A5] text-white shadow-md'
-                                                : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
+                                            ${filters.status.includes(s as any) ? 'bg-[#0054A5] text-white shadow-md' : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
                                         {s.charAt(0).toUpperCase() + s.slice(1)}
                                     </button>
                                 ))}
@@ -195,9 +191,7 @@ const FilterPopup: React.FC<FilterPopupProps> = ({
                                         key={a}
                                         onClick={() => handleAccessToggle(a as any)}
                                         className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all
-                                            ${filters.access.includes(a as any)
-                                                ? 'bg-[#0054A5] text-white shadow-md'
-                                                : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
+                                            ${filters.access.includes(a as any) ? 'bg-[#0054A5] text-white shadow-md' : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
                                         {a.charAt(0).toUpperCase() + a.slice(1)}
                                     </button>
                                 ))}
@@ -215,9 +209,7 @@ const FilterPopup: React.FC<FilterPopupProps> = ({
                                     key={val.toString()}
                                     onClick={() => handleShowLogoToggle(val)}
                                     className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all
-                                        ${filters.showLogo.includes(val)
-                                            ? 'bg-[#0054A5] text-white shadow-md'
-                                            : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
+                                        ${filters.showLogo.includes(val) ? 'bg-[#0054A5] text-white shadow-md' : 'bg-gray-100 text-[#0054A5] hover:bg-gray-200'}`}>
                                     {val ? "Show Logo" : "Hide Logo"}
                                 </button>
                             ))}

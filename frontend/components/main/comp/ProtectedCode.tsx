@@ -54,12 +54,10 @@ export default function ProtectedCode({
                         value={digit}
                         onChange={(e) => handleCodeChange(e.target.value, idx)}
                         onKeyDown={(e) => handleBackspace(e, idx)}
-                        className={`w-12 h-12 lg:w-14 lg:h-14 text-center text-lg font-semibold text-[#0054A5] bg-white/10 backdrop-blur-xl  border transition-all duration-300 rounded-xl shadow-5 focus:scale-105 focus:shadow-6 focus:outline-none
-                            ${errorMessage 
-                                ? 'border-red-500/50 focus:border-red-500' 
-                                : digit 
-                                    ? 'border-[#0054A5]/30 bg-white/15' 
-                                    : 'border-[#D3D3D3] focus:border-[#0054A5]/30'
+                        className={`w-12 h-12 lg:w-14 lg:h-14 text-center text-lg font-semibold text-[#0054A5] bg-white/10 backdrop-blur-xl  border transition-all duration-300 rounded-xl shadow-5 focus:scale-105 focus:shadow-6 focus:outline-none ${errorMessage ?
+                            'border-red-500/50 focus:border-red-500' : digit
+                                ? 'border-[#0054A5]/30 bg-white/15'
+                                : 'border-[#D3D3D3] focus:border-[#0054A5]/30'
                             }
                             ${digit ? 'animate-pop' : ''}
                         `}

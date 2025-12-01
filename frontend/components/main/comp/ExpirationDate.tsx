@@ -148,9 +148,7 @@ export default function ExpirationDate({
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg h-12 bg-white/15 backdrop-blur-xl border transition-all duration-300 flex items-center justify-between cursor-pointer ${errorMessage
-                            ? 'border-red-500/50 hover:border-red-500'
-                            : 'border-[#D3D3D3]'
-                            }`}
+                            ? 'border-red-500/50 hover:border-red-500' : 'border-[#D3D3D3]'}`}
                     >
                         <span className={`text-sm font-medium ${selectedDate ? 'text-[#0054A5]' : 'text-gray-400'}`}>
                             {formatDisplayDate()}
@@ -172,26 +170,24 @@ export default function ExpirationDate({
                                 </button>
 
                                 <div className="flex items-center gap-2">
-                                    <button
+                                    <button className="cursor-pointer py-1 hover:bg-white/20 rounded-lg transition-all duration-300 flex items-center gap-1"
                                         type="button"
                                         onClick={() => {
                                             setShowMonthPicker(!showMonthPicker)
                                             setShowYearPicker(false)
                                         }}
-                                        className="cursor-pointer py-1 hover:bg-white/20 rounded-lg transition-all duration-300 flex items-center gap-1"
                                     >
                                         <span className="text-[#0054A5] font-bold text-sm sm:text-base">
                                             {currentMonth.toLocaleDateString('en-US', { month: 'long' })}
                                         </span>
                                     </button>
 
-                                    <button
+                                    <button className="cursor-pointer py-1 hover:bg-white/20 rounded-lg transition-all duration-300 flex items-center gap-1"
                                         type="button"
                                         onClick={() => {
                                             setShowYearPicker(!showYearPicker)
                                             setShowMonthPicker(false)
                                         }}
-                                        className="cursor-pointer py-1 hover:bg-white/20 rounded-lg transition-all duration-300 flex items-center gap-1"
                                     >
                                         <span className="text-[#0054A5] font-bold text-sm sm:text-base">
                                             {currentMonth.getFullYear()}
@@ -199,10 +195,9 @@ export default function ExpirationDate({
                                     </button>
                                 </div>
 
-                                <button
+                                <button className="cursor-pointer p-1.5 sm:p-2 hover:bg-white/20 rounded-lg transition-all duration-300"
                                     type="button"
                                     onClick={() => handleMonthChange(1)}
-                                    className="cursor-pointer p-1.5 sm:p-2 hover:bg-white/20 rounded-lg transition-all duration-300"
                                 >
                                     <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#0054A5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -220,17 +215,9 @@ export default function ExpirationDate({
                                                 type="button"
                                                 onClick={() => !disabled && handleMonthSelect(index)}
                                                 disabled={disabled}
-                                                className={`
-                                                    px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300
-                                                    ${disabled
-                                                        ? 'text-gray-400 cursor-not-allowed opacity-40'
-                                                        : 'cursor-pointer hover:bg-white/30'
-                                                    }
-                                                    ${currentMonth.getMonth() === index
-                                                        ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-26'
-                                                        : 'text-[#0054A5]'
-                                                    }
-                                                `}
+                                                className={`px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${disabled
+                                                    ? 'text-gray-400 cursor-not-allowed opacity-40' : 'cursor-pointer hover:bg-white/30'}
+                                                    ${currentMonth.getMonth() === index ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-26' : 'text-[#0054A5]'}`}
                                             >
                                                 {month.slice(0, 3)}
                                             </button>
@@ -246,13 +233,8 @@ export default function ExpirationDate({
                                             key={year}
                                             type="button"
                                             onClick={() => handleYearSelect(year)}
-                                            className={`
-                                                px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer hover:bg-white/30
-                                                ${currentMonth.getFullYear() === year
-                                                    ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-26'
-                                                    : 'text-[#0054A5]'
-                                                }
-                                            `}
+                                            className={`px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer hover:bg-white/30
+                                                ${currentMonth.getFullYear() === year ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-26' : 'text-[#0054A5]'}`}
                                         >
                                             {year}
                                         </button>
@@ -285,17 +267,10 @@ export default function ExpirationDate({
                                                     key={day}
                                                     onClick={() => !disabled && handleDateSelect(day)}
                                                     disabled={disabled}
-                                                    className={`
-                                                        aspect-square rounded-lg text-xs sm:text-sm font-medium transition-all duration-300
-                                                        ${disabled
-                                                            ? 'text-gray-400 cursor-not-allowed opacity-40'
-                                                            : 'cursor-pointer hover:bg-white/30 hover:scale-110'
-                                                        }
-                                                        ${selected
-                                                            ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-26 scale-105'
-                                                            : today
-                                                                ? 'bg-white/20 text-[#0054A5] font-bold border border-[#0054A5]/30'
-                                                                : 'text-[#0054A5]'
+                                                    className={`aspect-square rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${disabled
+                                                        ? 'text-gray-400 cursor-not-allowed opacity-40' : 'cursor-pointer hover:bg-white/30 hover:scale-110'} ${selected
+                                                            ? 'bg-gradient-to-br from-[#0054A5] to-[#003d7a] text-white shadow-26 scale-105' : today
+                                                                ? 'bg-white/20 text-[#0054A5] font-bold border border-[#0054A5]/30' : 'text-[#0054A5]'
                                                         }
                                                     `}
                                                 >

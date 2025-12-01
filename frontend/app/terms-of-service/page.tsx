@@ -141,7 +141,6 @@ export default function TermsOfService() {
                                         <h3 className="font-semibold text-[#0054A5] mb-2">D. Analytics Data Retention</h3>
                                         <ul className="list-disc list-inside space-y-2 ml-4">
                                             <li>Analytics data is stored indefinitely while your account remains active</li>
-                                            <li>Deleting a link will also delete its associated analytics data</li>
                                             <li>Account deletion will remove all links and their analytics permanently</li>
                                             <li>You can export analytics data at any time through your dashboard</li>
                                         </ul>
@@ -229,7 +228,7 @@ export default function TermsOfService() {
                                         <h3 className="font-semibold text-[#0054A5] mb-2">A. Your Data Ownership</h3>
                                         <ul className="list-disc list-inside space-y-2 ml-4">
                                             <li>You retain ownership of links and associated analytics data you create</li>
-                                            <li>You can export, download, or delete your analytics data at any time</li>
+                                            <li>You can export or download your analytics data at any time</li>
                                             <li>Analytics data is yours to use in compliance with applicable laws</li>
                                         </ul>
                                     </div>
@@ -297,27 +296,6 @@ export default function TermsOfService() {
                     />
 
                     <Section
-                        icon={<FileText className="w-6 h-6" />}
-                        title="11. Modifications to Terms"
-                        content={
-                            <>
-                                <p>
-                                    We reserve the right to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. Material changes include:
-                                </p>
-                                <ul className="list-disc list-inside space-y-2 text-[#64748B] ml-4 mt-3">
-                                    <li>Changes to data collection practices</li>
-                                    <li>Modifications to analytics features or availability</li>
-                                    <li>Updates to acceptable use policies</li>
-                                    <li>Changes in service pricing or features</li>
-                                </ul>
-                                <p className="mt-3">
-                                    Your continued use of the Service after changes become effective constitutes acceptance of the revised terms.
-                                </p>
-                            </>
-                        }
-                    />
-
-                    <Section
                         icon={<AlertCircle className="w-6 h-6" />}
                         title="12. Termination"
                         content={
@@ -367,9 +345,6 @@ export default function TermsOfService() {
                                     <p><strong>Website:</strong> <Link href="https://www.bncc.net" target="_blank" rel="noopener noreferrer" className="text-[#0054A5] hover:underline">www.bncc.net</Link></p>
                                     <p><strong>Address:</strong> Jalan Rawa Belong No.51A, Kec. Palmerah, Kota Jakarta Barat, Indonesia</p>
                                 </div>
-                                <p className="mt-4 text-[#0054A5] font-semibold">
-                                    We are committed to addressing your questions and concerns promptly.
-                                </p>
                             </>
                         }
                     />

@@ -45,7 +45,6 @@ const Links: React.FC<LinksProps> = ({
     const [activeLinkId, setActiveLinkId] = useState<string | null>(null)
     const [isLoadingMore, setIsLoadingMore] = useState(false)
 
-    // Pagination hook
     const {
         visibleItems: visibleLinks,
         hasMore,
@@ -83,11 +82,9 @@ const Links: React.FC<LinksProps> = ({
         setIsLoadingMore(false)
     }
 
-    // Check if it's truly empty (no links in database) vs filtered out
     const isTrulyEmpty = initialLinks.length === 0 && !searchQuery && !hasActiveFilters
     const isFilteredEmpty = links.length === 0 && (searchQuery || hasActiveFilters)
 
-    // State: Tidak ada link sama sekali di database
     if (isTrulyEmpty) {
         return (
             <EmptyState
@@ -97,7 +94,6 @@ const Links: React.FC<LinksProps> = ({
         )
     }
 
-    // State: Link tidak ditemukan karena search/filter
     if (isFilteredEmpty) {
         return (
             <EmptyState
@@ -111,7 +107,6 @@ const Links: React.FC<LinksProps> = ({
         )
     }
 
-    // State: Ada links yang ditampilkan
     return (
         <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
             <ul className="space-y-3 sm:space-y-4">

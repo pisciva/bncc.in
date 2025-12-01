@@ -207,8 +207,7 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                                         <QRCode value={qrValue_qr || ""} size={size} fgColor={qr.color || "#000"} className="w-full h-full"/>
 
                                         {qr.logo && (
-                                            <div
-                                                className="bottom-0 right-0 absolute bg-white rounded-tl-md"
+                                            <div className="bottom-0 right-0 absolute bg-white rounded-tl-md"
                                                 style={{
                                                     paddingLeft: size * 0.035,
                                                     paddingTop: size * 0.04
@@ -219,17 +218,14 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                                         )}
                                     </div>
                                 ) : (
-                                    <p className="text-gray-400 text-sm text-center">
-                                        Enter custom link <br /> to preview QR
-                                    </p>
+                                    <p className="text-gray-400 text-sm text-center">Enter custom link <br /> to preview QR</p>
                                 )}
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-2 justify-center">
                             <DownloadQR qrRef={qrRef} name={title} />
-                            <button
+                            <button className="hidden lg:flex px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16"
                                 onClick={handleCopyQR}
-                                className="hidden lg:flex px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16"
                             >
                                 Copy QR <IconCopy color='#0054A5' width={16} />
                             </button>
@@ -241,9 +237,8 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
                                 </Link>
                             ) : (
                                 <div className="relative">
-                                    <button
-                                        onClick={triggerPopup}
-                                        className={`flex px-3 py-2 bg-gray-200/60 backdrop-blur-lg text-[#64748B] rounded-xl border border-gray-300/40 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-27 ${shake ? 'animate-shake' : ''}`}>
+                                    <button className={`flex px-3 py-2 bg-gray-200/60 backdrop-blur-lg text-[#64748B] rounded-xl border border-gray-300/40 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-27 ${shake ? 'animate-shake' : ''}`}
+                                        onClick={triggerPopup}>
                                         Edit QR <IconEdit color="#64748B" width={19} />
                                     </button>
 

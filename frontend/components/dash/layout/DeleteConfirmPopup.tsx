@@ -41,17 +41,16 @@ const DeleteConfirmPopup: React.FC<DeleteConfirmPopupProps> = ({
                 </p>
 
                 <div className="flex gap-3 pt-2">
-                    <button
+                    <button className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={onCancel}
                         disabled={loading}
-                        className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Cancel
                     </button>
-                    <button
+                        
+                    <button className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         onClick={onConfirm}
                         disabled={loading}
-                        className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         {loading ? (
                             <>

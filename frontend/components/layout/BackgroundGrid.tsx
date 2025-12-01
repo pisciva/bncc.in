@@ -105,8 +105,7 @@ export default function BackgroundGrid({
                             height: tileSize,
                             borderRadius: 6,
                             border: '1px solid rgba(15,23,42,0.03)',
-                            transition:
-                                'background-color 260ms ease, opacity 260ms ease, transform 260ms ease, box-shadow 260ms ease',
+                            transition: 'background-color 260ms ease, opacity 260ms ease, transform 260ms ease, box-shadow 260ms ease',
                             ...tileStyle(i, color),
                             pointerEvents: 'auto',
                         }}

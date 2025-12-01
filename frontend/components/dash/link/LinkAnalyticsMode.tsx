@@ -107,7 +107,6 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
                     onViewChange={setView}
                 />
 
-                {/* Desktop: Full Analytics Charts (≥1024px) */}
                 <div className="hidden lg:grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-6">
                     <div className="lg:col-span-3 sm:space-y-4">
                         <div className="rounded-xl pt-4 sm:pt-6 lg:pt-0">
@@ -142,7 +141,6 @@ const LinkAnalyticsMode: React.FC<LinkAnalyticsModeProps> = ({ link, linkId, tok
                     </div>
                 </div>
 
-                {/* Mobile: Minimalist Desktop Only Message (<1024px) */}
                 <div className="lg:hidden">
                     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border-2 border-dashed border-blue-200">
                         <div className="flex items-center gap-4">

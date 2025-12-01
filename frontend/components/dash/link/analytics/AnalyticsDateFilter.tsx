@@ -61,14 +61,11 @@ const AnalyticsDateFilter: React.FC<AnalyticsDateFilterProps> = ({
         <div className="flex flex-col w-full gap-3">
             <div ref={datePickerRef} className="relative">
                 
-                <button
+                <button className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg h-12 bg-white/15 backdrop-blur-xl border transition-all duration-300 flex items-center justify-between cursor-pointer border-[#D3D3D3]"
                     onClick={() => {
-                        if (startDate && endDate) {
-                            clearDateRange()
-                        }
+                        if (startDate && endDate) {clearDateRange()}
                         setShowDatePicker(!showDatePicker)
                     }}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg h-12 bg-white/15 backdrop-blur-xl border transition-all duration-300 flex items-center justify-between cursor-pointer border-[#D3D3D3]"
                 >
                     <span className={`text-sm font-medium ${(!startDate || !endDate) ? 'text-gray-400' : 'text-[#0054A5]'}`}>
                         {formatDateRange()}

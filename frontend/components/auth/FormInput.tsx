@@ -43,7 +43,7 @@ export const InputField = ({
 
             <div className="relative">
                 {icon && (
-                    <img src={icon} className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 lg:w-6 lg:h-6 z-10" alt=""/>
+                    <img src={icon} className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 lg:w-6 lg:h-6 z-10" alt="" />
                 )}
 
                 <input
@@ -51,30 +51,14 @@ export const InputField = ({
                     maxLength={maxLength}
                     placeholder={placeholder}
                     {...inputProps}
-                    className={`
-                        w-full h-12 lg:h-14 rounded-lg 
-                        ${icon ? 'pl-12 lg:pl-14' : 'pl-4'}
-                        ${showPasswordToggle ? 'pr-12' : 'pr-4'}
-                        bg-white/10 backdrop-blur-xl
-                        border transition-all duration-300
-                        shadow-5
-                        text-[#0054A5] font-medium text-md lg:text-base
-                        placeholder:text-gray-400 placeholder:font-normal
-                        focus:outline-none
-                        focus:shadow-6
-                        focus:scale-[1.005]
-                        ${error
-                            ? 'border-red-500/50 focus:border-red-500'
-                            : 'border-[#D3D3D3] focus:border-[#0054A5]/30'
-                        }
-                        ${hasValue ? 'bg-white/15' : ''}`}
+                    className={`w-full h-12 lg:h-14 rounded-lg ${icon ? 'pl-12 lg:pl-14' : 'pl-4'} ${showPasswordToggle ? 'pr-12' : 'pr-4'} bg-white/10 backdrop-blur-xl border transition-all duration-300 shadow-5 text-[#0054A5] font-medium text-md lg:text-base placeholder:text-gray-400 placeholder:font-normal focus:outline-none focus:shadow-6 focus:scale-[1.005]
+                        ${error ? 'border-red-500/50 focus:border-red-500' : 'border-[#D3D3D3] focus:border-[#0054A5]/30'} ${hasValue ? 'bg-white/15' : ''}`}
                 />
 
                 {showPasswordToggle && setShowPassword && (
-                    <button
+                    <button className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-[#64748B] hover:text-[#0054A5] transition-colors z-10"
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-[#64748B] hover:text-[#0054A5] transition-colors z-10"
                     >
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>

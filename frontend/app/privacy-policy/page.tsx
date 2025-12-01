@@ -334,38 +334,8 @@ export default function PrivacyPolicy() {
                     />
 
                     <Section
-                        icon={<UserCheck className="w-6 h-6" />}
-                        title="10. Children's Privacy"
-                        content={
-                            <>
-                                <p className="mb-3">
-                                    Our Service is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13.
-                                </p>
-                                <p>
-                                    If you are a parent or guardian and believe your child has provided us with personal information, please contact us at <Link href="mailto:rnd@bncc.net" className="text-[#0054A5] font-semibold hover:underline">rnd@bncc.net</Link>, and we will promptly delete such information from our systems.
-                                </p>
-                            </>
-                        }
-                    />
-
-                    <Section
-                        icon={<Globe className="w-6 h-6" />}
-                        title="11. International Data Transfers"
-                        content={
-                            <>
-                                <p className="mb-3">
-                                    Your information may be transferred to and processed in countries other than your country of residence. These countries may have different data protection laws.
-                                </p>
-                                <p>
-                                    Our servers and database infrastructure may be located in various jurisdictions. By using our Service, you consent to the transfer of your information to these countries. We ensure appropriate safeguards are in place to protect your data in compliance with applicable laws.
-                                </p>
-                            </>
-                        }
-                    />
-
-                    <Section
                         icon={<Bell className="w-6 h-6" />}
-                        title="12. Changes to This Privacy Policy"
+                        title="10. Changes to This Privacy Policy"
                         content={
                             <>
                                 <p className="mb-3">
@@ -386,7 +356,7 @@ export default function PrivacyPolicy() {
 
                     <Section
                         icon={<Mail className="w-6 h-6" />}
-                        title="13. Contact Information"
+                        title="11. Contact Information"
                         content={
                             <>
                                 <p className="mb-3">
@@ -397,9 +367,6 @@ export default function PrivacyPolicy() {
                                     <p><strong>Website:</strong> <Link href="https://www.bncc.net" target="_blank" rel="noopener noreferrer" className="text-[#0054A5] hover:underline">www.bncc.net</Link></p>
                                     <p><strong>Address:</strong> Jalan Rawa Belong No.51A, Kec. Palmerah, Kota Jakarta Barat, Indonesia</p>
                                 </div>
-                                <p className="mt-4 text-[#0054A5] font-semibold">
-                                    We are committed to resolving any privacy concerns you may have and will respond to your inquiry within a reasonable timeframe (typically within 48-72 hours).
-                                </p>
                             </>
                         }
                     />

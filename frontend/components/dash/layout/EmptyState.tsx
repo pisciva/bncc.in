@@ -31,7 +31,6 @@ const EmptyState: React.FC<EmptyStateProps> = ({
     const dataLabel = dataType === 'link' ? 'link' : 'QR code'
     const dataLabelPlural = dataType === 'link' ? 'links' : 'QR codes'
 
-    // Truncate search query based on screen size
     const truncateQuery = (query: string) => {
         const maxLength = typeof window !== 'undefined' && window.innerWidth < 640 ? 30 : 50
         if (query.length > maxLength) {
@@ -40,7 +39,6 @@ const EmptyState: React.FC<EmptyStateProps> = ({
         return query
     }
 
-    // State: Tidak ada data sama sekali
     if (type === 'no-data') {
         return (
             <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
@@ -50,14 +48,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                         className="w-50 lg:w-70 mb-4" 
                         alt={`No ${dataLabelPlural}`} 
                     />
-                    <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">
-                        Nothing's here yet.
-                    </p>
+                    <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">Nothing's here yet.</p>
                     <p className="text-[#0054A5] font-medium text-sm lg:text-base mt-1">
                         Try{' '}
-                        <Link href="/" className="text-[#2788CE] hover:underline">
-                            creating a {dataLabel}
-                        </Link>
+                        <Link href="/" className="text-[#2788CE] hover:underline">creating a {dataLabel}</Link>
                         {' '}to get started.
                     </p>
                 </div>
@@ -65,16 +59,13 @@ const EmptyState: React.FC<EmptyStateProps> = ({
         )
     }
 
-    // State: Tidak ada hasil dari search/filter
     return (
         <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
             <div className="flex flex-col justify-center items-center text-center py-24">
                 <div className="w-20 h-20 rounded-full bg-[#0054A5]/10 flex items-center justify-center mb-4">
                     <Search className="w-10 h-10 text-[#0054A5]" />
                 </div>
-                <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">
-                    No {dataLabelPlural} found
-                </p>
+                <p className="text-[#0054A5] font-bold text-lg lg:text-2xl">No {dataLabelPlural} found</p>
                 <p className="text-[#0054A5]/70 font-medium text-sm lg:text-base mt-2 max-w-sm sm:max-w-md px-4">
                     {searchQuery && !hasActiveFilters && (
                         <>

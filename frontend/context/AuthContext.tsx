@@ -56,7 +56,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser(res.data.user)
                 setToken(storedToken)
             } catch (err) {
-                console.error('Token invalid atau kedaluwarsa')
                 localStorage.removeItem('token')
                 setToken(null)
             } finally {

@@ -19,19 +19,14 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
     const [justUpdated, setJustUpdated] = useState(false)
     const [saving, setSaving] = useState(false)
     const cardRef = useRef<HTMLDivElement>(null)
-    
-    // Form states
     const [title, setTitle] = useState(qr.title)
     const [originalUrl, setOriginalUrl] = useState(qr.originalUrl)
     const [qrColor, setQrColor] = useState(qr.qrColor || '#000000')
     const [showLogo, setShowLogo] = useState(qr.showLogo || false)
-    
-    // UI states
     const [errorMessage, setErrorMessage] = useState('')
     const [errors, setErrors] = useState({ title: '' })
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
-    // Reset form when QR changes
     useEffect(() => {
         setTitle(qr.title)
         setOriginalUrl(qr.originalUrl)
@@ -40,9 +35,8 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
         setHasSubmitted(false)
         setErrorMessage('')
         setErrors({ title: '' })
-    }, [qr._id]) // Only re-run when QR ID changes
+    }, [qr._id])
 
-    // Real-time validation
     useEffect(() => {
         if (!hasSubmitted) return
         if (title.trim()) {
@@ -90,8 +84,6 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
             onShowToast({ message: "QR updated!", type: "success" })
             onUpdateQR?.(data.qr)
             setEditing(false)
-
-            // Visual feedback
             setJustUpdated(true)
             setTimeout(() => {
                 cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -147,9 +139,7 @@ const QRItem: React.FC<QRItemProps> = ({ qr, onUpdateQR, onShowToast }) => {
     )
 }
 
-// Memoization with custom comparison
 export default React.memo(QRItem, (prevProps, nextProps) => {
-    // Only re-render if these specific props change
     return (
         prevProps.qr._id === nextProps.qr._id &&
         prevProps.qr.title === nextProps.qr.title &&

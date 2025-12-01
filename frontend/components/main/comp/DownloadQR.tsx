@@ -26,7 +26,6 @@ export default function DownloadQR({ qrRef, name = 'qr-code', rounded = "rounded
             a.download = `${name.trim().replace(/[^A-z0-9]/gi, '-')}.${type}`
             a.click()
         } catch (err) {
-            
             alert('Failed to download QR code.')
         }
         setOpen(false)
@@ -55,15 +54,13 @@ export default function DownloadQR({ qrRef, name = 'qr-code', rounded = "rounded
                 </svg>
             </button>
 
-            <div
-                className={`absolute top-full mt-1 right-0 min-w-full bg-white border border-[#0054A5]/30 rounded-xl shadow-lg z-50 overflow-hidden transition-all duration-500 ease-in-out
+            <div className={`absolute top-full mt-1 right-0 min-w-full bg-white border border-[#0054A5]/30 rounded-xl shadow-lg z-50 overflow-hidden transition-all duration-500 ease-in-out
                 ${open ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'}`}
             >
                 {['png', 'svg', 'jpeg'].map((type) => (
-                    <button
+                    <button className="w-full px-3 py-2 text-sm text-[#0054A5] font-medium hover:font-bold hover:bg-[#EAF3FC] transition-colors text-left cursor-pointer"
                         key={type}
                         title={`Download QR format ${type.toUpperCase()}`}
-                        className="w-full px-3 py-2 text-sm text-[#0054A5] font-medium hover:font-bold hover:bg-[#EAF3FC] transition-colors text-left cursor-pointer"
                         onClick={() => handleDownload(type as 'png' | 'svg' | 'jpeg')}
                     >
                         {type.toUpperCase()}
