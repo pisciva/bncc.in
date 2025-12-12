@@ -122,7 +122,7 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
     }
 
     return (
-        <div className={`rounded-2xl shadow-7 hover:shadow-7 transition-all duration-300 border ${justUpdated ? 'border-[#0054A5]/50 shadow-12 scale-[1.01]' : 'border-transparent'}`}>
+        <div className={`rounded-2xl shadow-2  transition-all duration-300 border ${justUpdated ? 'border-[#0054A5]/50 shadow-[0_6px_18px_rgba(0,0,0,0.15)] scale-[1.01]' : 'border-transparent shadow-[0_4px_14px_rgba(0,0,0,0.12)]'}`}>
             <div className="p-5 sm:p-6 lg:px-7">
                 <div className="flex flex-row gap-4 lg:gap-6">
                     <div className="flex-1 space-y-3 sm:space-y-4 overflow-hidden">

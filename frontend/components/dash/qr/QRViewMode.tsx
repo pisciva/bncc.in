@@ -37,17 +37,13 @@ const QRViewMode: React.FC<QRViewModeProps> = ({
             await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
             onShowToast({ message: 'QR grabbed! Go paste it!', type: 'success' })
         } catch (err) {
-            
+
             onShowToast({ message: "Uh-oh! Couldn't grab the QR!", type: 'error' })
         }
     }
 
     return (
-        <div
-            ref={cardRef}
-            className={`rounded-2xl shadow-7 hover:shadow-7 transition-all duration-300 border ${
-                justUpdated ? 'border-[#0054A5]/50 shadow-12 scale-[1.01]' : 'border-transparent'}`}
-        >
+        <div ref={cardRef} className={`rounded-2xl shadow-2  transition-all duration-300 border ${justUpdated ? 'border-[#0054A5]/50 shadow-[0_6px_18px_rgba(0,0,0,0.15)] scale-[1.01]' : 'border-transparent shadow-[0_4px_14px_rgba(0,0,0,0.12)]'}`}>
             <div className="p-4 sm:p-5 flex flex-col md:flex-row md:gap-5">
                 <div className="mb-4 md:mb-0 overflow-hidden rounded-2xl shadow-2 mx-auto md:mx-0">
                     <div className="relative bg-white flex items-center justify-center p-5 transition-all duration-300"
