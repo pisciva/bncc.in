@@ -28,11 +28,21 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
     onShowToast
 }) => {
     const [showPasscode, setShowPasscode] = useState(false)
-    const [popup, setPopup] = useState(false)
+    const [desktopQRPopup, setDesktopQRPopup] = useState(false) // Untuk desktop
+    const [mobileQRPopup, setMobileQRPopup] = useState(false) // Untuk mobile
     const [mobileMenu, setMobileMenu] = useState(false)
-    const qrRef = useRef<HTMLDivElement>(null)
-    const popupRef = useRef<HTMLDivElement>(null)
-    const qrButtonRef = useRef<HTMLButtonElement>(null)
+
+    // Refs untuk desktop QR
+    const desktopQrRef = useRef<HTMLDivElement>(null)
+    const desktopPopupRef = useRef<HTMLDivElement>(null)
+    const desktopQrButtonRef = useRef<HTMLButtonElement>(null)
+    const desktopPopupContainerRef = useRef<HTMLDivElement>(null)
+
+    // Refs untuk mobile QR
+    const mobileQrRef = useRef<HTMLDivElement>(null)
+    const mobilePopupRef = useRef<HTMLDivElement>(null)
+
+    // Refs untuk mobile menu
     const mobileMenuRef = useRef<HTMLDivElement>(null)
     const mobileMenuButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -42,10 +52,59 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
     const qrValue = `https://bncc.in/${link.customUrl}`
     const size = 160
 
-    const handleCopyQR = async () => {
+    // Handle click outside untuk Desktop QR popup
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (desktopQRPopup &&
+                desktopPopupContainerRef.current &&
+                desktopQrButtonRef.current &&
+                !desktopPopupContainerRef.current.contains(event.target as Node) &&
+                !desktopQrButtonRef.current.contains(event.target as Node)) {
+                setDesktopQRPopup(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [desktopQRPopup])
+
+    // Handle click outside untuk mobile menu
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (mobileMenu &&
+                mobileMenuRef.current &&
+                mobileMenuButtonRef.current &&
+                !mobileMenuRef.current.contains(event.target as Node) &&
+                !mobileMenuButtonRef.current.contains(event.target as Node)) {
+                setMobileMenu(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [mobileMenu])
+
+    const handleCopyDesktopQR = async () => {
         try {
-            if (!qrRef.current) return
-            const dataUrl = await toPng(qrRef.current, { pixelRatio: 5 })
+            if (!desktopQrRef.current) return
+            const dataUrl = await toPng(desktopQrRef.current, { pixelRatio: 5 })
+            const res = await fetch(dataUrl)
+            const blob = await res.blob()
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+            onShowToast({ message: 'QR grabbed! Go paste it!', type: 'success' })
+        } catch (err) {
+            onShowToast({ message: "Uh-oh! Couldn't grab the QR!", type: 'error' })
+        }
+    }
+
+    const handleCopyMobileQR = async () => {
+        try {
+            if (!mobileQrRef.current) return
+            const dataUrl = await toPng(mobileQrRef.current, { pixelRatio: 5 })
             const res = await fetch(dataUrl)
             const blob = await res.blob()
             await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
@@ -57,7 +116,7 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
 
     const handleMobileQRClick = () => {
         setMobileMenu(false)
-        setPopup(true)
+        setMobileQRPopup(true)
     }
 
     const handleMobileAnalyticsClick = () => {
@@ -69,32 +128,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
         setMobileMenu(false)
         onEdit()
     }
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (qrButtonRef.current && qrButtonRef.current.contains(e.target as Node)) return
-            if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
-                setPopup(false)
-            }
-        }
-
-        if (popup) document.addEventListener("mousedown", handleClickOutside)
-        else document.removeEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [popup])
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (mobileMenuButtonRef.current && mobileMenuButtonRef.current.contains(e.target as Node)) return
-            if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
-                setMobileMenu(false)
-            }
-        }
-
-        if (mobileMenu) document.addEventListener("mousedown", handleClickOutside)
-        else document.removeEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [mobileMenu])
 
     return (
         <div className={`rounded-2xl shadow-7 hover:shadow-7 transition-all duration-300 border ${justUpdated ? 'border-[#0054A5]/50 shadow-12 scale-[1.01]' : 'border-transparent'}`}>
@@ -173,6 +206,7 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 <span className="hidden sm:inline">Copy Link</span>
                             </button>
 
+                            {/* Desktop Actions */}
                             <div className="hidden lg:flex gap-2">
                                 <button className="cursor-pointer h-9 sm:h-10 px-3 sm:px-4 py-2 border border-[#D3D3D3] bg-white/15 text-[#0054A5] text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 flex items-center gap-2"
                                     onClick={onViewAnalytics}
@@ -185,18 +219,21 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 {link.qr?.enabled && (
                                     <div className="relative">
                                         <button className="cursor-pointer w-9 h-9 sm:w-10 sm:h-10 bg-white/15 backdrop-blur-xl border border-[#D3D3D3] rounded-full hover:bg-white/25 transition-all duration-300 flex items-center justify-center"
-                                            ref={qrButtonRef} 
-                                            onClick={() => setPopup(!popup)}
+                                            ref={desktopQrButtonRef}
+                                            onClick={() => setDesktopQRPopup(!desktopQRPopup)}
                                         >
                                             <QrCode className="w-4 h-4 sm:w-5 sm:h-5 text-[#0054A5]" />
                                         </button>
 
-                                        <div className={`absolute right-0 bottom-full mb-2 z-50 transition-all duration-300 ease-out ${popup ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}>
-                                            <div ref={popupRef}>
+                                        {/* Desktop QR Popup */}
+                                        <div className={`absolute right-0 bottom-full mb-2 z-50 transition-all duration-300 ease-out ${desktopQRPopup ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}
+                                            ref={desktopPopupContainerRef}
+                                        >
+                                            <div ref={desktopPopupRef}>
                                                 <div className="bg-white rounded-2xl shadow-1 p-4 flex flex-col gap-4">
                                                     <div className="overflow-hidden rounded-2xl shadow-2">
                                                         <div className="relative bg-white flex items-center justify-center transition-all duration-300 hover:shadow-7"
-                                                            ref={qrRef}
+                                                            ref={desktopQrRef}
                                                             style={{ width: size + 40, height: size + 40 }}
                                                         >
                                                             <div className="relative" style={{ width: size, height: size }}>
@@ -211,9 +248,9 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                                     </div>
 
                                                     <div className="flex gap-2">
-                                                        <DownloadQR qrRef={qrRef} name={link.title} />
+                                                        <DownloadQR qrRef={desktopQrRef} name={link.title} />
                                                         <button className="flex-1 px-3 py-2 bg-white/60 backdrop-blur-lg text-[#0054A5] rounded-xl border border-[#0054A5]/30 hover:bg-white/80 hover:border-[#0054A5]/50 text-sm font-medium cursor-pointer gap-2 transition-all duration-300 shadow-6 hover:shadow-16 flex items-center justify-center"
-                                                            onClick={handleCopyQR}
+                                                            onClick={handleCopyDesktopQR}
                                                             title="Copy QR"
                                                         >
                                                             <Copy className="w-3.5 h-3.5" />
@@ -230,6 +267,7 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 </button>
                             </div>
 
+                            {/* Mobile Menu */}
                             <div className="relative lg:hidden">
                                 <button className="cursor-pointer w-9 h-9 bg-white/15 backdrop-blur-xl border border-[#D3D3D3] rounded-full hover:bg-white/25 transition-all duration-300 flex items-center justify-center"
                                     ref={mobileMenuButtonRef}
@@ -266,14 +304,15 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 </div>
                             </div>
 
-                            {link.qr?.enabled && popup && (
-                                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 flex items-center justify-center lg:hidden" onClick={() => setPopup(false)}>
+                            {/* Mobile QR Popup (Full Screen) */}
+                            {link.qr?.enabled && mobileQRPopup && (
+                                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 flex items-center justify-center lg:hidden" onClick={() => setMobileQRPopup(false)}>
                                     <div onClick={(e) => e.stopPropagation()} className="m-4">
-                                        <div ref={popupRef}>
+                                        <div ref={mobilePopupRef}>
                                             <div className="bg-white rounded-2xl shadow-1 p-4 flex flex-col items-center gap-4">
                                                 <div className="overflow-hidden rounded-2xl shadow-2">
                                                     <div className="relative bg-white flex items-center justify-center transition-all duration-300"
-                                                        ref={qrRef}
+                                                        ref={mobileQrRef}
                                                         style={{ width: size + 40, height: size + 40 }}
                                                     >
                                                         <div className="relative" style={{ width: size, height: size }}>
@@ -286,7 +325,7 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <DownloadQR qrRef={qrRef} name={link.title} />
+                                                <DownloadQR qrRef={mobileQrRef} name={link.title} />
                                             </div>
                                         </div>
                                     </div>
