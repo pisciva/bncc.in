@@ -93,19 +93,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
         }
     }
 
-    const handleCopyMobileQR = async () => {
-        try {
-            if (!mobileQrRef.current) return
-            const dataUrl = await toPng(mobileQrRef.current, { pixelRatio: 5 })
-            const res = await fetch(dataUrl)
-            const blob = await res.blob()
-            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-            onShowToast({ message: 'QR grabbed! Go paste it!', type: 'success' })
-        } catch (err) {
-            onShowToast({ message: "Uh-oh! Couldn't grab the QR!", type: 'error' })
-        }
-    }
-
     const handleMobileQRClick = () => {
         setMobileMenu(false)
         setMobileQRPopup(true)

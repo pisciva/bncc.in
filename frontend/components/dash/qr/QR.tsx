@@ -91,7 +91,7 @@ const QRs: React.FC<QRsProps> = ({
     }
 
     return (
-        <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
+        <div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 {visibleQrs.map((qr) => (
                     <QRItem

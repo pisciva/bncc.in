@@ -108,7 +108,7 @@ const Links: React.FC<LinksProps> = ({
     }
 
     return (
-        <div className="bg-transparent sm:bg-white/10 sm:backdrop-blur-xl border border-white/30 sm:p-3 sm:p-4 rounded-2xl shadow-none sm:shadow-lg">
+        <div>
             <ul className="space-y-3 sm:space-y-4">
                 {visibleLinks.map((link) => (
                     <LinkItem
