@@ -1,109 +1,123 @@
 # BNCC.IN - URL Shortener & QR Code Generator
 
-Aplikasi web berfitur lengkap untuk memperpendek URL dan membuat Kode QR yang dapat disesuaikan, lengkap dengan dasbor dan fitur analitik yang mendalam.
+A full-featured web application for shortening URLs and generating customizable QR Codes, complete with a dashboard and deep analytics features.
 
-## Fitur Utama
+## Key Features
 
-* **Pembaruan Tautan dan QR:** Perpendek URL panjang menjadi tautan singkat yang mudah dibagikan.
-* **Pembuatan Kode QR:** Buat Kode QR untuk tautan yang diperpendek, dengan opsi penyesuaian (warna, mata, batas, dll.).
-* **Otentikasi Lengkap:** Mendukung pendaftaran/login manual dan otentikasi pihak ketiga melalui Google dan GitHub.
-* **Dasbor Pengguna:** Dasbor yang intuitif untuk mengelola semua tautan dan Kode QR Anda.
-* **Analitik Mendalam:** Lacak statistik kunjungan, termasuk total klik, sumber rujukan, lokasi geografis, dan perangkat yang digunakan.
-* **Pengaturan Lanjutan:** Opsi untuk mengatur kode sandi perlindungan, tanggal kedaluwarsa, dan URL kustom untuk tautan Anda.
-* **Penanganan Pengalihan Cerdas:** Logika pengalihan khusus untuk tautan dan Kode QR yang dilindungi atau kedaluwarsa.
-* **Pengelolaan Akun:** Fitur lupa/reset kata sandi.
+* **Link and QR Generation:** Shorten long URLs into easy-to-share short links.
+* **QR Code Generation:** Create QR Codes for shortened links, with customization options (color, eyes, borders, etc.).
+* **Complete Authentication:** Supports manual signup/login and third-party authentication via Google and GitHub.
+* **User Dashboard:** An intuitive dashboard to manage all your links and QR Codes.
+* **Deep Analytics:** Track visit statistics, including total clicks, referrer sources, geographical location, and devices used.
+* **Advanced Settings:** Options to set password protection, expiration dates, and custom URLs for your links.
+* **Intelligent Redirect Handling:** Custom redirection logic for protected or expired links and QR Codes.
+* **Account Management:** Forgot/reset password features.
 
-## Teknologi yang Digunakan
+## Technology Stack
 
-Proyek ini dibangun sebagai aplikasi Full-stack yang terpisah (monorepo), menggunakan teknologi berikut:
+This project is built as a separate Full-stack application (monorepo), utilizing the following technologies:
 
 ### Backend
 
-| Teknologi | Deskripsi |
+| Technology | Description |
 | :--- | :--- |
-| **TypeScript** | Bahasa utama untuk pengembangan backend. |
-| **Node.js/Express** | Runtime dan kerangka kerja web untuk membangun API yang cepat dan skalabel. |
-| **MongoDB/Mongoose** | Database NoSQL yang fleksibel dan ORM untuk pemodelan data. |
-| **Passport.js** | Middleware otentikasi yang mendukung strategi lokal, Google OAuth, dan GitHub OAuth. |
-| **Bcrypt** | Untuk hashing kata sandi secara aman. |
+| **TypeScript** | Primary language for backend development. |
+| **Node.js/Express** | Runtime and web framework for building a fast and scalable API. |
+| **MongoDB/Mongoose** | Flexible NoSQL database and ORM for data modeling. |
+| **Passport.js** | Authentication middleware supporting local, Google OAuth, and GitHub OAuth strategies. |
+| **Bcrypt** | For securely hashing passwords. |
 
 ### Frontend
 
-| Teknologi | Deskripsi |
+| Technology | Description |
 | :--- | :--- |
-| **Next.js** | Kerangka kerja React untuk pengembangan aplikasi web yang performa tinggi. |
-| **React** | Pustaka JavaScript untuk membangun antarmuka pengguna. |
-| **TypeScript** | Bahasa utama untuk pengembangan frontend. |
-| **Tailwind CSS** | Kerangka kerja CSS untuk styling kustom yang cepat dan reaktif. |
-| **React Context** | Untuk pengelolaan status otentikasi global. |
-| **Chart Libraries** | Digunakan untuk memvisualisasikan data analitik (misalnya, `AnalyticsCharts.tsx`). |
+| **Next.js** | React framework for developing high-performance web applications. |
+| **React** | JavaScript library for building user interfaces. |
+| **TypeScript** | Primary language for frontend development. |
+| **Tailwind CSS** | CSS framework for fast and reactive custom styling. |
+| **React Context** | For global authentication state management. |
+| **Chart Libraries** | Used for visualizing analytics data (e.g., `AnalyticsCharts.tsx`). |
 
-## Prasyarat Instalasi
+## Installation Prerequisites
 
-Sebelum memulai, pastikan Anda telah menginstal yang berikut:
+Before starting, ensure you have the following installed:
 
 * **Git**
-* **Node.js** (Versi LTS direkomendasikan)
-* **MongoDB** (Lokal atau melalui layanan cloud seperti MongoDB Atlas)
+* **Node.js** (LTS Version recommended)
+* **MongoDB** (Local or via a cloud service like MongoDB Atlas)
 
-Anda juga perlu mendapatkan kredensial untuk layanan pihak ketiga:
+You will also need to obtain credentials for third-party services:
 
-* Kunci/Klien OAuth Google (jika ingin mengaktifkan login Google)
-* Kunci/Klien OAuth GitHub (jika ingin mengaktifkan login GitHub)
-* Kredensial layanan email (untuk fitur reset kata sandi)
+* Google OAuth Key/Client (if you want to enable Google login)
+* GitHub OAuth Key/Client (if you want to enable GitHub login)
+* Email service credentials (for the password reset feature)
 
-## Susunan Project
+## Project Structure
 
-Struktur proyek dibagi menjadi dua direktori utama: `backend` dan `frontend`.
+The project structure is divided into two main directories: `backend` and `frontend`.
 
-bncc.in/ ├── backend/ │ ├── config/ # Konfigurasi koneksi database, passport, dan strategi OAuth. │ ├── middleware/ # Middleware Express (misalnya, otentikasi). │ ├── models/ # Skema dan model MongoDB (User, Link, Qr, Analytics). │ ├── routes/ # Definisi rute API (auth, main). │ ├── utils/ # Fungsi utilitas (hashing password, pengiriman email, pelacakan analitik). │ └── index.ts # Entri utama server backend. └── frontend/ ├── app/ # Aplikasi Next.js menggunakan App Router. ├── components/ # Komponen UI yang dapat digunakan kembali (dash, auth, layout, main). ├── context/ # Konteks global (misalnya, AuthContext). ├── hooks/ # Custom React Hooks (dashboard, pagination, dll.). ├── lib/ # Klien API untuk komunikasi backend. └── public/ # Aset statis (logo, ikon, font, dll.).
+bncc.in/
 
+├── backend/
+│   ├── config/              # Configuration for database connection, passport, and OAuth strategies.
+│   ├── middleware/          # Express middleware (e.g., authentication).
+│   ├── models/              # MongoDB schemas and models (User, Link, Qr, Analytics).
+│   ├── routes/              # API route definitions (auth, main).
+│   ├── utils/               # Utility functions (password hashing, email sending, analytics tracking).
+│   └── index.ts             # Main entry point for the backend server.
+└── frontend/
+├── app/                 # Next.js application using the App Router.
+├── components/          # Reusable UI components (dash, auth, layout, main).
+├── context/             # Global context (e.g., AuthContext).
+├── hooks/               # Custom React Hooks (dashboard, pagination, etc.).
+├── lib/                 # API client for backend communication.
+└── public/              # Static assets (logos, icons, fonts, etc.).
 
-## Contoh Penggunaan
+## Usage Example
 
-### 1. Kloning Repositori
+### 1. Cloning the Repository
 
 ```bash
-git clone <URL_REPOSITORI_ANDA>
+git clone <YOUR_REPOSITORY_URL>
 cd bncc.in
-2. Konfigurasi Lingkungan
-Buat file .env di direktori backend/ dan frontend/ dan isi variabel lingkungan yang diperlukan (misalnya, MONGO_URI, JWT_SECRET, GOOGLE_CLIENT_ID, NEXT_PUBLIC_API_BASE_URL).
+2. Environment Configuration
+Create a .env file in the backend/ and frontend/ directories and populate the necessary environment variables (e.g., MONGO_URI, JWT_SECRET, GOOGLE_CLIENT_ID, NEXT_PUBLIC_API_BASE_URL).
 
-3. Instalasi dan Menjalankan Backend
+3. Installing and Running the Backend
 Bash
 
 cd backend
 npm install
-npm run dev # atau npm start
-Server backend akan berjalan di http://localhost:5000 (port dapat bervariasi).
+npm run dev # or npm start
+The backend server will run on http://localhost:5000 (port may vary).
 
-4. Instalasi dan Menjalankan Frontend
+4. Installing and Running the Frontend
 Bash
 
 cd frontend
 npm install
 npm run dev
-Aplikasi frontend akan berjalan di http://localhost:3000 (atau port Next.js default lainnya).
+The frontend application will run on http://localhost:3000 (or another Next.js default port).
 
-Kontribusi
-Kami menyambut kontribusi! Jika Anda memiliki ide untuk fitur baru, perbaikan bug, atau peningkatan kinerja, silakan ikuti langkah-langkah berikut:
+Contributing
+We welcome contributions! If you have ideas for new features, bug fixes, or performance improvements, please follow these steps:
 
-Fork repositori ini.
+Fork this repository.
 
-Buat branch baru (git checkout -b feature/nama-fitur-anda).
+Create a new branch (git checkout -b feature/your-feature-name).
 
-Lakukan perubahan Anda dan commit (git commit -m 'feat: Tambahkan fitur baru').
+Make your changes and commit (git commit -m 'feat: Add new feature').
 
-Push ke branch Anda (git push origin feature/nama-fitur-anda).
+Push to your branch (git push origin feature/your-feature-name).
 
-Buka Pull Request baru.
+Open a new Pull Request.
 
-Lisensi
-Proyek ini dilisensikan di bawah Lisensi MIT.
+MIT License
+This project is licensed under the MIT License.
 
 MIT License
 
-Copyright (c) [TAHUN] [NAMA PEMILIK HAK CIPTA]
+Copyright (c) [YEAR] [COPYRIGHT HOLDER NAME]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
