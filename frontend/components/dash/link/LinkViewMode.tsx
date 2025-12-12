@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { toPng } from 'html-to-image'
 import QRCode from "react-qr-code"
-import BNCCLogo from "../..//layout/BNCCLogo"
+import BNCCLogo from "../../layout/BNCCLogo"
 import DownloadQR from "../../main/comp/DownloadQR"
 import { formatCreatedAt } from "@/utils/formatCreatedAt"
 import { Eye, EyeOff, Copy, QrCode, Edit, Lock, Unlock, Clock, Calendar, KeyRound, BarChart3, MoreVertical } from 'lucide-react'
@@ -28,21 +28,15 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
     onShowToast
 }) => {
     const [showPasscode, setShowPasscode] = useState(false)
-    const [desktopQRPopup, setDesktopQRPopup] = useState(false) // Untuk desktop
-    const [mobileQRPopup, setMobileQRPopup] = useState(false) // Untuk mobile
+    const [desktopQRPopup, setDesktopQRPopup] = useState(false)
+    const [mobileQRPopup, setMobileQRPopup] = useState(false)
     const [mobileMenu, setMobileMenu] = useState(false)
-
-    // Refs untuk desktop QR
     const desktopQrRef = useRef<HTMLDivElement>(null)
     const desktopPopupRef = useRef<HTMLDivElement>(null)
     const desktopQrButtonRef = useRef<HTMLButtonElement>(null)
     const desktopPopupContainerRef = useRef<HTMLDivElement>(null)
-
-    // Refs untuk mobile QR
     const mobileQrRef = useRef<HTMLDivElement>(null)
     const mobilePopupRef = useRef<HTMLDivElement>(null)
-
-    // Refs untuk mobile menu
     const mobileMenuRef = useRef<HTMLDivElement>(null)
     const mobileMenuButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -52,7 +46,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
     const qrValue = `https://bncc.in/${link.customUrl}`
     const size = 160
 
-    // Handle click outside untuk Desktop QR popup
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (desktopQRPopup &&
@@ -70,7 +63,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
         }
     }, [desktopQRPopup])
 
-    // Handle click outside untuk mobile menu
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (mobileMenu &&
@@ -206,7 +198,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 <span className="hidden sm:inline">Copy Link</span>
                             </button>
 
-                            {/* Desktop Actions */}
                             <div className="hidden lg:flex gap-2">
                                 <button className="cursor-pointer h-9 sm:h-10 px-3 sm:px-4 py-2 border border-[#D3D3D3] bg-white/15 text-[#0054A5] text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 flex items-center gap-2"
                                     onClick={onViewAnalytics}
@@ -224,8 +215,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                         >
                                             <QrCode className="w-4 h-4 sm:w-5 sm:h-5 text-[#0054A5]" />
                                         </button>
-
-                                        {/* Desktop QR Popup */}
                                         <div className={`absolute right-0 bottom-full mb-2 z-50 transition-all duration-300 ease-out ${desktopQRPopup ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}
                                             ref={desktopPopupContainerRef}
                                         >
@@ -267,7 +256,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 </button>
                             </div>
 
-                            {/* Mobile Menu */}
                             <div className="relative lg:hidden">
                                 <button className="cursor-pointer w-9 h-9 bg-white/15 backdrop-blur-xl border border-[#D3D3D3] rounded-full hover:bg-white/25 transition-all duration-300 flex items-center justify-center"
                                     ref={mobileMenuButtonRef}
@@ -304,7 +292,6 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 </div>
                             </div>
 
-                            {/* Mobile QR Popup (Full Screen) */}
                             {link.qr?.enabled && mobileQRPopup && (
                                 <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 flex items-center justify-center lg:hidden" onClick={() => setMobileQRPopup(false)}>
                                     <div onClick={(e) => e.stopPropagation()} className="m-4">
