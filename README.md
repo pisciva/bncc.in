@@ -8,7 +8,7 @@
   </picture>
 </p>
 
-## 📸 Screenshots
+## 👀 Interface Preview
 
 <table>
   <tr>
