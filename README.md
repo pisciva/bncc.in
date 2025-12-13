@@ -161,7 +161,7 @@ GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 
 # Email Service (Resend)
-RESEND_API_KEY=your_resend_api_key
+RESEND_API_KEY=your_resend_api_keyy
 ```
 
 **Frontend `.env`:**
