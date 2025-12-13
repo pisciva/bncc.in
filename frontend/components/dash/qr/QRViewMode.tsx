@@ -80,9 +80,8 @@ const QRViewMode: React.FC<QRViewModeProps> = ({
                                 {qr.title}
                             </p>
                         )}
-
                         <Link
-                            href={qr.originalUrl}
+                            href={qr.originalUrl.startsWith('http://') || qr.originalUrl.startsWith('https://') ? qr.originalUrl : `https://${qr.originalUrl}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             title={qr.originalUrl}

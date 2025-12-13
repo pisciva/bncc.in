@@ -122,7 +122,7 @@ const LinkViewMode: React.FC<LinkViewModeProps> = ({
                                 bncc.in/{link.customUrl}
                             </p>
                             <Link
-                                href={link.originalUrl}
+                                href={link.originalUrl.startsWith('http://') || link.originalUrl.startsWith('https://') ? link.originalUrl : `https://${link.originalUrl}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="max-w-85 text-xs sm:text-sm font-medium text-[#64748B] hover:text-[#0054A5] underline decoration-[0.5px] underline-offset-2 truncate block transition-colors"

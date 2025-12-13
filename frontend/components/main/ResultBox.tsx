@@ -34,7 +34,7 @@ export default function ResultBox({ result, onReset }: ResultBoxProps) {
     }
 
     const handleCopyLink = () => {
-        const linkToCopy = `https://bncc.in/${shortenLink}`
+        const linkToCopy = `https://bncc.in/${customUrl}`
 
         navigator.clipboard.writeText(linkToCopy)
             .then(() => setToast({ message: 'Link grabbed! Go paste it!', type: 'success' }))
