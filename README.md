@@ -152,6 +152,7 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 **Frontend `.env`:**
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 **5. Start the servers**
