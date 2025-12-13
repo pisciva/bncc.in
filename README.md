@@ -1,12 +1,23 @@
 # BNCC.IN — URL Shortener & QR Code Generator
 
 <p align="center">
-  <img src="./frontend/public/logo-bnccin.svg" alt="BNCC.IN Logo" width="200"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./frontend/public/logo-bnccin2-white.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./frontend/public/logo-bnccin2.svg">
+    <img src="./frontend/public/logo-bnccin.svg" alt="BNCC.IN Logo" width="200"/>
+  </picture>
 </p>
 
-![Tampilan Halaman Utama](./frontend/public/logo-bnccin.svg)
-
-A full-stack monorepo for modern link management.
+<table>
+  <tr>
+    <td><img src="./frontend/public/images/readme_image1.png" alt="Screenshot 1"/></td>
+    <td><img src="./frontend/public/images/readme_image2.png" alt="Screenshot 2"/></td>
+  </tr>
+  <tr>
+    <td><img src="./frontend/public/images/readme_image3.png" alt="Screenshot 3"/></td>
+    <td><img src="./frontend/public/images/readme_image4.png" alt="Screenshot 4"/></td>
+  </tr>
+</table>
 
 ***
 
@@ -18,10 +29,11 @@ The core of the application lies in its deep analytics, which allows users to tr
 
 ### Tech Stack
 
-| Component | Primary Technology | Database |
-| :--- | :--- | :--- |
-| **Backend (API)** | Node.js (Express) & TypeScript | MongoDB (Mongoose) |
-| **Frontend (Web)** | Next.js & React | N/A |
+| Component | Primary Technology |
+| :--- | :--- |
+| **Backend (API)** | Node.js (Express) & TypeScript |
+| **Frontend (Web)** | Next.js & React |
+| **Database** | MongoDB (Mongoose) |
 
 ## ⚙️ Installation Guide
 
