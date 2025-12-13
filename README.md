@@ -53,9 +53,14 @@
 
 ## 📖 About BNCC.IN
 
-BNCC.IN is a powerful platform designed to shorten URLs and create dynamic, customizable QR Codes. It features a complete user authentication system (supporting manual registration, Google, and GitHub login) and an intuitive dashboard.
+BNCC.IN is a URL shortener and QR code generator with essential link management features. 
 
-The core of the application lies in its deep analytics, which allows users to track comprehensive statistics for their shortened links, including total clicks, referrer sources, and geographical data.
+**Key Features:**
+- Shorten URLs and generate customizable QR codes
+- User authentication (Email, Google, GitHub)
+- Dashboard for managing and editing links
+- Analytics to track link performance
+- Passcode protection and link expiration options
 
 ### Tech Stack
 
