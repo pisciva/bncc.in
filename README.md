@@ -8,14 +8,44 @@
   </picture>
 </p>
 
+## 📸 Screenshots
+
 <table>
   <tr>
-    <td><img src="./frontend/public/images/readme_image1.png" alt="Screenshot 1"/></td>
-    <td><img src="./frontend/public/images/readme_image2.png" alt="Screenshot 2"/></td>
+    <td align="center">
+      <img src="./frontend/public/images/readme_image1.png" alt="Authentication Page" width="100%"/>
+      <br />
+      <b>Authentication Page</b>
+    </td>
+    <td align="center">
+      <img src="./frontend/public/images/readme_image2.png" alt="Shorten Link / Generate QR Page" width="100%"/>
+      <br />
+      <b>Shorten Link / Generate QR Page</b>
+    </td>
   </tr>
   <tr>
-    <td><img src="./frontend/public/images/readme_image3.png" alt="Screenshot 3"/></td>
-    <td><img src="./frontend/public/images/readme_image4.png" alt="Screenshot 4"/></td>
+    <td align="center">
+      <img src="./frontend/public/images/readme_image3.png" alt="Result Page" width="100%"/>
+      <br />
+      <b>Result Page</b>
+    </td>
+    <td align="center">
+      <img src="./frontend/public/images/readme_image4.png" alt="Main Dashboard" width="100%"/>
+      <br />
+      <b>Main Dashboard</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="./frontend/public/images/readme_image5.png" alt="Edit Dashboard" width="100%"/>
+      <br />
+      <b>Edit Dashboard</b>
+    </td>
+    <td align="center">
+      <img src="./frontend/public/images/readme_image6.png" alt="Analytics Dashboard" width="100%"/>
+      <br />
+      <b>Analytics Dashboard</b>
+    </td>
   </tr>
 </table>
 
