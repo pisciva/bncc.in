@@ -141,12 +141,27 @@ Create `.env` files in both `backend/` and `frontend/` directories with your con
 
 **Backend `.env`:**
 ```env
-MONGODB_URI=your_mongodb_uri
-JWT_SECRET=your_jwt_secret
+# Server URLs
+BACKEND_URL=http://localhost:5000
+FRONTEND_URL=http://localhost:3000
+
+# Database
+MONGO_URI=your_mongodb_connection_string
+
+# Security Secrets
+JWT_SECRET=your_jwt_secret_key
+SESSION_SECRET=your_session_secret_key
+
+# Google OAuth
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# GitHub OAuth
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
+
+# Email Service (Resend)
+RESEND_API_KEY=your_resend_api_key
 ```
 
 **Frontend `.env`:**
