@@ -77,7 +77,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 <table>
   <tr>
@@ -189,7 +189,7 @@ npm run dev
 ```
 > Frontend runs on http://localhost:3000
 
-🎉 **You're all set!** Visit http://localhost:3000 to see the application.
+**You're all set!** Visit http://localhost:3000 to see the application.
 
 ---
 
