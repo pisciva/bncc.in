@@ -65,9 +65,6 @@ export default function LeftCol() {
             </Link>
 
             <div className="container w-full mx-auto relative h-full">
-
-
-
                 <FloatingBox
                     className="absolute rounded-2xl font-semibold text-white flex items-center z-3 justify-center gradient-blur-box"
                     barClass="blur-bar"
@@ -91,7 +88,7 @@ export default function LeftCol() {
                 <img src="/icon-cursor.svg" alt="" className="z-5 absolute icon-cursor" />
 
                 <div className="absolute rounded-full px-[10.85px] z-5 pt-[5.74px] pb-[5.74px] font-bold text-white z-10 cursor-default flex items-center tremble justify-center bncc-box">
-                    <img src="/logo-bnccin2-white.svg" className='w-30 xl:w-35' alt="" />
+                    <img src="/logo-bnccin2-white.svg" className='w-30' alt="" />
                 </div>
             </div>
         </div>

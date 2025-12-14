@@ -22,7 +22,7 @@
 
 ---
 
-## 👀 Interface Preview
+## Interface Preview
 
 <table>
   <tr>
@@ -65,7 +65,7 @@
 
 ---
 
-## ✨ Features
+## Features
 
 - 🔗 **URL Shortening** - Create short, memorable links with custom aliases
 - 🎨 **QR Code Generator** - Generate customizable QR codes with branding options
@@ -107,7 +107,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -193,7 +193,7 @@ npm run dev
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```
 bncc.in/
 ├── backend/
@@ -217,12 +217,12 @@ bncc.in/
     └── public/              # Static assets
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Built with ❤️ by [BNCC (Bina Nusantara Computer Club)](https://bncc.net)

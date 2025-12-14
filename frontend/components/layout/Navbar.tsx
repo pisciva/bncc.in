@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { UserCircle2, Menu, X, LayoutList, LogOut, ChevronDown, House, LogIn } from 'lucide-react'
+import { UserCircle2, Menu, X, LayoutList, LogOut, ChevronDown, House, LogIn, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useState, useRef, useEffect } from 'react'
 
@@ -11,6 +11,7 @@ export default function Navbar() {
     const router = useRouter()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [showLogoutPopup, setShowLogoutPopup] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const getFirstName = (name: string) => name.split(' ')[0]
@@ -18,6 +19,12 @@ export default function Navbar() {
     const handleLogout = () => {
         localStorage.removeItem("token")
         window.location.href = "/login"
+    }
+
+    const openLogoutPopup = () => {
+        setShowLogoutPopup(true)
+        setIsDropdownOpen(false)
+        setIsMenuOpen(false)
     }
 
     useEffect(() => {
@@ -71,7 +78,7 @@ export default function Navbar() {
                                                     <div className="border-t border-gray-200"></div>
 
                                                     <button className="w-full flex items-center space-x-3 px-4 py-3 text-[#EF4444] hover:bg-red-50 transition cursor-pointer text-left"
-                                                        onClick={handleLogout}>
+                                                        onClick={openLogoutPopup}>
                                                         <LogOut className="w-4 h-4 hidden lg:block" />
                                                         <span className="font-medium">Logout</span>
                                                     </button>
@@ -131,7 +138,7 @@ export default function Navbar() {
                                         </button>
 
                                         <button className="flex items-center space-x-2 hover:font-semibold transition cursor-pointer py-2 text-left text-[#EF4444]"
-                                            onClick={handleLogout}>
+                                            onClick={openLogoutPopup}>
                                             <LogOut className="w-5 h-5" />
                                             <span>Logout</span>
                                         </button>
@@ -148,6 +155,40 @@ export default function Navbar() {
                     </div>
                 )}
             </nav>
+
+            {showLogoutPopup && (
+                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowLogoutPopup(false)}>
+                    <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md animate-fadeIn">
+                        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+                            <div className="flex flex-col items-center gap-4 text-center">
+                                <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
+                                    <AlertCircle className="w-8 h-8 text-[#EF4444]" />
+                                </div>
+                                
+                                <div className="space-y-2">
+                                    <h3 className="text-2xl font-bold text-[#0054A5]">Logout Confirmation</h3>
+                                    <p className="text-gray-600">Are you sure you want to logout from your account?</p>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-3 w-full mt-4">
+                                    <button 
+                                        onClick={() => setShowLogoutPopup(false)}
+                                        className="cursor-pointer flex-1 px-6 py-3 rounded-full border-2 border-[#0054A5] text-[#0054A5] font-semibold hover:bg-[#0054A5]/5 transition-all duration-200"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="cursor-pointer flex-1 px-6 py-3 rounded-full bg-[#EF4444] text-white font-semibold hover:bg-[#DC2626] transition-all duration-200 shadow-lg hover:shadow-xl"
+                                    >
+                                        Yes, Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     )
 }
