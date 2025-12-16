@@ -9,7 +9,7 @@ export default async function sendEmail(
 ) {
     try {
         const data = await resend.emails.send({
-            from: 'bncc.in <no-reply@bncc.in>',
+            from: 'bncc.in <onboarding@resend.dev>',
             to,
             subject,
             html,
@@ -19,4 +19,3 @@ export default async function sendEmail(
         throw error
     }
 }
- 
